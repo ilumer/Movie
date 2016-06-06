@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <FrameLayout
+            android:id="@+id/Movie_name_container"
+            android:background="#00796B"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/movie_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal|center_vertical"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/movie_titleSize" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/movie_content_container"
+            android:orientation="horizontal"
+            android:layout_below="@id/Movie_name_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/movie_imageView"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/movie_image"
+                android:layout_height="wrap_content" />
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/release_date"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    style="@style/Movie_textView"/>
+
+                <TextView
+                    android:id="@+id/movie_runtime"
+                    android:layout_below="@+id/release_date"
+                    style="@style/Movie_textView"/>
+
+                <TextView
+                    android:id="@+id/vote_average"
+                    android:layout_below="@+id/movie_runtime"
+                    android:textSize="@dimen/movie_vote_size"
+                    android:textStyle="bold"
+                    android:textColor="#212121"
+                    style="@style/common_Movie_textTextView"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/movie_overview"
+            android:layout_below="@id/movie_content_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+</ScrollView>

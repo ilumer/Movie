@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Movie</string>
+    <string name="sort_vote_average">评分排序</string>
+    <string name="sort_point">refresh</string>
+    <string name="movie_image">image</string>
+    <string name="movie_runtime_unit">%1$d min</string>
+    <string name="movie_vote_helper">%1$.1f /10</string>
+</resources>
