@@ -4,12 +4,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,14 +21,21 @@ import com.bumptech.glide.Glide;
 import com.example.root.movie.Net.DBAPI;
 import com.example.root.movie.Net.MovieOkhttp;
 import com.example.root.movie.model.DetialMovie;
+import com.example.root.movie.model.TrailerAsyncloader;
+import com.example.root.movie.model.Trailers;
+
+import java.util.List;
 
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetialFragment extends Fragment {
+public class DetialFragment extends Fragment implements
+        LoaderManager.LoaderCallbacks<List<Trailers.ResultsBean>>{
     public static final String EXTRA_ID = "com.example.root.movie.ID";
     public static final String EXTRA_DETIAL_MOVIE = "com.example.root.movie.DETIAL_MOVIE";
+    @BindView(R.id.trailer_show)
+    ListView trailerLView;
     @BindView(R.id.movie_name)
     TextView movieName;
     @BindView(R.id.movie_overview)
@@ -65,6 +75,7 @@ public class DetialFragment extends Fragment {
             }
         }
         int id = getArguments().getInt(EXTRA_ID,10);
+        getLoaderManager().initLoader(0,null,this);
         new AsyncUpdateUI().execute(id);
         Log.e("TAG","onViewCreated");
     }
@@ -114,8 +125,17 @@ public class DetialFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.e("destory","destory");
+    public Loader<List<Trailers.ResultsBean>> onCreateLoader(int id, Bundle args) {
+        return new TrailerAsyncloader(getActivity(),id);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Trailers.ResultsBean>> loader, List<Trailers.ResultsBean> data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Trailers.ResultsBean>> loader) {
+
     }
 }

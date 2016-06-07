@@ -2,9 +2,11 @@ package com.example.root.movie.Net;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import com.example.root.movie.model.DetialMovie;
 import com.example.root.movie.model.MovieData;
+import com.example.root.movie.model.Trailers;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -16,8 +18,9 @@ import okhttp3.Response;
 
 
 public class MovieOkhttp {
-    private final OkHttpClient client = new OkHttpClient();
-    private final Gson gson = new Gson();
+    private final static OkHttpClient client = new OkHttpClient();
+    private final static Gson gson = new Gson();
+    private final static String TAG = MovieOkhttp.class.getName();
     private Context mcontext;
 
     public MovieOkhttp(Context context) {
@@ -68,5 +71,22 @@ public class MovieOkhttp {
             throw new IOException("unexpected code"+response);
         }
         return response.body().string();
+    }
+
+    public static List<Trailers.ResultsBean> getTrailers(int id){
+        String uri = DBAPI.BASEMOVIEINFO_URI+id+DBAPI.BASEVIDEO_TYPE+"?api_key="+DBAPI.API_KEY;
+        Request request = new Request.Builder().url(uri).build();
+        List<Trailers.ResultsBean> trailers = null;
+        Response response =null;
+        try{
+            response = client.newCall(request).execute();
+            if (!response.isSuccessful()){
+                Log.e(TAG,"unexpected code"+response);
+            }
+            trailers = gson.fromJson(response.body().string(),Trailers.class).getResults();
+        }catch (Exception e){
+            Log.e(TAG,e.getMessage());
+        }
+        return trailers;
     }
 }
