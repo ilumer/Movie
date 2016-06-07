@@ -4,14 +4,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 
 public class DetialFragment extends Fragment {
     public static final String EXTRA_ID = "com.example.root.movie.ID";
+    public static final String EXTRA_DETIAL_MOVIE = "com.example.root.movie.DETIAL_MOVIE";
     @BindView(R.id.movie_name)
     TextView movieName;
     @BindView(R.id.movie_overview)
@@ -41,6 +42,9 @@ public class DetialFragment extends Fragment {
     String voteHelper;
     @BindString(R.string.movie_runtime_unit)
     String runtimeUnit;
+    @BindString(R.string.toast_notInternet)
+    String toastMessage;
+    DetialMovie tempData = null;
 
     @Nullable
     @Override
@@ -54,9 +58,15 @@ public class DetialFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //暂时没有使用toolbar
+        //not use toolbar
+        if (savedInstanceState!=null){
+            if ((tempData =savedInstanceState.getParcelable(EXTRA_DETIAL_MOVIE))!=null){
+                UpdateUI(tempData);
+            }
+        }
         int id = getArguments().getInt(EXTRA_ID,10);
         new AsyncUpdateUI().execute(id);
+        Log.e("TAG","onViewCreated");
     }
 
     public static Fragment newInstance(int id){
@@ -87,7 +97,25 @@ public class DetialFragment extends Fragment {
         @Override
         protected void onPostExecute(DetialMovie detialMovie) {
             super.onPostExecute(detialMovie);
-            UpdateUI(detialMovie);
+            if (detialMovie!=null) {
+                tempData = detialMovie;
+                UpdateUI(detialMovie);
+            }else {
+                Toast.makeText
+                        (getActivity(),toastMessage,Toast.LENGTH_SHORT).show();
+            }
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(EXTRA_DETIAL_MOVIE, tempData);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("destory","destory");
     }
 }

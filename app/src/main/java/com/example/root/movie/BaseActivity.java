@@ -14,9 +14,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = createNewFragment();
-        fragmentManager.
-                beginTransaction().
-                add(R.id.fragment_container,fragment).commit();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        if (fragment==null) {
+            fragment = createNewFragment();
+            fragmentManager.
+                    beginTransaction().
+                    add(R.id.fragment_container, fragment).commit();
+        }
+
     }
 }

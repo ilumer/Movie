@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Movie</string>
     <string name="sort_vote_average">评分排序</string>
+    <string name="toast_notInternet">Check the network</string>
     <string name="sort_point">refresh</string>
     <string name="movie_image">image</string>
     <string name="movie_runtime_unit">%1$d min</string>

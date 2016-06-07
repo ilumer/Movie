@@ -1,11 +1,15 @@
 package com.example.root.movie.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  *  data get by movie id
  */
-public class DetialMovie {
+public class DetialMovie implements Parcelable{
 
 
     private boolean adult;
@@ -261,7 +265,7 @@ public class DetialMovie {
         this.spoken_languages = spoken_languages;
     }
 
-    public static class BelongsToCollectionBean {
+    public static class BelongsToCollectionBean implements Parcelable{
         private int id;
         private String name;
         private String poster_path;
@@ -298,6 +302,39 @@ public class DetialMovie {
         public void setBackdrop_path(String backdrop_path) {
             this.backdrop_path = backdrop_path;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(this.id);
+            dest.writeString(this.name);
+            dest.writeString(this.poster_path);
+            dest.writeString(this.backdrop_path);
+        }
+
+        public BelongsToCollectionBean() {
+        }
+
+        protected BelongsToCollectionBean(Parcel in) {
+            this.id = in.readInt();
+            this.name = in.readString();
+            this.poster_path = in.readString();
+            this.backdrop_path = in.readString();
+        }
+
+        public static final Creator<BelongsToCollectionBean> CREATOR = new Creator<BelongsToCollectionBean>() {
+            public BelongsToCollectionBean createFromParcel(Parcel source) {
+                return new BelongsToCollectionBean(source);
+            }
+
+            public BelongsToCollectionBean[] newArray(int size) {
+                return new BelongsToCollectionBean[size];
+            }
+        };
     }
 
     public static class GenresBean {
@@ -383,4 +420,83 @@ public class DetialMovie {
             this.name = name;
         }
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte(adult ? (byte) 1 : (byte) 0);
+        dest.writeString(this.backdrop_path);
+        dest.writeParcelable(this.belongs_to_collection, flags);
+        dest.writeInt(this.budget);
+        dest.writeString(this.homepage);
+        dest.writeInt(this.id);
+        dest.writeString(this.imdb_id);
+        dest.writeString(this.original_language);
+        dest.writeString(this.original_title);
+        dest.writeString(this.overview);
+        dest.writeDouble(this.popularity);
+        dest.writeString(this.poster_path);
+        dest.writeString(this.release_date);
+        dest.writeInt(this.revenue);
+        dest.writeInt(this.runtime);
+        dest.writeString(this.status);
+        dest.writeString(this.tagline);
+        dest.writeString(this.title);
+        dest.writeByte(video ? (byte) 1 : (byte) 0);
+        dest.writeDouble(this.vote_average);
+        dest.writeInt(this.vote_count);
+        dest.writeList(this.genres);
+        dest.writeList(this.production_companies);
+        dest.writeList(this.production_countries);
+        dest.writeList(this.spoken_languages);
+    }
+
+    public DetialMovie() {
+    }
+
+    protected DetialMovie(Parcel in) {
+        this.adult = in.readByte() != 0;
+        this.backdrop_path = in.readString();
+        this.belongs_to_collection = in.readParcelable(BelongsToCollectionBean.class.getClassLoader());
+        this.budget = in.readInt();
+        this.homepage = in.readString();
+        this.id = in.readInt();
+        this.imdb_id = in.readString();
+        this.original_language = in.readString();
+        this.original_title = in.readString();
+        this.overview = in.readString();
+        this.popularity = in.readDouble();
+        this.poster_path = in.readString();
+        this.release_date = in.readString();
+        this.revenue = in.readInt();
+        this.runtime = in.readInt();
+        this.status = in.readString();
+        this.tagline = in.readString();
+        this.title = in.readString();
+        this.video = in.readByte() != 0;
+        this.vote_average = in.readDouble();
+        this.vote_count = in.readInt();
+        this.genres = new ArrayList<GenresBean>();
+        in.readList(this.genres, List.class.getClassLoader());
+        this.production_companies = new ArrayList<ProductionCompaniesBean>();
+        in.readList(this.production_companies, List.class.getClassLoader());
+        this.production_countries = new ArrayList<ProductionCountriesBean>();
+        in.readList(this.production_countries, List.class.getClassLoader());
+        this.spoken_languages = new ArrayList<SpokenLanguagesBean>();
+        in.readList(this.spoken_languages, List.class.getClassLoader());
+    }
+
+    public static final Creator<DetialMovie> CREATOR = new Creator<DetialMovie>() {
+        public DetialMovie createFromParcel(Parcel source) {
+            return new DetialMovie(source);
+        }
+
+        public DetialMovie[] newArray(int size) {
+            return new DetialMovie[size];
+        }
+    };
 }

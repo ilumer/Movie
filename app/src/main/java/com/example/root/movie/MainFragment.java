@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.root.movie.model.MovieAdapter;
 import com.example.root.movie.model.MovieData;
@@ -22,11 +23,11 @@ import com.example.root.movie.Net.MovieOkhttp;
 import com.example.root.movie.model.RecyclerItemClickListener;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -38,6 +39,8 @@ public class MainFragment extends Fragment {
     RecyclerView movieList;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
+    @BindString(R.string.toast_notInternet)
+    String toastMessage;
     List<MovieData.ResultsBean> mList = new ArrayList<>();
     MovieAdapter adapter = null;
     GridLayoutManager gridLayoutManager=
@@ -82,7 +85,6 @@ public class MainFragment extends Fragment {
                     int totalcount = gridLayoutManager.getItemCount();
                     int pastvisibleItem = gridLayoutManager.findFirstVisibleItemPosition();
                     if ((visibleItemcount+pastvisibleItem)>=totalcount){
-                        //Toast.makeText(getActivity(),"endless",Toast.LENGTH_SHORT).show();
                         loadMore();
                     }
                 }
@@ -119,7 +121,7 @@ public class MainFragment extends Fragment {
     public class  AsyncGetData extends AsyncTask<Integer,Void,Integer>{
         public static final int GET_LATEST = 1;
         public static final int GET_MORE = 2;
-        public static final int SORT_LATEST =3;
+        //public static final int SORT_LATEST =3;
         public static final int FIR_PAGE =1;
         public List<MovieData.ResultsBean> temp;
         @Override
@@ -152,15 +154,19 @@ public class MainFragment extends Fragment {
             if (swipeRefresh.isRefreshing()){
                 swipeRefresh.setRefreshing(false);
             }
-            switch (result) {
-                case GET_LATEST: {
-                    adapter.notifyDataSetChanged();
-                    break;
+            if(temp!=null) {
+                switch (result) {
+                    case GET_LATEST: {
+                        adapter.notifyDataSetChanged();
+                        break;
+                    }
+                    case GET_MORE: {
+                        adapter.notifyItemRangeChanged(mList.size() - temp.size(), temp.size());
+                        break;
+                    }
                 }
-                case GET_MORE:{
-                    adapter.notifyItemRangeChanged(mList.size()-temp.size(),temp.size());
-                    break;
-                }
+            }else {
+                Toast.makeText(getActivity(),toastMessage,Toast.LENGTH_SHORT).show();
             }
         }
     }
