@@ -7,9 +7,6 @@ import com.example.root.movie.Net.MovieOkhttp;
 
 import java.util.List;
 
-/**
- * Created by root on 16-6-7.
- */
 public class TrailerAsyncloader extends AsyncTaskLoader<List<Trailers.ResultsBean>> {
     int id;
     public TrailerAsyncloader(Context context, int id) {

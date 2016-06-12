@@ -7,6 +7,7 @@ import android.util.Log;
 import com.example.root.movie.model.DetialMovie;
 import com.example.root.movie.model.MovieData;
 import com.example.root.movie.model.Trailers;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -18,7 +19,9 @@ import okhttp3.Response;
 
 
 public class MovieOkhttp {
-    private final static OkHttpClient client = new OkHttpClient();
+    private final static OkHttpClient client = new OkHttpClient.Builder()
+            .addNetworkInterceptor(new StethoInterceptor())
+            .build();
     private final static Gson gson = new Gson();
     private final static String TAG = MovieOkhttp.class.getName();
     private Context mcontext;
@@ -77,7 +80,7 @@ public class MovieOkhttp {
         String uri = DBAPI.BASEMOVIEINFO_URI+id+DBAPI.BASEVIDEO_TYPE+"?api_key="+DBAPI.API_KEY;
         Request request = new Request.Builder().url(uri).build();
         List<Trailers.ResultsBean> trailers = null;
-        Response response =null;
+        Response response ;
         try{
             response = client.newCall(request).execute();
             if (!response.isSuccessful()){
