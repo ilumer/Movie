@@ -1,10 +1,9 @@
 package com.example.root.movie.model;
 
-import android.app.Activity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +38,9 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     @Override
     public void onBindViewHolder(TrailerViewHolder holder, int position) {
         final Trailers.ResultsBean m = mList.get(position);
+        if (position==0){
+            holder.mtitle.setVisibility(View.VISIBLE);
+        }
         holder.mtextView.setText(m.getName());
         holder.mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +62,8 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         TextView mtextView;
         @BindView(R.id.trailer_play)
         ImageButton mButton;
+        @BindView(R.id.trailer_title)
+        TextView mtitle;
         public TrailerViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);

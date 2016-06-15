@@ -13,13 +13,13 @@ import com.example.root.movie.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ReViewHolder extends RecyclerView.ViewHolder {
+public class ReHolder extends RecyclerView.ViewHolder {
     private MovieAdapter movieAdapter;
     private Context mcontext;
     @BindView(R.id.movie_image)
     ImageView imageView;
 
-    public ReViewHolder(View itemView,MovieAdapter adapter,Context context) {
+    public ReHolder(View itemView, MovieAdapter adapter, Context context) {
         super(itemView);
         this.movieAdapter = adapter;
         this.mcontext = context;

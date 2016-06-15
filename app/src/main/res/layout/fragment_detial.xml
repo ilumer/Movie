@@ -36,7 +36,7 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/release_date"
                     android:layout_alignParentLeft="true"
@@ -55,6 +55,26 @@
                     android:textStyle="bold"
                     android:textColor="#212121"
                     style="@style/common_Movie_textTextView"/>
+
+                <Button
+                    android:id="@+id/favorites"
+                    android:layout_below="@+id/vote_average"
+                    android:layout_marginTop="@dimen/movie_textVerMargin"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:text="@string/my_favourite_movies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/movie_reviews"
+                    android:text="@string/movie_review"
+                    android:layout_below="@+id/favorites"
+                    android:layout_marginTop="@dimen/movie_textVerMargin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </RelativeLayout>
         </LinearLayout>
 

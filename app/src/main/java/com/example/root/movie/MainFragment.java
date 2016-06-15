@@ -34,6 +34,7 @@ import butterknife.ButterKnife;
 
 public class MainFragment extends Fragment {
     public static final String ACTIVITY_EXTRA_ID = "com.example.root.movie.activity.ID";
+    public static final String ACTIVITY_EXTRA_MOVIE = "com.example.root.movie.activity.MOVIE";
     public int page = 1;
     @BindView(R.id.movie_recyclerView)
     RecyclerView movieList;
@@ -73,6 +74,7 @@ public class MainFragment extends Fragment {
             public void onItemClick(View view, int position) {
                 Intent i = new Intent(getActivity(),DetialActivity.class);
                 i.putExtra(ACTIVITY_EXTRA_ID,adapter.getItem(position).getId());
+                i.putExtra(ACTIVITY_EXTRA_MOVIE,adapter.getItem(position));
                 getActivity().startActivity(i);
             }
         }));

@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.example.root.movie.model.DetialMovie;
 import com.example.root.movie.model.MovieData;
+import com.example.root.movie.model.ReviewsModel;
 import com.example.root.movie.model.Trailers;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
@@ -91,5 +92,22 @@ public class MovieOkhttp {
             Log.e(TAG,e.getMessage());
         }
         return trailers;
+    }
+
+    public static ReviewsModel getReciew(int id){
+        String uri = DBAPI.BASEMOVIEINFO_URI+id+DBAPI.BASEREVIEWS_TYPE+"?api_key="+DBAPI.API_KEY;
+        Request request = new Request.Builder().url(uri).build();
+        ReviewsModel reviews = null;
+        Response response ;
+        try{
+            response = client.newCall(request).execute();
+            if (!response.isSuccessful()){
+                Log.e(TAG,"unexpected code"+response);
+            }
+            reviews = gson.fromJson(response.body().string(),ReviewsModel.class);
+        }catch (Exception e){
+            Log.e(TAG,e.getMessage());
+        }
+        return reviews;
     }
 }

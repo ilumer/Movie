@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">Movie</string>
     <string name="sort_vote_average">评分排序</string>
+    <string name="movie_favourite">favourite movie</string>
+    <string name="movie_popular">popular_movie</string>
+    <string name="trailers">Trailers</string>
+    <string name="trailers_video">play_video</string>
+    <string name="my_favourite_movies">MARK AS \n FAVORITE</string>
+    <string name="remove_favourite_movie">REMOVE \n FAVORITE</string>
+    <string name="movie_review">REVIEW</string>
+    <string name="review_account">account_image</string>
     <string name="toast_notInternet">Check the network</string>
     <string name="sort_point">refresh</string>
     <string name="movie_image">image</string>

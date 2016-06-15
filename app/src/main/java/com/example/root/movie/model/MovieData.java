@@ -1,5 +1,9 @@
 package com.example.root.movie.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class MovieData {
@@ -23,7 +27,7 @@ public class MovieData {
         this.results = results;
     }
 
-    public static class ResultsBean {
+    public static class ResultsBean implements Parcelable{
         private String poster_path;
         private boolean adult;
         private String overview;
@@ -39,7 +43,6 @@ public class MovieData {
         private int vote_count;
         private boolean video;
         private double vote_average;
-        private List<Integer> genre_ids;
 
         public String getPoster_path() {
             return poster_path;
@@ -161,12 +164,59 @@ public class MovieData {
             this.vote_average = vote_average;
         }
 
-        public List<Integer> getGenre_ids() {
-            return genre_ids;
+        @Override
+        public int describeContents() {
+            return 0;
         }
 
-        public void setGenre_ids(List<Integer> genre_ids) {
-            this.genre_ids = genre_ids;
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.poster_path);
+            dest.writeByte(adult ? (byte) 1 : (byte) 0);
+            dest.writeString(this.overview);
+            dest.writeString(this.release_date);
+            dest.writeInt(this.id);
+            dest.writeString(this.original_title);
+            dest.writeString(this.original_language);
+            dest.writeString(this.title);
+            dest.writeString(this.backdrop_path);
+            dest.writeInt(this.width);
+            dest.writeInt(this.height);
+            dest.writeDouble(this.popularity);
+            dest.writeInt(this.vote_count);
+            dest.writeByte(video ? (byte) 1 : (byte) 0);
+            dest.writeDouble(this.vote_average);
         }
+
+        public ResultsBean() {
+        }
+
+        protected ResultsBean(Parcel in) {
+            this.poster_path = in.readString();
+            this.adult = in.readByte() != 0;
+            this.overview = in.readString();
+            this.release_date = in.readString();
+            this.id = in.readInt();
+            this.original_title = in.readString();
+            this.original_language = in.readString();
+            this.title = in.readString();
+            this.backdrop_path = in.readString();
+            this.width = in.readInt();
+            this.height = in.readInt();
+            this.popularity = in.readDouble();
+            this.vote_count = in.readInt();
+            this.video = in.readByte() != 0;
+            this.vote_average = in.readDouble();
+        }
+
+        public static final Creator<ResultsBean> CREATOR = new Creator<ResultsBean>() {
+            public ResultsBean createFromParcel(Parcel source) {
+                return new ResultsBean(source);
+            }
+
+            public ResultsBean[] newArray(int size) {
+                return new ResultsBean[size];
+            }
+        };
     }
 }
