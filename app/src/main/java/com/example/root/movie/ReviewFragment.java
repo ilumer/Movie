@@ -1,6 +1,6 @@
 package com.example.root.movie;
 
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.Nullable;

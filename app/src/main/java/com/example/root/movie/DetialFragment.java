@@ -44,8 +44,9 @@ import butterknife.OnClick;
 
 public class DetialFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<List<Trailers.ResultsBean>>{
-    public static final String EXTRA_ID = "com.example.root.movie.ID";
+    public static final String EXTRA_MOVIE_RESULTBEAN = "com.example.root.movie.MOVIERESULTBEAN";
     public static final String EXTRA_DETAIL_MOVIE = "com.example.root.movie.DETIAL_MOVIE";
+    public static final String EXTRA_ID = "com.example.root.movie.ID";
     public static final String TAG = DetialFragment.class.getSimpleName();
     @BindView(R.id.trailer_show)
     RecyclerView trailerRv;
@@ -100,7 +101,7 @@ public class DetialFragment extends Fragment implements
                 UpdateUI(tempData);
             }
         }
-        id = getArguments().getInt(EXTRA_ID,10);
+        id = ((MovieData.ResultsBean) getArguments().getParcelable(EXTRA_MOVIE_RESULTBEAN)).getId();
         if (!checkFavouriteMovie(id)){
             favMovie.setText(removeFav);
         }
@@ -111,9 +112,9 @@ public class DetialFragment extends Fragment implements
         Log.e("TAG","onViewCreated");
     }
 
-    public static Fragment newInstance(int id){
+    public static Fragment newInstance(MovieData.ResultsBean r){
         Bundle args = new Bundle();
-        args.putInt(EXTRA_ID,id);
+        args.putParcelable(EXTRA_MOVIE_RESULTBEAN,r);
         DetialFragment detialFragment = new
                 DetialFragment();
         detialFragment.setArguments(args);
@@ -139,8 +140,7 @@ public class DetialFragment extends Fragment implements
 
     @OnClick(R.id.favorites)
     public void addFavMovie(){
-        final MovieData.ResultsBean m =getActivity().getIntent().
-               getParcelableExtra(MainFragment.ACTIVITY_EXTRA_MOVIE);
+        final MovieData.ResultsBean m =getArguments().getParcelable(EXTRA_MOVIE_RESULTBEAN);
         if (checkFavouriteMovie(m.getId())) {
             AccountFavourite.getInstance().addFavMovie(m);
             new Handler().post(new Runnable() {

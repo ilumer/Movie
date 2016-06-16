@@ -47,8 +47,8 @@ public class FavDAO {
     }
 
     public static void InsertFavMovieToDB(SQLiteDatabase database, MovieData.ResultsBean m){
-        int isAdult = m.isAdult()?1:0;
-        int isVideo = m.isVideo()?1:0;
+        int isAdult = boolConvertInt(m.isAdult());
+        int isVideo = boolConvertInt(m.isVideo());
         ContentValues values = new ContentValues();
         values.put(Movie.MovieDataBean.COLUMN_NAME_POSTER_PATH,m.getPoster_path());
         values.put(Movie.MovieDataBean.COLUMN_NAME_ADULT,isAdult);

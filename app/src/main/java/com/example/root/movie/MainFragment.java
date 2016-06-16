@@ -1,5 +1,6 @@
 package com.example.root.movie;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.root.movie.model.FragmentCallback;
 import com.example.root.movie.model.MovieAdapter;
 import com.example.root.movie.model.MovieData;
 import com.example.root.movie.Net.MovieOkhttp;
@@ -46,6 +48,7 @@ public class MainFragment extends Fragment {
     MovieAdapter adapter = null;
     GridLayoutManager gridLayoutManager=
             new GridLayoutManager(getActivity(),2);
+    private FragmentCallback mcallbacks;
 
     @Nullable
     @Override
@@ -72,10 +75,11 @@ public class MainFragment extends Fragment {
                 new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent i = new Intent(getActivity(),DetialActivity.class);
+                /*Intent i = new Intent(getActivity(),DetialActivity.class);
                 i.putExtra(ACTIVITY_EXTRA_ID,adapter.getItem(position).getId());
                 i.putExtra(ACTIVITY_EXTRA_MOVIE,adapter.getItem(position));
-                getActivity().startActivity(i);
+                getActivity().startActivity(i);*/
+                mcallbacks.selectdMovie(adapter.getItem(position));
             }
         }));
         movieList.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -118,6 +122,20 @@ public class MainFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof MainActivity) {
+            mcallbacks = (FragmentCallback) activity;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mcallbacks = null;
     }
 
     public class  AsyncGetData extends AsyncTask<Integer,Void,Integer>{

@@ -1,5 +1,7 @@
 package com.example.root.movie;
 
+import android.app.Activity;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,8 +17,10 @@ import android.widget.Button;
 
 import com.example.root.movie.Helper.MovieHelper;
 import com.example.root.movie.model.AccountFavourite;
+import com.example.root.movie.model.FragmentCallback;
 import com.example.root.movie.model.MovieAdapter;
 import com.example.root.movie.model.MovieData;
+import com.example.root.movie.model.RecyclerItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +31,9 @@ import butterknife.ButterKnife;
 public class FavouriteFragment extends Fragment implements MainActivity.UpdateUI{
 
     public static final String TAG = FavouriteFragment.class.getSimpleName();
+    public FragmentCallback mcallbacks;
     @BindView(R.id.favourite_movie)
     RecyclerView rvFavMovie;
-
     List<MovieData.ResultsBean> mList ;
     MovieAdapter adapter = null;
     AccountFavourite accountFavourite;
@@ -52,11 +56,28 @@ public class FavouriteFragment extends Fragment implements MainActivity.UpdateUI
         mList = accountFavourite.getmList();
         adapter = new MovieAdapter(mList);
         rvFavMovie.setAdapter(adapter);
+        rvFavMovie.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                mcallbacks.selectdMovie(adapter.getItem(position));
+            }
+        }));
         new AsyUpdateSingle().execute();
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof MainActivity){
+            mcallbacks = (FragmentCallback) activity;
+        }
+    }
 
-
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mcallbacks = null;
+    }
 
     @Override
     public void updateUI() {
