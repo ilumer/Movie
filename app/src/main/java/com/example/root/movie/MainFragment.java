@@ -1,9 +1,9 @@
 package com.example.root.movie;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.example.root.movie.model.FragmentCallback;
 import com.example.root.movie.model.MovieAdapter;
 import com.example.root.movie.model.MovieData;
-import com.example.root.movie.Net.MovieOkhttp;
+import com.example.root.movie.net.MovieOkhttp;
 import com.example.root.movie.model.RecyclerItemClickListener;
 
 import java.util.ArrayList;
@@ -32,11 +32,14 @@ import java.util.List;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
 public class MainFragment extends Fragment {
+    public static final String TAG = MainFragment.class.getSimpleName();
     public static final String ACTIVITY_EXTRA_ID = "com.example.root.movie.activity.ID";
     public static final String ACTIVITY_EXTRA_MOVIE = "com.example.root.movie.activity.MOVIE";
+    public static final String RECYCLERVIEW_LATOUTSTATE = "com.example..root.activity.LAYOUTSTATE";
     public int page = 1;
     @BindView(R.id.movie_recyclerView)
     RecyclerView movieList;
@@ -48,15 +51,41 @@ public class MainFragment extends Fragment {
     MovieAdapter adapter = null;
     GridLayoutManager gridLayoutManager=
             new GridLayoutManager(getActivity(),2);
+    private Parcelable mGridLayoutState = null;
     private FragmentCallback mcallbacks;
+    private Unbinder unbinder;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main,container,false);
-        ButterKnife.bind(this,view);
+        unbinder=ButterKnife.bind(this,view);
         setHasOptionsMenu(true);
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        mGridLayoutState = movieList.getLayoutManager().onSaveInstanceState();
+        outState.putParcelable(RECYCLERVIEW_LATOUTSTATE,mGridLayoutState);
+        super.onSaveInstanceState(outState);
+    }
+
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        // the same function with activity onSaveInstanceState
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState!=null){
+            Log.e(TAG,"savedInstanceState");
+            mGridLayoutState = savedInstanceState.getParcelable(RECYCLERVIEW_LATOUTSTATE);
+        }
     }
 
     @Override
@@ -68,6 +97,7 @@ public class MainFragment extends Fragment {
                 loadLatest();
             }
         });
+        movieList.setHasFixedSize(true);
         movieList.setLayoutManager(gridLayoutManager);
         adapter = new MovieAdapter(mList);
         movieList.setAdapter(adapter);
@@ -75,10 +105,6 @@ public class MainFragment extends Fragment {
                 new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                /*Intent i = new Intent(getActivity(),DetialActivity.class);
-                i.putExtra(ACTIVITY_EXTRA_ID,adapter.getItem(position).getId());
-                i.putExtra(ACTIVITY_EXTRA_MOVIE,adapter.getItem(position));
-                getActivity().startActivity(i);*/
                 mcallbacks.selectdMovie(adapter.getItem(position));
             }
         }));
@@ -96,7 +122,18 @@ public class MainFragment extends Fragment {
                 }
             }
         });
-        loadLatest();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mGridLayoutState!=null) {
+            Log.e(TAG,"not working");
+            gridLayoutManager.onRestoreInstanceState(mGridLayoutState);
+        }else {
+            loadLatest();
+        }
     }
 
     @Override
