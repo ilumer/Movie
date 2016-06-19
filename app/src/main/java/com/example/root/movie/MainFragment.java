@@ -40,6 +40,8 @@ public class MainFragment extends Fragment {
     public static final String ACTIVITY_EXTRA_ID = "com.example.root.movie.activity.ID";
     public static final String ACTIVITY_EXTRA_MOVIE = "com.example.root.movie.activity.MOVIE";
     public static final String RECYCLERVIEW_LATOUTSTATE = "com.example..root.activity.LAYOUTSTATE";
+    public static final String RECYCLERVIEW_LAYOUTCONTENT = "com.example.root.activity.content";
+    public static final String RECYCLERVIEW_LAYOUTPOSITION = "com.example.root.actvity.position";
     public int page = 1;
     @BindView(R.id.movie_recyclerView)
     RecyclerView movieList;
@@ -54,7 +56,6 @@ public class MainFragment extends Fragment {
     private Parcelable mGridLayoutState = null;
     private FragmentCallback mcallbacks;
     private Unbinder unbinder;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,13 +68,14 @@ public class MainFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        //unbinder.unbind();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         mGridLayoutState = movieList.getLayoutManager().onSaveInstanceState();
         outState.putParcelable(RECYCLERVIEW_LATOUTSTATE,mGridLayoutState);
+        outState.putParcelableArrayList(RECYCLERVIEW_LAYOUTCONTENT,(ArrayList<? extends Parcelable>)mList);
         super.onSaveInstanceState(outState);
     }
 
@@ -84,6 +86,10 @@ public class MainFragment extends Fragment {
         super.onViewStateRestored(savedInstanceState);
         if (savedInstanceState!=null){
             Log.e(TAG,"savedInstanceState");
+            List<MovieData.ResultsBean> temp = savedInstanceState.getParcelableArrayList(RECYCLERVIEW_LAYOUTCONTENT);
+            if (temp!=null) {
+                mList.addAll(temp);
+            }
             mGridLayoutState = savedInstanceState.getParcelable(RECYCLERVIEW_LATOUTSTATE);
         }
     }
@@ -97,7 +103,7 @@ public class MainFragment extends Fragment {
                 loadLatest();
             }
         });
-        movieList.setHasFixedSize(true);
+        //movieList.setHasFixedSize(true);
         movieList.setLayoutManager(gridLayoutManager);
         adapter = new MovieAdapter(mList);
         movieList.setAdapter(adapter);
@@ -117,6 +123,7 @@ public class MainFragment extends Fragment {
                     int totalcount = gridLayoutManager.getItemCount();
                     int pastvisibleItem = gridLayoutManager.findFirstVisibleItemPosition();
                     if ((visibleItemcount+pastvisibleItem)>=totalcount){
+                        swipeRefresh.setRefreshing(true);
                         loadMore();
                     }
                 }

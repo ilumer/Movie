@@ -1,10 +1,10 @@
-package com.example.root.movie.Helper;
+package com.example.root.movie.helper;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.root.movie.DAO.Movie;
+import com.example.root.movie.dao.Movie;
 
 public class MovieHelper extends SQLiteOpenHelper{
 

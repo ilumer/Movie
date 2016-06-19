@@ -23,10 +23,10 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
-import com.example.root.movie.DAO.FavDAO;
-import com.example.root.movie.Helper.MovieHelper;
-import com.example.root.movie.Net.DBAPI;
-import com.example.root.movie.Net.MovieOkhttp;
+import com.example.root.movie.dao.FavDAO;
+import com.example.root.movie.helper.MovieHelper;
+import com.example.root.movie.net.DBAPI;
+import com.example.root.movie.net.MovieOkhttp;
 import com.example.root.movie.model.AccountFavourite;
 import com.example.root.movie.model.DetialMovie;
 import com.example.root.movie.model.MovieData;
@@ -41,6 +41,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 public class DetialFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<List<Trailers.ResultsBean>>{
@@ -48,6 +49,7 @@ public class DetialFragment extends Fragment implements
     public static final String EXTRA_DETAIL_MOVIE = "com.example.root.movie.DETIAL_MOVIE";
     public static final String EXTRA_ID = "com.example.root.movie.ID";
     public static final String TAG = DetialFragment.class.getSimpleName();
+    private Unbinder unbinder;
     @BindView(R.id.trailer_show)
     RecyclerView trailerRv;
     @BindView(R.id.movie_name)
@@ -85,8 +87,14 @@ public class DetialFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detial,container,false);
-        ButterKnife.bind(this,view);
+        unbinder = ButterKnife.bind(this,view);
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override
@@ -149,6 +157,7 @@ public class DetialFragment extends Fragment implements
                     FavDAO.InsertFavMovieToDB(database,m);
                 }
             });
+            favMovie.setText(removeFav);
         }else {
             AccountFavourite.getInstance().removeFavMovie(m);
             new Handler().post(new Runnable() {

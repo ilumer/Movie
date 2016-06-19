@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.root.movie.Helper.YoutubeHelper;
+import com.example.root.movie.helper.YoutubeHelper;
 import com.example.root.movie.R;
 
 
@@ -47,7 +47,9 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
             public void onClick(View view) {
                 Intent i = new Intent(Intent.ACTION_VIEW,
                         YoutubeHelper.getVideoUri(m.getKey()));
-                mcontext.startActivity(i);
+                if (i.resolveActivity(mcontext.getPackageManager())!=null) {
+                    mcontext.startActivity(i);
+                }
             }
         });
     }

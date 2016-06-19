@@ -3,7 +3,7 @@ package com.example.root.movie.model;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
-import com.example.root.movie.Net.MovieOkhttp;
+import com.example.root.movie.net.MovieOkhttp;
 
 import java.util.List;
 

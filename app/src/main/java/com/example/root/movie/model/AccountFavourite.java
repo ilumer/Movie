@@ -4,7 +4,7 @@ package com.example.root.movie.model;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.root.movie.DAO.FavDAO;
+import com.example.root.movie.dao.FavDAO;
 
 import java.util.ArrayList;
 import java.util.List;

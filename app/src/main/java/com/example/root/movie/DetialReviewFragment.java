@@ -10,12 +10,15 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
 public class DetialReviewFragment extends Fragment {
 
     public static final String EXTRA_CONTENT =
             "com.example.root.movie.DetialReviewFragment.EXTRA_CONTENT";
+
+    private Unbinder unbinder;
 
     @BindView(R.id.content_review)
     TextView mcontent;
@@ -24,8 +27,14 @@ public class DetialReviewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detialreview,container,false);
-        ButterKnife.bind(this,view);
+        unbinder = ButterKnife.bind(this,view);
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override

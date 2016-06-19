@@ -1,4 +1,4 @@
-package com.example.root.movie.Helper;
+package com.example.root.movie.helper;
 
 
 import android.net.Uri;

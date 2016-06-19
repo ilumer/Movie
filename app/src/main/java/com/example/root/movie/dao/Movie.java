@@ -1,4 +1,4 @@
-package com.example.root.movie.DAO;
+package com.example.root.movie.dao;
 
 import android.provider.BaseColumns;
 

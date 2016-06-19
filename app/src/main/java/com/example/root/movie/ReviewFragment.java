@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.root.movie.Net.MovieOkhttp;
+import com.example.root.movie.net.MovieOkhttp;
 import com.example.root.movie.model.RecyclerItemClickListener;
 import com.example.root.movie.model.ReviewAdapter;
 import com.example.root.movie.model.ReviewsModel;
@@ -22,6 +22,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class ReviewFragment extends Fragment {
 
@@ -31,14 +32,20 @@ public class ReviewFragment extends Fragment {
     ReviewAdapter adapter;
     List<ReviewsModel.ResultsBean> list = new ArrayList<>();
     ReviewHandler handler;
-
+    private Unbinder unbinder;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_review,container,false);
-        ButterKnife.bind(this,view);
+        unbinder = ButterKnife.bind(this,view);
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override
@@ -55,8 +62,6 @@ public class ReviewFragment extends Fragment {
                 new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                /*Intent i = new Intent(getActivity(),DetialReviewsActivity.class);
-                getActivity().startActivity(i);*/
                 ReviewsModel.ResultsBean m = adapter.getItem(position);
                 DetialReviewFragment fragment = DetialReviewFragment.getInstance(m.getContent());
                 getActivity().getSupportFragmentManager().

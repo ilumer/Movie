@@ -11,7 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
-import com.example.root.movie.Helper.MovieHelper;
+import com.example.root.movie.helper.MovieHelper;
 import com.example.root.movie.model.FragmentCallback;
 import com.example.root.movie.model.MovieData;
 

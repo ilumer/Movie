@@ -1,4 +1,4 @@
-package com.example.root.movie.Net;
+package com.example.root.movie.net;
 
 import android.content.Context;
 import android.net.Uri;

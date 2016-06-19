@@ -1,7 +1,6 @@
 package com.example.root.movie;
 
 import android.app.Activity;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,25 +12,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import com.example.root.movie.Helper.MovieHelper;
+import com.example.root.movie.helper.MovieHelper;
 import com.example.root.movie.model.AccountFavourite;
 import com.example.root.movie.model.FragmentCallback;
 import com.example.root.movie.model.MovieAdapter;
 import com.example.root.movie.model.MovieData;
 import com.example.root.movie.model.RecyclerItemClickListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class FavouriteFragment extends Fragment implements MainActivity.UpdateUI{
 
     public static final String TAG = FavouriteFragment.class.getSimpleName();
     public FragmentCallback mcallbacks;
+    private Unbinder unbinder;
     @BindView(R.id.favourite_movie)
     RecyclerView rvFavMovie;
     List<MovieData.ResultsBean> mList ;
@@ -43,8 +42,14 @@ public class FavouriteFragment extends Fragment implements MainActivity.UpdateUI
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.favourite_movie,container,false);
-        ButterKnife.bind(this,view);
+        unbinder = ButterKnife.bind(this,view);
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override
