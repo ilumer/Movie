@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -56,6 +57,7 @@ public class MainFragment extends Fragment {
     private Parcelable mGridLayoutState = null;
     private FragmentCallback mcallbacks;
     private Unbinder unbinder;
+    private int position = 0;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -68,12 +70,13 @@ public class MainFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        //unbinder.unbind();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        mGridLayoutState = movieList.getLayoutManager().onSaveInstanceState();
+        mGridLayoutState = gridLayoutManager.onSaveInstanceState();
+        position = gridLayoutManager.findFirstCompletelyVisibleItemPosition();
+        outState.putInt(RECYCLERVIEW_LAYOUTPOSITION,position);
         outState.putParcelable(RECYCLERVIEW_LATOUTSTATE,mGridLayoutState);
         outState.putParcelableArrayList(RECYCLERVIEW_LAYOUTCONTENT,(ArrayList<? extends Parcelable>)mList);
         super.onSaveInstanceState(outState);
@@ -83,15 +86,16 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         // the same function with activity onSaveInstanceState
-        super.onViewStateRestored(savedInstanceState);
         if (savedInstanceState!=null){
             Log.e(TAG,"savedInstanceState");
             List<MovieData.ResultsBean> temp = savedInstanceState.getParcelableArrayList(RECYCLERVIEW_LAYOUTCONTENT);
             if (temp!=null) {
                 mList.addAll(temp);
             }
+            position = savedInstanceState.getInt(RECYCLERVIEW_LAYOUTPOSITION);
             mGridLayoutState = savedInstanceState.getParcelable(RECYCLERVIEW_LATOUTSTATE);
         }
+        super.onViewStateRestored(savedInstanceState);
     }
 
     @Override
@@ -103,7 +107,7 @@ public class MainFragment extends Fragment {
                 loadLatest();
             }
         });
-        //movieList.setHasFixedSize(true);
+        movieList.setHasFixedSize(true);
         movieList.setLayoutManager(gridLayoutManager);
         adapter = new MovieAdapter(mList);
         movieList.setAdapter(adapter);
@@ -135,9 +139,9 @@ public class MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (mGridLayoutState!=null) {
+        if (position!=0) {
             Log.e(TAG,"not working");
-            gridLayoutManager.onRestoreInstanceState(mGridLayoutState);
+            movieList.smoothScrollToPosition(position);
         }else {
             loadLatest();
         }
@@ -185,7 +189,6 @@ public class MainFragment extends Fragment {
     public class  AsyncGetData extends AsyncTask<Integer,Void,Integer>{
         public static final int GET_LATEST = 1;
         public static final int GET_MORE = 2;
-        //public static final int SORT_LATEST =3;
         public static final int FIR_PAGE =1;
         public List<MovieData.ResultsBean> temp;
         @Override
@@ -236,10 +239,12 @@ public class MainFragment extends Fragment {
     }
 
     private void loadLatest(){
+        Log.e(TAG,"refresh");
         new AsyncGetData().execute(AsyncGetData.GET_LATEST);
     }
 
     public void loadMore(){
+        Log.e(TAG,"latest");
         new AsyncGetData().execute(AsyncGetData.GET_MORE);
     }
 }
