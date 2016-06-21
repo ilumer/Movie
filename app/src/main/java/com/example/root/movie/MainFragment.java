@@ -75,8 +75,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         mGridLayoutState = gridLayoutManager.onSaveInstanceState();
-        position = gridLayoutManager.findFirstCompletelyVisibleItemPosition();
-        outState.putInt(RECYCLERVIEW_LAYOUTPOSITION,position);
+        outState.putInt(RECYCLERVIEW_LAYOUTPOSITION,gridLayoutManager.findFirstVisibleItemPosition());
         outState.putParcelable(RECYCLERVIEW_LATOUTSTATE,mGridLayoutState);
         outState.putParcelableArrayList(RECYCLERVIEW_LAYOUTCONTENT,(ArrayList<? extends Parcelable>)mList);
         super.onSaveInstanceState(outState);
@@ -90,9 +89,10 @@ public class MainFragment extends Fragment {
             Log.e(TAG,"savedInstanceState");
             List<MovieData.ResultsBean> temp = savedInstanceState.getParcelableArrayList(RECYCLERVIEW_LAYOUTCONTENT);
             if (temp!=null) {
+                mList.clear();
                 mList.addAll(temp);
             }
-            position = savedInstanceState.getInt(RECYCLERVIEW_LAYOUTPOSITION);
+            position = savedInstanceState.getInt(RECYCLERVIEW_LAYOUTPOSITION,0);
             mGridLayoutState = savedInstanceState.getParcelable(RECYCLERVIEW_LATOUTSTATE);
         }
         super.onViewStateRestored(savedInstanceState);
@@ -243,7 +243,7 @@ public class MainFragment extends Fragment {
         new AsyncGetData().execute(AsyncGetData.GET_LATEST);
     }
 
-    public void loadMore(){
+    public synchronized  void loadMore(){
         Log.e(TAG,"latest");
         new AsyncGetData().execute(AsyncGetData.GET_MORE);
     }
