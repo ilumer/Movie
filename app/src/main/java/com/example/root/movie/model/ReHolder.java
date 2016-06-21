@@ -29,6 +29,7 @@ public class ReHolder extends RecyclerView.ViewHolder {
     void bindModel(MovieData.ResultsBean i){
         String uri = DBAPI.BASEIMAGE_URI + i.getPoster_path();
         Glide.with(mcontext).load(uri).
+                fitCenter().
                 diskCacheStrategy(DiskCacheStrategy.ALL).
                 error(R.mipmap.ic_launcher).
                 into(imageView);

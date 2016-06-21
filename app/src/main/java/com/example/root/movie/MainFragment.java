@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -57,6 +56,7 @@ public class MainFragment extends Fragment {
             new GridLayoutManager(getActivity(),2);
     private Parcelable mGridLayoutState = null;
     private FragmentCallback mcallbacks;
+    private AsyncGetData asyncGetData;
     private Unbinder unbinder;
     private int position = 0;
     @Nullable
@@ -76,7 +76,6 @@ public class MainFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         mGridLayoutState = gridLayoutManager.onSaveInstanceState();
-        outState.putInt(RECYCLERVIEW_LAYOUTPOSITION,gridLayoutManager.findFirstVisibleItemPosition());
         outState.putInt(CURRENT_PAGE,page);
         outState.putParcelable(RECYCLERVIEW_LATOUTSTATE,mGridLayoutState);
         outState.putParcelableArrayList(RECYCLERVIEW_LAYOUTCONTENT,(ArrayList<? extends Parcelable>)mList);
@@ -88,13 +87,11 @@ public class MainFragment extends Fragment {
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         // the same function with activity onSaveInstanceState
         if (savedInstanceState!=null){
-            Log.e(TAG,"savedInstanceState");
             List<MovieData.ResultsBean> temp = savedInstanceState.getParcelableArrayList(RECYCLERVIEW_LAYOUTCONTENT);
             if (temp!=null) {
-                mList.clear();
+
                 mList.addAll(temp);
             }
-            position = savedInstanceState.getInt(RECYCLERVIEW_LAYOUTPOSITION,0);
             mGridLayoutState = savedInstanceState.getParcelable(RECYCLERVIEW_LATOUTSTATE);
             page = savedInstanceState.getInt(CURRENT_PAGE);
         }
@@ -125,26 +122,30 @@ public class MainFragment extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (dy>0){
-                    int visibleItemcount = gridLayoutManager.getChildCount();
-                    int totalcount = gridLayoutManager.getItemCount();
-                    int pastvisibleItem = gridLayoutManager.findFirstVisibleItemPosition();
-                    if ((visibleItemcount+pastvisibleItem)>=totalcount){
-                        swipeRefresh.setRefreshing(true);
-                        loadMore();
+                if(!swipeRefresh.isRefreshing()) {
+                    if (dy > 0) {
+                        int visibleItemcount = gridLayoutManager.getChildCount();
+                        int totalcount = gridLayoutManager.getItemCount();
+                        int pastvisibleItem = gridLayoutManager.findFirstVisibleItemPosition();
+                        if ((visibleItemcount + pastvisibleItem) >= totalcount) {
+                            swipeRefresh.setRefreshing(true);
+                            loadMore();
+                        }
                     }
                 }
             }
         });
+
+
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (position!=0) {
+        if (mGridLayoutState!=null) {
             Log.e(TAG,"not working");
-            movieList.smoothScrollToPosition(position);
+            gridLayoutManager.onRestoreInstanceState(mGridLayoutState);
         }else {
             loadLatest();
         }
@@ -167,7 +168,7 @@ public class MainFragment extends Fragment {
                 });
                 Collections.reverse(mList);
                 Log.e("sort","average");
-                adapter.notifyDataSetChanged();
+                //adapter.notifyDataSetChanged();
                 return true;
             }
             default:
@@ -189,7 +190,14 @@ public class MainFragment extends Fragment {
         mcallbacks = null;
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
+        if (asyncGetData!=null) {
+            asyncGetData.cancel(true);
+        }
+    }
 
     public class  AsyncGetData extends AsyncTask<Integer,Void,Integer>{
         public static final int GET_LATEST = 1;
@@ -223,33 +231,37 @@ public class MainFragment extends Fragment {
         @Override
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
-            if (swipeRefresh.isRefreshing()){
-                swipeRefresh.setRefreshing(false);
-            }
-            if(temp!=null) {
-                switch (result) {
-                    case GET_LATEST: {
-                        adapter.notifyDataSetChanged();
-                        break;
-                    }
-                    case GET_MORE: {
-                        adapter.notifyItemRangeChanged(mList.size() - temp.size(), temp.size());
-                        break;
-                    }
+            if (!isCancelled()) {
+                if (swipeRefresh.isRefreshing()) {
+                    swipeRefresh.setRefreshing(false);
                 }
-            }else {
-                Toast.makeText(getActivity(),toastMessage,Toast.LENGTH_SHORT).show();
+                if (temp != null) {
+                    switch (result) {
+                        case GET_LATEST: {
+                            adapter.notifyDataSetChanged();
+                            break;
+                        }
+                        case GET_MORE: {
+                            adapter.notifyItemRangeChanged(mList.size() - temp.size(), temp.size());
+                            break;
+                        }
+                    }
+                } else {
+                    Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
 
     private void loadLatest(){
         Log.e(TAG,"refresh");
-        new AsyncGetData().execute(AsyncGetData.GET_LATEST);
+        asyncGetData = new AsyncGetData();
+        asyncGetData.execute(AsyncGetData.GET_LATEST);
     }
 
-    public synchronized  void loadMore(){
+    public void loadMore(){
         Log.e(TAG,"latest");
-        new AsyncGetData().execute(AsyncGetData.GET_MORE);
+        asyncGetData = new AsyncGetData();
+        asyncGetData.execute(AsyncGetData.GET_MORE);
     }
 }
