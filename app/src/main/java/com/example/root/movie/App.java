@@ -2,6 +2,7 @@ package com.example.root.movie;
 
 import android.app.Application;
 
+
 import com.facebook.stetho.Stetho;
 
 public class App extends Application {
@@ -14,6 +15,6 @@ public class App extends Application {
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
                         .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
                         .build());
-
     }
+
 }

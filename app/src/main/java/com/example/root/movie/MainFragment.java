@@ -38,6 +38,7 @@ import butterknife.Unbinder;
 
 public class MainFragment extends Fragment {
     public static final String TAG = MainFragment.class.getSimpleName();
+    public static final String CURRENT_PAGE = "com.example.root.movie.activity.PAGE";
     public static final String ACTIVITY_EXTRA_ID = "com.example.root.movie.activity.ID";
     public static final String ACTIVITY_EXTRA_MOVIE = "com.example.root.movie.activity.MOVIE";
     public static final String RECYCLERVIEW_LATOUTSTATE = "com.example..root.activity.LAYOUTSTATE";
@@ -76,6 +77,7 @@ public class MainFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         mGridLayoutState = gridLayoutManager.onSaveInstanceState();
         outState.putInt(RECYCLERVIEW_LAYOUTPOSITION,gridLayoutManager.findFirstVisibleItemPosition());
+        outState.putInt(CURRENT_PAGE,page);
         outState.putParcelable(RECYCLERVIEW_LATOUTSTATE,mGridLayoutState);
         outState.putParcelableArrayList(RECYCLERVIEW_LAYOUTCONTENT,(ArrayList<? extends Parcelable>)mList);
         super.onSaveInstanceState(outState);
@@ -94,6 +96,7 @@ public class MainFragment extends Fragment {
             }
             position = savedInstanceState.getInt(RECYCLERVIEW_LAYOUTPOSITION,0);
             mGridLayoutState = savedInstanceState.getParcelable(RECYCLERVIEW_LATOUTSTATE);
+            page = savedInstanceState.getInt(CURRENT_PAGE);
         }
         super.onViewStateRestored(savedInstanceState);
     }
@@ -185,6 +188,8 @@ public class MainFragment extends Fragment {
         super.onDetach();
         mcallbacks = null;
     }
+
+
 
     public class  AsyncGetData extends AsyncTask<Integer,Void,Integer>{
         public static final int GET_LATEST = 1;
