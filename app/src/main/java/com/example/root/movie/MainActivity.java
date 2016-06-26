@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
                         favouriteFragment.updateUI();
                     }
                 }
-                // how to update fragment
             }
 
             @Override
@@ -76,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
         if (container!=null){
             mode = Mode.multiple;
         }
+        movieHelper.close();
     }
 
     public class ViewPageAdapter extends FragmentStatePagerAdapter{

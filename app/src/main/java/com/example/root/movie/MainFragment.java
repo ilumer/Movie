@@ -1,8 +1,10 @@
 package com.example.root.movie;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -59,6 +61,23 @@ public class MainFragment extends Fragment {
     private AsyncGetData asyncGetData;
     private Unbinder unbinder;
     private int position = 0;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            List<MovieData.ResultsBean> temp = savedInstanceState.getParcelableArrayList(RECYCLERVIEW_LAYOUTCONTENT);
+            if (temp != null) {
+                mList.addAll(temp);
+            }
+            mGridLayoutState = savedInstanceState.getParcelable(RECYCLERVIEW_LATOUTSTATE);
+            page = savedInstanceState.getInt(CURRENT_PAGE);
+        }
+        if (mGridLayoutState!=null){
+            gridLayoutManager.onRestoreInstanceState(mGridLayoutState);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -86,15 +105,6 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         // the same function with activity onSaveInstanceState
-        if (savedInstanceState!=null){
-            List<MovieData.ResultsBean> temp = savedInstanceState.getParcelableArrayList(RECYCLERVIEW_LAYOUTCONTENT);
-            if (temp!=null) {
-
-                mList.addAll(temp);
-            }
-            mGridLayoutState = savedInstanceState.getParcelable(RECYCLERVIEW_LATOUTSTATE);
-            page = savedInstanceState.getInt(CURRENT_PAGE);
-        }
         super.onViewStateRestored(savedInstanceState);
     }
 
@@ -135,18 +145,12 @@ public class MainFragment extends Fragment {
                 }
             }
         });
-
-
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (mGridLayoutState!=null) {
-            Log.e(TAG,"not working");
-            gridLayoutManager.onRestoreInstanceState(mGridLayoutState);
-        }else {
+        if (mGridLayoutState==null){
             loadLatest();
         }
     }
@@ -168,13 +172,13 @@ public class MainFragment extends Fragment {
                 });
                 Collections.reverse(mList);
                 Log.e("sort","average");
-                //adapter.notifyDataSetChanged();
                 return true;
             }
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
     @Override
     public void onAttach(Activity activity) {

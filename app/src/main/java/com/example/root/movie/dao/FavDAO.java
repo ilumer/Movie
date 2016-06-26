@@ -20,7 +20,7 @@ public class FavDAO {
                         cursor.getString
                                 (cursor.getColumnIndexOrThrow
                                         (Movie.MovieDataBean.COLUMN_NAME_POSTER_PATH)));
-                r.setAdult(intConvertBool(cursor.getInt(cursor.getColumnIndexOrThrow(Movie.MovieDataBean.COLUMN_NAME_ADULT))));
+                r.setAdult( intConvertBool( cursor.getInt( cursor.getColumnIndexOrThrow(Movie.MovieDataBean.COLUMN_NAME_ADULT))));
                 r.setOverview(cursor.getString(cursor.getColumnIndexOrThrow(Movie.MovieDataBean.COLUMN_NAME_OVERVIEW)));
                 r.setRelease_date(cursor.getString(cursor.getColumnIndexOrThrow(Movie.MovieDataBean.COLUMN_NAME_DATE)));
                 r.setId(cursor.getInt(cursor.getColumnIndexOrThrow(Movie.MovieDataBean.COLUMN_NAME_MOVIE_ID)));

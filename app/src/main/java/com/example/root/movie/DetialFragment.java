@@ -76,12 +76,15 @@ public class DetialFragment extends Fragment implements
     String toastMessage;
     @BindString(R.string.remove_favourite_movie)
     String removeFav;
+    @BindString(R.string.my_favourite_movies)
+    String addFav;
 
     DetialMovie tempData = null;
     List<Trailers.ResultsBean> mList = new ArrayList<>();
     TrailerAdapter mtrailers ;
     SQLiteDatabase database;
     AccountFavourite accountFavourite;
+    AsyncUpdateUI asyncUpdateUI;
     int id;
     @Nullable
     @Override
@@ -95,6 +98,9 @@ public class DetialFragment extends Fragment implements
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        if (asyncUpdateUI!=null){
+            asyncUpdateUI.cancel(true);
+        }
     }
 
     @Override
@@ -116,7 +122,8 @@ public class DetialFragment extends Fragment implements
         getLoaderManager().initLoader(id,null,this).forceLoad();
         database= new MovieHelper(getActivity()).getReadableDatabase();
         //the same id
-        new AsyncUpdateUI().execute(id);
+        asyncUpdateUI = new AsyncUpdateUI();
+        asyncUpdateUI.execute(id);
         Log.e("TAG","onViewCreated");
     }
 
@@ -166,6 +173,7 @@ public class DetialFragment extends Fragment implements
                     FavDAO.deleteFavMovieByDB(database,m.getId());
                 }
             });
+            favMovie.setText(addFav);
         }
     }
 
@@ -178,12 +186,14 @@ public class DetialFragment extends Fragment implements
         @Override
         protected void onPostExecute(DetialMovie detialMovie) {
             super.onPostExecute(detialMovie);
-            if (detialMovie!=null) {
-                tempData = detialMovie;
-                UpdateUI(detialMovie);
-            }else {
-                Toast.makeText
-                        (getActivity(),toastMessage,Toast.LENGTH_SHORT).show();
+            if (!isCancelled()) {
+                if (detialMovie != null) {
+                    tempData = detialMovie;
+                    UpdateUI(detialMovie);
+                } else {
+                    Toast.makeText
+                            (getActivity(), toastMessage, Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
