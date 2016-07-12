@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.root.movie.dao.FavDAO;
+import com.example.root.movie.helper.IMDBHelper;
 import com.example.root.movie.helper.MovieHelper;
 import com.example.root.movie.net.DBAPI;
 import com.example.root.movie.net.MovieOkhttp;
@@ -138,7 +139,8 @@ public class DetialFragment extends Fragment implements
 
     public void UpdateUI(DetialMovie detialMovie){
         movieName.setText(detialMovie.getOriginal_title());
-        Glide.with(getActivity()).load(DBAPI.BASEIMAGE_URI+detialMovie.getPoster_path())
+        Glide.with(getActivity()).
+                load(IMDBHelper.getImageBsUri(IMDBHelper.getWidth(getActivity()),detialMovie.getPoster_path()))
                 .into(movieImageView);
         release_date.setText(detialMovie.getRelease_date());
         runtime.setText(String.format(runtimeUnit,detialMovie.getRuntime()));

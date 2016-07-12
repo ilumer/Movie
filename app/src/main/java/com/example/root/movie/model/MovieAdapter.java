@@ -1,5 +1,6 @@
 package com.example.root.movie.model;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -10,19 +11,21 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<ReHolder> {
     List<MovieData.ResultsBean> list;
-    public MovieAdapter(List<MovieData.ResultsBean> list) {
+    Context context;
+    public MovieAdapter(List<MovieData.ResultsBean> list, Context context) {
         this.list = list;
+        this.context = context;
     }
 
     @Override
     public ReHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ReHolder(LayoutInflater.from(parent.getContext()).
-                inflate(R.layout.item_view,parent,false),this,parent.getContext());
+                inflate(R.layout.item_view,parent,false),this);
     }
 
     @Override
     public void onBindViewHolder(ReHolder holder, int position) {
-        holder.bindModel(list.get(position));
+        holder.bindModel(list.get(position),context);
     }
 
     @Override

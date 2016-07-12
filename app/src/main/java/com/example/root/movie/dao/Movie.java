@@ -6,7 +6,6 @@ import android.provider.BaseColumns;
 public class Movie {
     public static abstract class MovieDataBean implements BaseColumns{
         public static final String TABLE_NAME = "MovieDataBean";
-        /*public static final String TABLE_COLUMN_ENTRY_ID = "PRIMARY_ID";*/
         public static final String COLUMN_NAME_POSTER_PATH = "poster_path";
         public static final String COLUMN_NAME_ADULT = "adult";
         public static final String COLUMN_NAME_OVERVIEW = "overview";

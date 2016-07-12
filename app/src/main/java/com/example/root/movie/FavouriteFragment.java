@@ -59,7 +59,7 @@ public class FavouriteFragment extends Fragment implements MainActivity.UpdateUI
         database = new MovieHelper(getActivity()).getReadableDatabase();
         rvFavMovie.setLayoutManager(new GridLayoutManager(getActivity(),2));
         mList = accountFavourite.getmList();
-        adapter = new MovieAdapter(mList);
+        adapter = new MovieAdapter(mList,getContext());
         rvFavMovie.setAdapter(adapter);
         rvFavMovie.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
             @Override

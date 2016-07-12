@@ -1,10 +1,9 @@
 package com.example.root.movie;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.root.movie.helper.IMDBHelper;
+import com.example.root.movie.model.ControlPage;
 import com.example.root.movie.model.FragmentCallback;
 import com.example.root.movie.model.MovieAdapter;
 import com.example.root.movie.model.MovieData;
@@ -37,14 +38,11 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements ControlPage{
     public static final String TAG = MainFragment.class.getSimpleName();
     public static final String CURRENT_PAGE = "com.example.root.movie.activity.PAGE";
-    public static final String ACTIVITY_EXTRA_ID = "com.example.root.movie.activity.ID";
-    public static final String ACTIVITY_EXTRA_MOVIE = "com.example.root.movie.activity.MOVIE";
     public static final String RECYCLERVIEW_LATOUTSTATE = "com.example..root.activity.LAYOUTSTATE";
     public static final String RECYCLERVIEW_LAYOUTCONTENT = "com.example.root.activity.content";
-    public static final String RECYCLERVIEW_LAYOUTPOSITION = "com.example.root.actvity.position";
     public int page = 1;
     @BindView(R.id.movie_recyclerView)
     RecyclerView movieList;
@@ -60,7 +58,6 @@ public class MainFragment extends Fragment {
     private FragmentCallback mcallbacks;
     private AsyncGetData asyncGetData;
     private Unbinder unbinder;
-    private int position = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,7 +101,6 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        // the same function with activity onSaveInstanceState
         super.onViewStateRestored(savedInstanceState);
     }
 
@@ -119,7 +115,7 @@ public class MainFragment extends Fragment {
         });
         movieList.setHasFixedSize(true);
         movieList.setLayoutManager(gridLayoutManager);
-        adapter = new MovieAdapter(mList);
+        adapter = new MovieAdapter(mList,getContext());
         movieList.setAdapter(adapter);
         movieList.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(),
                 new RecyclerItemClickListener.OnItemClickListener() {
@@ -132,13 +128,12 @@ public class MainFragment extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if(!swipeRefresh.isRefreshing()) {
-                    if (dy > 0) {
-                        int visibleItemcount = gridLayoutManager.getChildCount();
-                        int totalcount = gridLayoutManager.getItemCount();
-                        int pastvisibleItem = gridLayoutManager.findFirstVisibleItemPosition();
-                        if ((visibleItemcount + pastvisibleItem) >= totalcount) {
-                            swipeRefresh.setRefreshing(true);
+                if (dy>0) {
+                    if (!swipeRefresh.isRefreshing()) {
+                        int visiableItem = recyclerView.getChildCount();
+                        int totalItemCount = gridLayoutManager.getItemCount();
+                        int firstVisiableItem = gridLayoutManager.findFirstVisibleItemPosition();
+                        if ((visiableItem + firstVisiableItem) >= totalItemCount) {
                             loadMore();
                         }
                     }
@@ -153,6 +148,7 @@ public class MainFragment extends Fragment {
         if (mGridLayoutState==null){
             loadLatest();
         }
+        Log.e(TAG, IMDBHelper.getWidth(getActivity())+"");
     }
 
     @Override
@@ -189,6 +185,21 @@ public class MainFragment extends Fragment {
     }
 
     @Override
+    public void add() {
+        page++;
+    }
+
+    @Override
+    public int getPage() {
+        return page;
+    }
+
+    @Override
+    public void backOriginalValue() {
+        page = 1;
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mcallbacks = null;
@@ -203,30 +214,58 @@ public class MainFragment extends Fragment {
         }
     }
 
-    public class  AsyncGetData extends AsyncTask<Integer,Void,Integer>{
+    private static class  AsyncGetData extends AsyncTask<Integer,Void,Integer>{
         public static final int GET_LATEST = 1;
         public static final int GET_MORE = 2;
         public static final int FIR_PAGE =1;
-        public List<MovieData.ResultsBean> temp;
+        private List<MovieData.ResultsBean> temp;
+        private List<MovieData.ResultsBean> mList;
+        private Context mContext;
+        private ControlPage page;
+        private SwipeRefreshLayout mSwipeRefreshLayout;
+        private MovieAdapter mAdapter;
+        private String toastMessage;
+
+        public AsyncGetData(List<MovieData.ResultsBean> list,
+                            Context context,
+                            SwipeRefreshLayout swipeRefreshLayout,
+                            MovieAdapter adapter,
+                            String message,
+                            ControlPage apage) {
+            this.mList = list;
+            this.mContext = context;
+            this.mSwipeRefreshLayout = swipeRefreshLayout;
+            this.mAdapter = adapter;
+            this.toastMessage = message;
+            this.page = apage;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
         @Override
         protected Integer doInBackground(Integer... mode) {
-            switch (mode[0]){
-                case GET_LATEST:{
-                    if ((temp= new MovieOkhttp(getActivity()).
-                            getPopularMovieResults(FIR_PAGE))!=null) {
-                        mList.clear();
-                        mList.addAll(temp);
+            if (!isCancelled()) {
+                switch (mode[0]) {
+                    case GET_LATEST: {
+                        if ((temp = new MovieOkhttp(mContext).
+                                getPopularMovieResults(FIR_PAGE)) != null) {
+                            mList.clear();
+                            mList.addAll(temp);
+                        }
+                        page.backOriginalValue();
+                        break;
                     }
-                    page=1;
-                    break;
-                }
-                case GET_MORE:{
-                    page=page+1;
-                    if ((temp=new MovieOkhttp(getActivity()).
-                            getPopularMovieResults(page))!=null) {
-                        mList.addAll(temp);
+                    case GET_MORE: {
+                        page.add();
+                        if ((temp = new MovieOkhttp(mContext).
+                                getPopularMovieResults(page.getPage())) != null) {
+                            mList.addAll(temp);
+                        }
+                        break;
                     }
-                    break;
                 }
             }
             return mode[0];
@@ -236,36 +275,44 @@ public class MainFragment extends Fragment {
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
             if (!isCancelled()) {
-                if (swipeRefresh.isRefreshing()) {
-                    swipeRefresh.setRefreshing(false);
+                if (mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
                 }
                 if (temp != null) {
-                    switch (result) {
-                        case GET_LATEST: {
-                            adapter.notifyDataSetChanged();
-                            break;
-                        }
-                        case GET_MORE: {
-                            adapter.notifyItemRangeChanged(mList.size() - temp.size(), temp.size());
-                            break;
-                        }
-                    }
+                    mAdapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, toastMessage, Toast.LENGTH_SHORT).show();
                 }
             }
         }
+
+        @Override
+        protected void onCancelled(Integer integer) {
+            super.onCancelled(integer);
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+        }
+
     }
 
     private void loadLatest(){
         Log.e(TAG,"refresh");
-        asyncGetData = new AsyncGetData();
+        swipeRefresh.setRefreshing(true);
+        generateAsyncTask();
         asyncGetData.execute(AsyncGetData.GET_LATEST);
     }
 
     public void loadMore(){
-        Log.e(TAG,"latest");
-        asyncGetData = new AsyncGetData();
+        Log.e(TAG,"more");
+        swipeRefresh.setRefreshing(true);
+        generateAsyncTask();
         asyncGetData.execute(AsyncGetData.GET_MORE);
+    }
+
+    public void generateAsyncTask(){
+        asyncGetData = new AsyncGetData(mList,getActivity(),swipeRefresh,adapter,toastMessage,this);
     }
 }
