@@ -1,6 +1,7 @@
 package com.example.root.movie.net;
 
 public class DBAPI {
+
     private DBAPI(){
         throw new AssertionError();
     }
@@ -9,4 +10,12 @@ public class DBAPI {
     public static final String BASEMOVIEINFO_URI = "https://api.themoviedb.org/3/movie/";
     public static final String BASEVIDEO_TYPE = "/videos";
     public static final String BASEREVIEWS_TYPE = "/reviews";
+
+    /*-------token api-------*/
+
+    public static final String NEW_TOKEN = "http://api.themoviedb.org/3/authentication/token/new";
+    public static final String ASK_PREMISSION = "https://www.themoviedb.org/authenticate/";
+
+    /*--------account --------*/
+    public static final String SING_UP = "https://www.themoviedb.org/account/signup";
 }
