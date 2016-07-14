@@ -11,6 +11,9 @@ import com.example.root.movie.model.Trailers;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -109,5 +112,25 @@ public class MovieOkhttp {
             Log.e(TAG,e.getMessage());
         }
         return reviews;
+    }
+
+    public static String getToken(){
+        String uri = DBAPI.NEW_TOKEN+"?api_key="+DBAPI.API_KEY;
+        Request request = new Request.Builder().url(uri).build();
+        Response response = null;
+        JSONObject object = null;
+        String content = null;
+        try{
+            response = client.newCall(request).execute();
+            if (!response.isSuccessful()){
+                Log.e(TAG,"unexpected code" +response);
+            }
+
+            object = new JSONObject(response.body().string());
+            content = (String) object.get("request_token");
+        }catch (Exception e){
+            Log.e(TAG,e.getMessage());
+        }
+        return content;
     }
 }

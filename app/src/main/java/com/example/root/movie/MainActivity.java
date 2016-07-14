@@ -1,5 +1,6 @@
 package com.example.root.movie;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;

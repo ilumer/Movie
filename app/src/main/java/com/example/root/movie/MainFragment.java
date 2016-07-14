@@ -2,6 +2,7 @@ package com.example.root.movie;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.root.movie.activity.LoginActivity;
 import com.example.root.movie.helper.IMDBHelper;
 import com.example.root.movie.model.ControlPage;
 import com.example.root.movie.model.FragmentCallback;
@@ -169,6 +171,10 @@ public class MainFragment extends Fragment implements ControlPage{
                 Collections.reverse(mList);
                 Log.e("sort","average");
                 return true;
+            }
+            case R.id.login:{
+                Intent i = new Intent(getActivity(),LoginActivity.class);
+                getActivity().startActivityForResult(i,1);
             }
             default:
                 return super.onOptionsItemSelected(item);

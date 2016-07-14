@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="@dimen/movie_card_minHeight"
-    android:layout_marginLeft="4dp"
-    android:layout_marginStart="4dp"
-    android:layout_marginRight="4dp"
-    android:layout_marginEnd="4dp"
-    android:layout_marginTop="4dp"
+    android:layout_marginLeft="@dimen/card_layout_margin"
+    android:layout_marginStart="@dimen/card_layout_margin"
+    android:layout_marginRight="@dimen/card_layout_margin"
+    android:layout_marginEnd="@dimen/card_layout_margin"
+    android:layout_marginTop="@dimen/card_layout_margin"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
@@ -20,7 +20,7 @@
         <ImageView
             android:id="@+id/movie_image"
             android:layout_width="match_parent"
-            android:layout_height="135dp"
+            android:layout_height="@dimen/card_imageView_height"
             android:background="@color/default_imageView_bgColor"
             android:scaleType="center"
             tools:ignore="ContentDescription"/>

@@ -3,8 +3,8 @@
     package="com.example.root.movie">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".App"
@@ -30,6 +30,11 @@
                 android:value=".MainActivity" />
         </activity>
         <activity android:name=".ReviewActivity" />
+        <activity
+            android:name=".BrowserActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:noHistory="true" />
+        <activity android:name=".activity.LoginActivity"></activity>
     </application>
 
 </manifest>
