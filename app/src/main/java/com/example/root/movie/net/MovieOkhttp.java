@@ -12,11 +12,11 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import java.io.IOException;
 import java.util.List;
 
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -132,5 +132,29 @@ public class MovieOkhttp {
             Log.e(TAG,e.getMessage());
         }
         return content;
+    }
+
+    public static String getSessionId(String Token){
+        HttpUrl url = HttpUrl.parse(DBAPI.NEW_SESSION).newBuilder()
+                .addQueryParameter("api_key",DBAPI.API_KEY)
+                .addQueryParameter("request_token",Token)
+                .build();
+
+        Request request = new Request.Builder().
+                url(url).
+                build();
+        Response response ;
+        String sessionId = null;
+        try{
+            response = client.newCall(request).execute();
+            if (!response.isSuccessful()){
+                Log.e(TAG,"unexpected code" +response);
+            }
+            JSONObject object = new JSONObject(response.body().string());
+            sessionId = (String) object.get("session_id");
+        }catch (Exception e){
+            Log.e(TAG,e.getMessage());
+        }
+        return sessionId;
     }
 }

@@ -34,7 +34,6 @@ public class BrowserActivity extends AppCompatActivity {
     ProgressBar loading;
     @BindView(R.id.login)
     WebView webView;
-
     String Token = null;
 
     @Override
@@ -52,6 +51,7 @@ public class BrowserActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+
         super.onResume();
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setSavePassword(false);
@@ -68,6 +68,7 @@ public class BrowserActivity extends AppCompatActivity {
 
     private static  class TokenAsyncTask extends AsyncTask<Void,Void,String>{
         WebView webView;
+
         private final BrowserActivity mActivity;
         public TokenAsyncTask(final BrowserActivity activity) {
             super();
@@ -101,14 +102,21 @@ public class BrowserActivity extends AppCompatActivity {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            mprogressBar.setVisibility(View.GONE);
+            IsShowLoading(true);
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            IsShowLoading(false);
+            if (url.contains("allow")){
+                //获得授权
+                Intent i = new Intent();
+                i.putExtra(MovieConstant.EXTRA_TOKEN,mActivity.Token);
+                mActivity.setResult(Activity.RESULT_OK,i);
+                mActivity.finish();
+            }
         }
-
 
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
@@ -119,20 +127,18 @@ public class BrowserActivity extends AppCompatActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             Uri uri = Uri.parse(url);
-            Log.e(TAG,uri.getPath());
             if (uri.getPath().contains("account")){
                 //重定向到授权页面
                 view.loadUrl(DBAPI.ASK_PREMISSION+mActivity.Token);
-            }else if (uri.getPath().contains("allow")){
-                //获得授权
-                Intent i = new Intent();
-                i.putExtra(MovieConstant.EXTRA_TOKEN,mActivity.Token);
-                mActivity.setResult(Activity.RESULT_OK,i);
-                mActivity.finish();
-            } else {
+            }else {
                 view.loadUrl(url);
             }
             return true;
         }
+
+        private void IsShowLoading(final boolean shown){
+            mprogressBar.setVisibility((shown? View.VISIBLE:View.GONE));
+        }
     }
+
 }

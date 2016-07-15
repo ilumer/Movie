@@ -15,6 +15,8 @@ public class DBAPI {
 
     public static final String NEW_TOKEN = "http://api.themoviedb.org/3/authentication/token/new";
     public static final String ASK_PREMISSION = "https://www.themoviedb.org/authenticate/";
+    public static final String NEW_SESSION = "http://api.themoviedb.org/3/authentication/session/new";
+    /* 如果在申请权限时没有登录会显示登录页面所以没有记录登录的api */
 
     /*--------account --------*/
     public static final String SING_UP = "https://www.themoviedb.org/account/signup";
