@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Movie_AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/toolbar_color</item>
+        <item name="colorPrimaryDark">@color/statusbar_color</item>
+        <item name="colorAccent">@color/field_color</item>
+        <item name="android:statusBarColor">@color/statusbar_color</item>
+    </style>
+</resources>

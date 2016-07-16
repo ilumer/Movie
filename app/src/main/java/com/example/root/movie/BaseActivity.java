@@ -4,15 +4,23 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    protected abstract Fragment createNewFragment();
+    @BindView(R.id.toolbar)
+    Toolbar mtoolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
+        ButterKnife.bind(this);
+        setSupportActionBar(mtoolbar);
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
         if (fragment==null) {
@@ -23,4 +31,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
     }
+
+    protected abstract Fragment createNewFragment();
 }

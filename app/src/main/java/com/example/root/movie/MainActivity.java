@@ -1,6 +1,5 @@
 package com.example.root.movie;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -10,6 +9,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.widget.FrameLayout;
 
 import com.example.root.movie.helper.MovieHelper;
@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
     ViewPager pager;
     @BindView(R.id.tabLayout)
     TabLayout tabLayout;
+    @BindView(R.id.toolbar)
+    Toolbar mtoolbar;
     @Nullable@BindView(R.id.fragment_container)
     FrameLayout container;
     @BindString(R.string.movie_favourite)
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         ButterKnife.bind(this);
+        setSupportActionBar(mtoolbar);
         final String[] title = {popTitle,favTitle};
         adapter = new ViewPageAdapter(getSupportFragmentManager(),title);
         pager.setAdapter(adapter);
