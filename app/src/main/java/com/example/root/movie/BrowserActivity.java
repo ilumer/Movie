@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -58,6 +59,18 @@ public class BrowserActivity extends AppCompatActivity {
         webView.getSettings().setSaveFormData(false);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         webView.setWebViewClient(new LoginWebViewClient(this));
+        webView.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                if (!loading.isShown()) {
+                    loading.setVisibility(View.VISIBLE);
+                }
+                loading.setProgress(newProgress);
+                if (newProgress==100){
+                    loading.setVisibility(View.GONE);
+                }
+            }
+        });
         webView.clearCache(true);
         new TokenAsyncTask(this).execute();
     }
@@ -84,31 +97,26 @@ public class BrowserActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Log.e(TAG,s);
             mActivity.setRequestToken(s);
             webView.loadUrl(DBAPI.ASK_PREMISSION+s);
         }
     }
 
     private class LoginWebViewClient extends WebViewClient{
-        ProgressBar mprogressBar;
         private final BrowserActivity mActivity;
         public LoginWebViewClient(final BrowserActivity activity) {
             super();
-            this.mprogressBar = activity.loading;
             mActivity = activity;
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            IsShowLoading(true);
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            IsShowLoading(false);
             if (url.contains("allow")){
                 //获得授权
                 Intent i = new Intent();
@@ -136,9 +144,6 @@ public class BrowserActivity extends AppCompatActivity {
             return true;
         }
 
-        private void IsShowLoading(final boolean shown){
-            mprogressBar.setVisibility((shown? View.VISIBLE:View.GONE));
-        }
     }
 
 }
