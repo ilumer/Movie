@@ -16,4 +16,7 @@
     <!--item_view-->
     <dimen name="card_imageView_height">190dp</dimen>
     <dimen name="card_layout_margin">4dp</dimen>
+    
+    <!--status_bar_height-->
+    <dimen name="status_bar_height">25dp</dimen>
 </resources>

@@ -20,4 +20,5 @@ public class DBAPI {
 
     /*--------account --------*/
     public static final String SING_UP = "https://www.themoviedb.org/account/signup";
+    public static final String ACCOUNT_INFO = "http://api.themoviedb.org/3/account";
 }

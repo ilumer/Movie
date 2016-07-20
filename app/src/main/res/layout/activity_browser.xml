@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".BrowserActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -20,11 +19,6 @@
             android:theme="@style/Movie_AppTheme"/>
     </android.support.design.widget.AppBarLayout>
 
-    <WebView
-        android:id="@+id/login"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
     <ProgressBar
         android:id="@+id/loading"
         android:visibility="visible"
@@ -34,5 +28,12 @@
         android:layout_below="@+id/toolbar_container"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <WebView
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
 
 </RelativeLayout>

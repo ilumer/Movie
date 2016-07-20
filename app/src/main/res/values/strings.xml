@@ -19,4 +19,8 @@
     <!--login-->
     <string name="account_login">登录</string>
     <string name="accout_signup">注册</string>
+    
+    <!--drawerLayout-->
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 </resources>

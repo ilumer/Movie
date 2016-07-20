@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            SharedPreferences pf = mActivity.getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences pf = mActivity.getSharedPreferences(MovieConstant.SP_EXTRA_SESSIONID,Context.MODE_PRIVATE);
             SharedPreferences.Editor editor =pf.edit();
             editor.putString(MovieConstant.SP_EXTRA_SESSIONID,s);
             editor.apply();

@@ -140,21 +140,42 @@ public class MovieOkhttp {
                 .addQueryParameter("request_token",Token)
                 .build();
 
-        Request request = new Request.Builder().
-                url(url).
-                build();
-        Response response ;
         String sessionId = null;
         try{
-            response = client.newCall(request).execute();
-            if (!response.isSuccessful()){
-                Log.e(TAG,"unexpected code" +response);
-            }
-            JSONObject object = new JSONObject(response.body().string());
+            JSONObject object = new JSONObject(getContent(url));
             sessionId = (String) object.get("session_id");
         }catch (Exception e){
             Log.e(TAG,e.getMessage());
         }
         return sessionId;
+    }
+
+    public static void getAccountInfo(String SessionId){
+        HttpUrl url = HttpUrl.parse(DBAPI.ACCOUNT_INFO).
+                newBuilder().
+                addQueryParameter("api_key",DBAPI.API_KEY).
+                addQueryParameter("session_id",SessionId).
+                build();
+        try{
+            Log.e(TAG,getContent(url));
+        }catch (IOException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public static String getContent(HttpUrl url) throws IOException{
+        Request request = new Request.Builder().
+                url(url).
+                build();
+        Response response = null;
+        try{
+            response = client.newCall(request).execute();
+            if (!response.isSuccessful()){
+                Log.e(TAG,"unexpected code" +response);
+            }
+        }catch (IOException e){
+            Log.e(TAG,e.toString());
+        }
+        return response.body().string();
     }
 }
