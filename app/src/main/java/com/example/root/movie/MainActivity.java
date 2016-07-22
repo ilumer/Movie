@@ -18,19 +18,26 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.root.movie.api.model.UserInfoCache;
 import com.example.root.movie.constant.MovieConstant;
-import com.example.root.movie.dao.Movie;
+import com.example.root.movie.handler.UserInfoHandler;
 import com.example.root.movie.helper.MovieHelper;
 import com.example.root.movie.model.FragmentCallback;
 import com.example.root.movie.model.MovieData;
 import com.example.root.movie.net.MovieOkhttp;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -58,7 +65,10 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
     String drawer_open;
     @BindString(R.string.drawer_close)
     String drawer_close;
+    TextView mHeadname;
     private ActionBarDrawerToggle drawerToggle;
+    private final UserInfoHandler handler = new UserInfoHandler(this);
+    private UserInfoCache mUserInfoCache;
     ViewPageAdapter adapter;
     Mode mode = Mode.single;
     enum Mode{
@@ -81,6 +91,11 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
                             View.SYSTEM_UI_FLAG_FULLSCREEN
             );
+        }
+        View headerLayout = nvView.getHeaderView(0);
+        mHeadname = (TextView) headerLayout.findViewById(R.id.name);
+        if ((mUserInfoCache = getUserInfocache("user"))!=null){
+            setNvAccountName(mUserInfoCache.getUsername());
         }
         final String[] title = {popTitle,favTitle};
         adapter = new ViewPageAdapter(getSupportFragmentManager(),title);
@@ -114,6 +129,10 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
             mode = Mode.multiple;
         }
         movieHelper.close();
+    }
+
+    public  void setNvAccountName(String name){
+        mHeadname.setText(name);
     }
 
 
@@ -156,9 +175,18 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
     public void selectDrawerItem(MenuItem item){
         switch (item.getItemId()){
             case R.id.nav_first_fragment:{
-                SharedPreferences pf = getSharedPreferences(MovieConstant.SP_EXTRA_SESSIONID,Context.MODE_PRIVATE);
+                final SharedPreferences pf = getSharedPreferences(MovieConstant.SP_EXTRA_SESSIONID,Context.MODE_PRIVATE);
                 if (pf.getString(MovieConstant.SP_EXTRA_SESSIONID,null)!=null) {
-                    MovieOkhttp.getAccountInfo(pf.getString(MovieConstant.SP_EXTRA_SESSIONID, null));
+                    new Thread(){
+                        @Override
+                        public void run() {
+                            UserInfoCache mUserInfo = MovieOkhttp.getAccountInfo(pf.getString(MovieConstant.SP_EXTRA_SESSIONID, null));
+                            handler.obtainMessage(MovieConstant.USERINFOHANDLERMESSAGE,mUserInfo).
+                                    sendToTarget();
+                            StoreageCache(mUserInfo,"user");
+                        }
+                    }.start();
+
                 }else {
                     Toast.makeText(this,"nosessionid",Toast.LENGTH_SHORT).show();
                 }
@@ -195,6 +223,37 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
         public CharSequence getPageTitle(int position) {
             return title[position];
         }
+    }
+
+    private SharedPreferences getSharedPreferences(){
+        return getSharedPreferences(MovieConstant.SP_EXTRA_USERINFOCACHE
+        ,Context.MODE_PRIVATE);
+    }
+
+    private <T extends Serializable> boolean StoreageCache(T cache, String filename){
+        FileOutputStream fos = null;
+        try{
+            fos = openFileOutput(filename,Context.MODE_PRIVATE);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fos);
+            objectOutputStream.writeObject(cache);
+        }catch (IOException ex){
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    private UserInfoCache getUserInfocache(String filename){
+        FileInputStream fis ;
+        UserInfoCache userInfoCache = null;
+        try{
+            fis = openFileInput(filename);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fis);
+            userInfoCache = (UserInfoCache) objectInputStream.readObject();
+        }catch (IOException |ClassNotFoundException ex){
+            ex.printStackTrace();
+        }
+        return userInfoCache;
     }
 
     @Override

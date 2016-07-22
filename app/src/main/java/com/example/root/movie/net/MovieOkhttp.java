@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import com.example.root.movie.api.model.UserInfoCache;
 import com.example.root.movie.model.DetialMovie;
 import com.example.root.movie.model.MovieData;
 import com.example.root.movie.model.ReviewsModel;
@@ -150,17 +151,21 @@ public class MovieOkhttp {
         return sessionId;
     }
 
-    public static void getAccountInfo(String SessionId){
+    public static UserInfoCache getAccountInfo(String SessionId){
         HttpUrl url = HttpUrl.parse(DBAPI.ACCOUNT_INFO).
                 newBuilder().
                 addQueryParameter("api_key",DBAPI.API_KEY).
                 addQueryParameter("session_id",SessionId).
                 build();
+        String content = null;
+        UserInfoCache mUserInfo = null;
         try{
-            Log.e(TAG,getContent(url));
+            content = getContent(url);
+            mUserInfo = gson.fromJson(content,UserInfoCache.class);
         }catch (IOException ex){
             ex.printStackTrace();
         }
+        return mUserInfo;
     }
 
     public static String getContent(HttpUrl url) throws IOException{

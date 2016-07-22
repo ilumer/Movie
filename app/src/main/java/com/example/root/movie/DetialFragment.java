@@ -160,7 +160,7 @@ public class DetialFragment extends Fragment implements
         final MovieData.ResultsBean m =getArguments().getParcelable(EXTRA_MOVIE_RESULTBEAN);
         if (checkFavouriteMovie(m.getId())) {
             AccountFavourite.getInstance().addFavMovie(m);
-            new Handler().post(new Runnable() {
+            new Thread(new Runnable() {
                 @Override
                 public void run() {
                     FavDAO.InsertFavMovieToDB(database,m);
@@ -169,7 +169,7 @@ public class DetialFragment extends Fragment implements
             favMovie.setText(removeFav);
         }else {
             AccountFavourite.getInstance().removeFavMovie(m);
-            new Handler().post(new Runnable() {
+            new Thread(new Runnable() {
                 @Override
                 public void run() {
                     FavDAO.deleteFavMovieByDB(database,m.getId());

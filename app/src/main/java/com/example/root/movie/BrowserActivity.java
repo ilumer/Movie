@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
@@ -81,7 +80,6 @@ public class BrowserActivity extends AppCompatActivity {
 
     private static  class TokenAsyncTask extends AsyncTask<Void,Void,String>{
         WebView webView;
-
         private final BrowserActivity mActivity;
         public TokenAsyncTask(final BrowserActivity activity) {
             super();
