@@ -14,13 +14,34 @@
     <string name="movie_image">image</string>
     <string name="movie_runtime_unit">%1$d min</string>
     <string name="movie_vote_helper">%1$.1f /10</string>
+    <string name="movie_vote_per">%1$.0f %%</string>
+    <string name="movie_vote_num">%1$d votes</string>
+    <string name="movie_collect">收集</string>
 
 
     <!--login-->
     <string name="account_login">登录</string>
     <string name="accout_signup">注册</string>
-    
+
     <!--drawerLayout-->
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <!--NavigationView-->
+    <string name="movie">电影</string>
+    <string name="TV">电视剧</string>
+    <string name="account_favMovie">喜欢的电影</string>
+    <string name="account_favTv">喜欢的电视剧</string>
+    <string name="account_account_TMDB">你的TMDB</string>
+    <string name="account_notification">通知</string>
+    <string name="account_history">记录</string>
+    <string name="account_ratedMovie">推荐的电影</string>
+    <string name="account_ratedTv">推荐的电视剧</string>
+    <string name="account_rated">推荐</string>
+    
+    <!--电影相关-->
+    <string name="Release_Date">Release_Date</string>
+    <string name="Run_time">Run Time</string>
+    <string name="Director">Director</string>
+    <string name="Language">Language</string>
+
 </resources>

@@ -4,7 +4,9 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import com.example.root.movie.api.model.RatedResults;
 import com.example.root.movie.api.model.UserInfoCache;
+import com.example.root.movie.helper.IMDBHelper;
 import com.example.root.movie.model.DetialMovie;
 import com.example.root.movie.model.MovieData;
 import com.example.root.movie.model.ReviewsModel;
@@ -166,6 +168,25 @@ public class MovieOkhttp {
             ex.printStackTrace();
         }
         return mUserInfo;
+    }
+
+    public static RatedResults getRated(String SessionID,String type,String id){
+        HttpUrl url = HttpUrl.parse(
+                IMDBHelper.getAccountBsUri(id,DBAPI.EVALUATION_RATED,type))
+                .newBuilder()
+                .addQueryParameter("api_key",DBAPI.API_KEY)
+                .addQueryParameter("session_id",SessionID)
+                .build();
+        String content ;
+        RatedResults ratedResults = null;
+        try{
+            content = getContent(url);
+            Log.e(TAG,content);
+            ratedResults = gson.fromJson(content,RatedResults.class);
+        }catch (IOException ex){
+            Log.e(TAG,ex.getCause().toString());
+        }
+        return ratedResults;
     }
 
     public static String getContent(HttpUrl url) throws IOException{

@@ -5,26 +5,30 @@
         <item
             android:id="@+id/nav_first_fragment"
             android:icon="@drawable/accountcircle"
-            android:title="First" />
+            android:title="@string/movie" />
         <item
             android:id="@+id/nav_second_fragment"
             android:icon="@drawable/accountcircle"
-            android:title="Second" />
-        <item
-            android:id="@+id/nav_third_fragment"
-            android:icon="@drawable/accountcircle"
-            android:title="Third" />
+            android:title="@string/TV" />
+
     </group>
 
-    <item android:title="Sub items">
+    <item android:title="@string/account_account_TMDB">
         <menu>
             <group android:checkableBehavior="single">
                 <item
                     android:icon="@drawable/accountcircle"
-                    android:title="Sub item 1" />
+                    android:title="@string/account_favMovie" />
                 <item
                     android:icon="@drawable/accountcircle"
-                    android:title="Sub item 2" />
+                    android:title="@string/account_favTv" />
+                <item
+                    android:icon="@drawable/accountcircle"
+                    android:title="@string/account_history"/>
+                <item
+                    android:id="@+id/rated"
+                    android:icon="@drawable/accountcircle"
+                    android:title="@string/account_rated"/>
             </group>
         </menu>
     </item>

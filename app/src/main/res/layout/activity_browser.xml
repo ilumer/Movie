@@ -24,12 +24,11 @@
         android:visibility="visible"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar_container"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_height="2dp"
+        android:layout_below="@+id/toolbar_container"/>
 
     <WebView
+        android:layout_below="@id/loading"
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

@@ -1,4 +1,4 @@
-package com.example.root.movie.model;
+package com.example.root.movie.model.rvadapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.root.movie.R;
+import com.example.root.movie.model.ReviewsModel;
 
 import java.util.List;
 

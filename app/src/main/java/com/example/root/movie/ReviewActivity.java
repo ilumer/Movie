@@ -1,10 +1,8 @@
 package com.example.root.movie;
 
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
-public class ReviewActivity extends BaseActivity {
+public class ReviewActivity extends ToolbarActivity {
 
     @Override
     protected Fragment createNewFragment() {
@@ -19,5 +17,10 @@ public class ReviewActivity extends BaseActivity {
             getSupportFragmentManager().popBackStack();
         }
 
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_with_toolbar;
     }
 }

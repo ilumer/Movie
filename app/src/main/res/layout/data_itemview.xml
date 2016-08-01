@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/view"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:duplicateParentState="true">
+
+    <include layout="@layout/icon_imageview"/>
+
+    <RelativeLayout
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="75dp">
+        <TextView
+            android:id="@+id/Movie_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"/>
+
+        <Button
+            android:id="@+id/collect"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:textColor="#FFFFFF"
+            android:background="@color/statusbar_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/movie_collect"/>
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

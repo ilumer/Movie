@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.root.movie.net.MovieOkhttp;
 import com.example.root.movie.model.RecyclerItemClickListener;
-import com.example.root.movie.model.ReviewAdapter;
+import com.example.root.movie.model.rvadapter.ReviewAdapter;
 import com.example.root.movie.model.ReviewsModel;
 
 import java.lang.ref.WeakReference;

@@ -21,4 +21,12 @@ public class DBAPI {
     /*--------account --------*/
     public static final String SING_UP = "https://www.themoviedb.org/account/signup";
     public static final String ACCOUNT_INFO = "http://api.themoviedb.org/3/account";
+    public static final String TYPE_LIST = "lists";
+    public static final String EVALUATION_FAV = "favorite";
+    public static final String EVALUATION_RATED = "rated";
+    public static final String EVALUATION_WATCHLIST ="watchlist";
+
+    public static final String MOVIE = "movies";
+    public static final String TV = "tv";
+
 }

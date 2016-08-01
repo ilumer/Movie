@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import com.example.root.movie.helper.MovieHelper;
 import com.example.root.movie.model.AccountFavourite;
 import com.example.root.movie.model.FragmentCallback;
-import com.example.root.movie.model.MovieAdapter;
+import com.example.root.movie.model.rvadapter.MovieAdapter;
 import com.example.root.movie.model.MovieData;
 import com.example.root.movie.model.RecyclerItemClickListener;
 

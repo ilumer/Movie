@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.root.movie.helper.IMDBHelper;
 import com.example.root.movie.R;
+import com.example.root.movie.model.rvadapter.MovieAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +30,7 @@ public class ReHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this,itemView);
     }
 
-    void bindModel(MovieData.ResultsBean i,Context context){
+    public void bindModel(MovieData.ResultsBean i,Context context){
         String uri = IMDBHelper.getImageBsUri(IMDBHelper.getWidth(context),i.getPoster_path());
         Glide.with(context).
                 load(uri).

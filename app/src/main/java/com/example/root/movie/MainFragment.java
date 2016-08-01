@@ -24,7 +24,7 @@ import com.example.root.movie.activity.LoginActivity;
 import com.example.root.movie.helper.IMDBHelper;
 import com.example.root.movie.model.ControlPage;
 import com.example.root.movie.model.FragmentCallback;
-import com.example.root.movie.model.MovieAdapter;
+import com.example.root.movie.model.rvadapter.MovieAdapter;
 import com.example.root.movie.model.MovieData;
 import com.example.root.movie.net.MovieOkhttp;
 import com.example.root.movie.model.RecyclerItemClickListener;

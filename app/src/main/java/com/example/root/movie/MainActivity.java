@@ -24,6 +24,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.root.movie.activity.RatedActivity;
 import com.example.root.movie.api.model.UserInfoCache;
 import com.example.root.movie.constant.MovieConstant;
 import com.example.root.movie.handler.UserInfoHandler;
@@ -190,6 +191,11 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
                 }else {
                     Toast.makeText(this,"nosessionid",Toast.LENGTH_SHORT).show();
                 }
+                break;
+            }
+            case R.id.rated:{
+                final Intent i = new Intent(this, RatedActivity.class);
+                startActivity(i);
                 break;
             }
         }
