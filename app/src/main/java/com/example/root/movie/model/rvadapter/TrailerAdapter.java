@@ -7,9 +7,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.root.movie.helper.YoutubeHelper;
 import com.example.root.movie.R;
 import com.example.root.movie.model.Trailers;
@@ -29,6 +29,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         mList = List;
     }
 
+
     @Override
     public TrailerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new TrailerViewHolder(LayoutInflater.
@@ -39,11 +40,10 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     @Override
     public void onBindViewHolder(TrailerViewHolder holder, int position) {
         final Trailers.ResultsBean m = mList.get(position);
-        if (position==0){
-            holder.mtitle.setVisibility(View.VISIBLE);
-        }
-        holder.mtextView.setText(m.getName());
-        holder.mButton.setOnClickListener(new View.OnClickListener() {
+        Glide.with(mcontext)
+                .load(YoutubeHelper.getImgUri(m.getKey()))
+                .into(holder.imageView);
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(Intent.ACTION_VIEW,
@@ -61,12 +61,9 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     }
 
     public class TrailerViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.trailer_text)
-        TextView mtextView;
-        @BindView(R.id.trailer_play)
-        ImageButton mButton;
-        @BindView(R.id.trailer_title)
-        TextView mtitle;
+        @BindView(R.id.trailer_imageview)
+        ImageView imageView;
+
         public TrailerViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);

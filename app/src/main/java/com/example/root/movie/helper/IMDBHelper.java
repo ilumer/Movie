@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
-import com.example.root.movie.api.model.Results;
 import com.example.root.movie.net.DBAPI;
 
 public class IMDBHelper {

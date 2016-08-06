@@ -33,4 +33,6 @@ public abstract class BaseFragment extends Fragment {
     protected Unbinder getUnbinder(){
         return this.unbinder;
     }
+
+
 }

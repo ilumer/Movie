@@ -8,10 +8,12 @@
     <string name="my_favourite_movies">MARK AS \n FAVORITE</string>
     <string name="remove_favourite_movie">REMOVE \n FAVORITE</string>
     <string name="movie_review">REVIEW</string>
+    <string name="movie_overview">OVERVIEW</string>
     <string name="review_account">account_image</string>
     <string name="toast_notInternet">Check the network</string>
     <string name="sort_point">refresh</string>
     <string name="movie_image">image</string>
+    <string name="movie_release_date">Release Date:%1$s</string>
     <string name="movie_runtime_unit">%1$d min</string>
     <string name="movie_vote_helper">%1$.1f /10</string>
     <string name="movie_vote_per">%1$.0f %%</string>

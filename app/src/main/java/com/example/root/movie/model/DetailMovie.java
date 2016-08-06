@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  *  data get by movie id
  */
-public class DetialMovie implements Parcelable{
+public class DetailMovie implements Parcelable{
 
 
     /**
@@ -177,10 +177,10 @@ public class DetialMovie implements Parcelable{
         dest.writeInt(this.vote_count);
     }
 
-    public DetialMovie() {
+    public DetailMovie() {
     }
 
-    protected DetialMovie(Parcel in) {
+    protected DetailMovie(Parcel in) {
         this.adult = in.readByte() != 0;
         this.backdrop_path = in.readString();
         this.imdb_id = in.readString();
@@ -196,13 +196,13 @@ public class DetialMovie implements Parcelable{
         this.vote_count = in.readInt();
     }
 
-    public static final Creator<DetialMovie> CREATOR = new Creator<DetialMovie>() {
-        public DetialMovie createFromParcel(Parcel source) {
-            return new DetialMovie(source);
+    public static final Creator<DetailMovie> CREATOR = new Creator<DetailMovie>() {
+        public DetailMovie createFromParcel(Parcel source) {
+            return new DetailMovie(source);
         }
 
-        public DetialMovie[] newArray(int size) {
-            return new DetialMovie[size];
+        public DetailMovie[] newArray(int size) {
+            return new DetailMovie[size];
         }
     };
 }

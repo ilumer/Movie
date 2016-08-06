@@ -14,4 +14,7 @@ public class MovieConstant {
 
     public static final int USERINFOHANDLERMESSAGE = 0x2;
     public static final String SP_EXTRA_USERINFOCACHE = "com.example.root.EXTRA_USERINFOCACHE";
+
+    public static final int REVIEWINFOMESSAGE = 0x3;
+    public static final int TRAILERSMESSAGE = 0x4;
 }

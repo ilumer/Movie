@@ -1,10 +1,8 @@
 package com.example.root.movie.fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.root.movie.R;
@@ -49,6 +48,7 @@ public class RatedMovieFragment extends BaseFragment implements RvOnClickListene
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
         mContent.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new RatedAdapter(mList,getActivity());
         mAdapter.setMrvOnClickListener(this);
@@ -63,8 +63,12 @@ public class RatedMovieFragment extends BaseFragment implements RvOnClickListene
         }catch (IOException | ClassNotFoundException ex){
             Log.e("",ex.getMessage());
         }
-        if (userInfoCache!=null&&SessionId!=null&&savedInstanceState==null) {
+        if (userInfoCache!=null&&SessionId!=null) {
             new Task(this).execute(new String[]{SessionId, String.valueOf(userInfoCache.getId())});
+        }
+        if (((AppCompatActivity) getActivity()).getSupportActionBar()==null) {
+            ((AppCompatActivity) getActivity()).setSupportActionBar(mtoolbar);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -86,9 +90,20 @@ public class RatedMovieFragment extends BaseFragment implements RvOnClickListene
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .hide(this)
-                .add(R.id.fragment_container,RatedDetialFragment.getInstance(info))
+                .add(R.id.fragment_container, RatedDetailFragment.getInstance(info.getId()))
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:{
+                getActivity().onBackPressed();
+                break;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     protected void addList(List<RateInfo> list){

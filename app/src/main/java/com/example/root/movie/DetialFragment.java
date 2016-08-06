@@ -27,7 +27,7 @@ import com.example.root.movie.helper.IMDBHelper;
 import com.example.root.movie.helper.MovieHelper;
 import com.example.root.movie.net.MovieOkhttp;
 import com.example.root.movie.model.AccountFavourite;
-import com.example.root.movie.model.DetialMovie;
+import com.example.root.movie.model.DetailMovie;
 import com.example.root.movie.model.MovieData;
 import com.example.root.movie.model.rvadapter.TrailerAdapter;
 import com.example.root.movie.model.TrailerAsyncloader;
@@ -78,7 +78,7 @@ public class DetialFragment extends Fragment implements
     @BindString(R.string.my_favourite_movies)
     String addFav;
 
-    DetialMovie tempData = null;
+    DetailMovie tempData = null;
     List<Trailers.ResultsBean> mList = new ArrayList<>();
     TrailerAdapter mtrailers ;
     SQLiteDatabase database;
@@ -135,15 +135,15 @@ public class DetialFragment extends Fragment implements
         return detialFragment;
     }
 
-    public void UpdateUI(DetialMovie detialMovie){
-        movieName.setText(detialMovie.getOriginal_title());
+    public void UpdateUI(DetailMovie detailMovie){
+        movieName.setText(detailMovie.getOriginal_title());
         Glide.with(getActivity()).
-                load(IMDBHelper.getImageBsUri(IMDBHelper.getWidth(getActivity()),detialMovie.getPoster_path()))
+                load(IMDBHelper.getImageBsUri(IMDBHelper.getWidth(getActivity()), detailMovie.getPoster_path()))
                 .into(movieImageView);
-        release_date.setText(detialMovie.getRelease_date());
-        runtime.setText(String.format(runtimeUnit,detialMovie.getRuntime()));
-        vote_average.setText(String.format(voteHelper,detialMovie.getVote_average()));
-        movieOverview.setText(detialMovie.getOverview());
+        release_date.setText(detailMovie.getRelease_date());
+        runtime.setText(String.format(runtimeUnit, detailMovie.getRuntime()));
+        vote_average.setText(String.format(voteHelper, detailMovie.getVote_average()));
+        movieOverview.setText(detailMovie.getOverview());
     }
 
     @OnClick(R.id.movie_reviews)
@@ -177,19 +177,19 @@ public class DetialFragment extends Fragment implements
         }
     }
 
-    public class AsyncUpdateUI extends AsyncTask<Integer,Void,DetialMovie>{
+    public class AsyncUpdateUI extends AsyncTask<Integer,Void,DetailMovie>{
         @Override
-        protected DetialMovie doInBackground(Integer... id) {
+        protected DetailMovie doInBackground(Integer... id) {
             return new MovieOkhttp(getActivity()).getDetialMovieInfo(id[0]);
         }
 
         @Override
-        protected void onPostExecute(DetialMovie detialMovie) {
-            super.onPostExecute(detialMovie);
+        protected void onPostExecute(DetailMovie detailMovie) {
+            super.onPostExecute(detailMovie);
             if (!isCancelled()) {
-                if (detialMovie != null) {
-                    tempData = detialMovie;
-                    UpdateUI(detialMovie);
+                if (detailMovie != null) {
+                    tempData = detailMovie;
+                    UpdateUI(detailMovie);
                 } else {
                     Toast.makeText
                             (getActivity(), toastMessage, Toast.LENGTH_SHORT).show();
