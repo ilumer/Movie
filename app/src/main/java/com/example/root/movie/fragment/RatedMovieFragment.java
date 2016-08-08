@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 
 import com.example.root.movie.R;
 import com.example.root.movie.api.model.RateInfo;
@@ -36,7 +38,7 @@ import butterknife.BindView;
  * 推荐的作品
  */
 public class RatedMovieFragment extends BaseFragment implements RvOnClickListener{
-
+    public static final String EXTRA_ID = RatedMovieFragment.class.getName()+"ID";
     public static final String TAG = RatedMovieFragment.class.getName();
     @BindView(R.id.toolbar)
     Toolbar mtoolbar;
@@ -53,6 +55,31 @@ public class RatedMovieFragment extends BaseFragment implements RvOnClickListene
         mAdapter = new RatedAdapter(mList,getActivity());
         mAdapter.setMrvOnClickListener(this);
         mContent.setAdapter(mAdapter);
+        mContent.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            boolean hideToolBar = false;
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 20) {
+                    hideToolBar = true;
+
+                } else if (dy < -5) {
+                    hideToolBar = false;
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (hideToolBar) {
+                    mtoolbar.animate().translationY(-mtoolbar.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
+                    ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+                } else {
+                    mtoolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
+                    ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+                }
+            }
+        });
         final SharedPreferences pf = getActivity().getSharedPreferences(MovieConstant.SP_EXTRA_SESSIONID, Context.MODE_PRIVATE);
         String SessionId = pf.getString(MovieConstant.SP_EXTRA_SESSIONID, null);
         UserInfoCache userInfoCache = null;
@@ -66,11 +93,13 @@ public class RatedMovieFragment extends BaseFragment implements RvOnClickListene
         if (userInfoCache!=null&&SessionId!=null) {
             new Task(this).execute(new String[]{SessionId, String.valueOf(userInfoCache.getId())});
         }
+        mtoolbar.setTitle("hello");
         if (((AppCompatActivity) getActivity()).getSupportActionBar()==null) {
             ((AppCompatActivity) getActivity()).setSupportActionBar(mtoolbar);
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
 
     @Override
     public void onDestroyView() {

@@ -27,6 +27,8 @@ import android.widget.Toast;
 import com.example.root.movie.activity.RatedActivity;
 import com.example.root.movie.api.model.UserInfoCache;
 import com.example.root.movie.constant.MovieConstant;
+import com.example.root.movie.fragment.RatedDetailFragment;
+import com.example.root.movie.fragment.RatedMovieFragment;
 import com.example.root.movie.handler.UserInfoHandler;
 import com.example.root.movie.helper.MovieHelper;
 import com.example.root.movie.model.FragmentCallback;
@@ -265,17 +267,17 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
     public void selectdMovie(MovieData.ResultsBean m) {
         if (mode==Mode.single){
             Intent i = new Intent(this,DetialActivity.class);
-            i.putExtra(DetialFragment.EXTRA_MOVIE_RESULTBEAN,m);
+            i.putExtra(RatedDetailFragment.EXTRA_ID,m);
             startActivity(i);
         }else if (mode==Mode.multiple){
             FragmentManager manager = getSupportFragmentManager();
-            DetialFragment  fragment = (DetialFragment) manager.findFragmentById(R.id.fragment_container);
+            RatedDetailFragment fragment = (RatedDetailFragment) manager.findFragmentById(R.id.fragment_container);
             if (fragment!=null){
                 manager.beginTransaction()
                         .remove(fragment).commit();
             }
             manager.beginTransaction()
-                    .add(R.id.fragment_container,DetialFragment.newInstance(m))
+                    .add(R.id.fragment_container,RatedDetailFragment.getInstance(m.getId()))
                     .commit();
         }
     }

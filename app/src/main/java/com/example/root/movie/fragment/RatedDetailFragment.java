@@ -34,7 +34,7 @@ import butterknife.BindView;
  */
 public class RatedDetailFragment extends BaseFragment
         implements LoaderManager.LoaderCallbacks<DetailMovie>{
-    public static final String EXTRA_INFO = "com.example.root.movie.EXTRA_INFO";
+    public static final String EXTRA_ID = "com.example.root.movie.EXTRA_ID";
     //public static final String TAG = RatedDetailFragment.class.getName();
     @BindView(R.id.movie_screen)
     ImageView imageView;
@@ -63,7 +63,7 @@ public class RatedDetailFragment extends BaseFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        movieId = getArguments().getInt(EXTRA_INFO);
+        movieId = getArguments().getInt(EXTRA_ID);
         handler = new CommonHandler(this);
     }
 
@@ -96,7 +96,7 @@ public class RatedDetailFragment extends BaseFragment
 
     public static RatedDetailFragment getInstance(int id){
         Bundle arg = new Bundle();
-        arg.putInt(EXTRA_INFO,id);
+        arg.putInt(EXTRA_ID,id);
         RatedDetailFragment fragment = new
                 RatedDetailFragment();
         fragment.setArguments(arg);

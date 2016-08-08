@@ -24,7 +24,6 @@
             android:id="@+id/movie_image"
             android:layout_width="match_parent"
             android:layout_height="@dimen/card_imageView_height"
-            android:background="@color/default_imageView_bgColor"
             android:scaleType="center"
             tools:ignore="ContentDescription"/>
         <LinearLayout

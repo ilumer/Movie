@@ -26,8 +26,7 @@ public class CommonHandler extends Handler {
             ReviewsModel model = (ReviewsModel) msg.obj;
             fragment.updateReviews(model);
         }else if (msg.what== MovieConstant.TRAILERSMESSAGE){
-            Trailers trailers = (Trailers) msg.obj;
-            fragment.updateTrailers(trailers);
+            Trailers trailers = (Trailers) msg.obj;fragment.updateTrailers(trailers);
         }
     }
 }
