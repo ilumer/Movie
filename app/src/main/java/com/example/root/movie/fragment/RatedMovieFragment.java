@@ -1,10 +1,13 @@
 package com.example.root.movie.fragment;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,8 +15,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
+
 import android.view.animation.DecelerateInterpolator;
+
 
 import com.example.root.movie.R;
 import com.example.root.movie.api.model.RateInfo;
@@ -44,6 +48,8 @@ public class RatedMovieFragment extends BaseFragment implements RvOnClickListene
     Toolbar mtoolbar;
     @BindView(R.id.content_list)
     RecyclerView mContent;
+    @BindView(R.id.appbar)
+    AppBarLayout appBar;
     List<RateInfo> mList = new ArrayList<>();
     RatedAdapter mAdapter;
 
@@ -55,31 +61,6 @@ public class RatedMovieFragment extends BaseFragment implements RvOnClickListene
         mAdapter = new RatedAdapter(mList,getActivity());
         mAdapter.setMrvOnClickListener(this);
         mContent.setAdapter(mAdapter);
-        mContent.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            boolean hideToolBar = false;
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy > 20) {
-                    hideToolBar = true;
-
-                } else if (dy < -5) {
-                    hideToolBar = false;
-                }
-            }
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (hideToolBar) {
-                    mtoolbar.animate().translationY(-mtoolbar.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
-                    ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
-                } else {
-                    mtoolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
-                    ((AppCompatActivity)getActivity()).getSupportActionBar().show();
-                }
-            }
-        });
         final SharedPreferences pf = getActivity().getSharedPreferences(MovieConstant.SP_EXTRA_SESSIONID, Context.MODE_PRIVATE);
         String SessionId = pf.getString(MovieConstant.SP_EXTRA_SESSIONID, null);
         UserInfoCache userInfoCache = null;
