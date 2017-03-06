@@ -1,1 +1,2 @@
-你需要在 `API_KEY` 中添加你的 `key` ，才可以正常的执行程序。
+你需要新建一个`keystore.properties`的文件
+写入 `MOVIE_API_KEY`,才能正确的导入Android studio中

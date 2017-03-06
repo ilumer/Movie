@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.root.movie.activity.LoginActivity;
+import com.example.root.movie.dao.Movie;
 import com.example.root.movie.helper.IMDBHelper;
 import com.example.root.movie.model.ControlPage;
 import com.example.root.movie.model.FragmentCallback;
@@ -40,7 +41,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-public class MainFragment extends Fragment implements ControlPage{
+public class MainFragment extends Fragment implements ControlPage , MoviesFragmentView{
     public static final String TAG = MainFragment.class.getSimpleName();
     public static final String CURRENT_PAGE = "com.example.root.movie.activity.PAGE";
     public static final String RECYCLERVIEW_LATOUTSTATE = "com.example..root.activity.LAYOUTSTATE";
@@ -60,6 +61,7 @@ public class MainFragment extends Fragment implements ControlPage{
     private FragmentCallback mcallbacks;
     private AsyncGetData asyncGetData;
     private Unbinder unbinder;
+    private MovieFragmentPresenter presenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -142,6 +144,8 @@ public class MainFragment extends Fragment implements ControlPage{
                 }
             }
         });
+
+       presenter = new MovieFragmentPresenter(this,null);
     }
 
     @Override
@@ -220,6 +224,16 @@ public class MainFragment extends Fragment implements ControlPage{
         }
     }
 
+    @Override
+    public void displayMovies(List<Movie> movies) {
+
+    }
+
+    @Override
+    public void displayNoMovies() {
+
+    }
+
     private static class  AsyncGetData extends AsyncTask<Integer,Void,Integer>{
         public static final int GET_LATEST = 1;
         public static final int GET_MORE = 2;
@@ -276,6 +290,8 @@ public class MainFragment extends Fragment implements ControlPage{
             }
             return mode[0];
         }
+
+
 
         @Override
         protected void onPostExecute(Integer result) {

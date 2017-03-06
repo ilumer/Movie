@@ -35,7 +35,7 @@ import butterknife.BindView;
 public class RatedDetailFragment extends BaseFragment
         implements LoaderManager.LoaderCallbacks<DetailMovie>{
     public static final String EXTRA_ID = "com.example.root.movie.EXTRA_ID";
-    //public static final String TAG = RatedDetailFragment.class.getName();
+
     @BindView(R.id.movie_screen)
     ImageView imageView;
     @BindView(R.id.toolbar)

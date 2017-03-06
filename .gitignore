@@ -6,3 +6,6 @@
 .DS_Store
 /build
 /captures
+keystore.properties
+gradle.xml
+/.idea/kotlinc.xml

@@ -1,11 +1,13 @@
 package com.example.root.movie.net;
 
+import com.example.root.movie.BuildConfig;
+
 public class DBAPI {
 
     private DBAPI(){
         throw new AssertionError();
     }
-    public static final String API_KEY = "";
+    public static final String API_KEY = BuildConfig.MOVIE_API_KEY;
     public static final String BASEPOPLULAR_URI = "http://api.themoviedb.org/3/movie/popular";
     public static final String BASEMOVIEINFO_URI = "https://api.themoviedb.org/3/movie/";
     public static final String BASEVIDEO_TYPE = "/videos";
