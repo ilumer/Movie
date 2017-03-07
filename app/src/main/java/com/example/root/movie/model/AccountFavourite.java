@@ -4,13 +4,13 @@ package com.example.root.movie.model;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.root.movie.dao.FavDAO;
+import com.example.root.movie.data.source.local.FavDAO;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AccountFavourite {
-    public List<MovieData.ResultsBean> mList;
+    public List<MovieInfo> mList;
     public static AccountFavourite accountFavourite = null;
 
     private AccountFavourite() {
@@ -24,16 +24,16 @@ public class AccountFavourite {
         return accountFavourite;
     }
 
-    public void addFavMovie(MovieData.ResultsBean movie){
+    public void addFavMovie(MovieInfo movie){
         mList.add(movie);
     }
 
-    public void removeFavMovie(MovieData.ResultsBean movie){
+    public void removeFavMovie(MovieInfo movie){
         mList.remove(movie);
     }
 
 
-    public List<MovieData.ResultsBean> getmList(){
+    public List<MovieInfo> getmList(){
         return mList;
     }
 

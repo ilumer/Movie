@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -24,15 +23,16 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.root.movie.PopMovie.view.PopMovieFragment;
 import com.example.root.movie.activity.RatedActivity;
 import com.example.root.movie.api.model.UserInfoCache;
 import com.example.root.movie.constant.MovieConstant;
 import com.example.root.movie.fragment.RatedDetailFragment;
-import com.example.root.movie.fragment.RatedMovieFragment;
 import com.example.root.movie.handler.UserInfoHandler;
-import com.example.root.movie.helper.MovieHelper;
+import com.example.root.movie.data.source.local.MovieHelper;
 import com.example.root.movie.model.FragmentCallback;
 import com.example.root.movie.model.MovieData;
+import com.example.root.movie.model.MovieInfo;
 import com.example.root.movie.net.MovieOkhttp;
 
 import java.io.FileInputStream;
@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
     @BindString(R.string.drawer_open)
     String drawer_open;
     @BindString(R.string.drawer_close)
+
     String drawer_close;
     TextView mHeadname;
     private ActionBarDrawerToggle drawerToggle;
@@ -215,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
         @Override
         public Fragment getItem(int position) {
             if (position==0){
-                return new MainFragment();
+                return new PopMovieFragment();
             }else {
                 return new FavouriteFragment();
             }
@@ -264,10 +265,10 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
     }
 
     @Override
-    public void selectdMovie(MovieData.ResultsBean m) {
+    public void selectdMovie(MovieInfo m) {
         if (mode==Mode.single){
             Intent i = new Intent(this,DetialActivity.class);
-            i.putExtra(RatedDetailFragment.EXTRA_ID,m);
+            //i.putExtra(RatedDetailFragment.EXTRA_ID,m);
             startActivity(i);
         }else if (mode==Mode.multiple){
             FragmentManager manager = getSupportFragmentManager();

@@ -13,9 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.root.movie.helper.MovieHelper;
+import com.example.root.movie.data.source.local.MovieHelper;
 import com.example.root.movie.model.AccountFavourite;
 import com.example.root.movie.model.FragmentCallback;
+import com.example.root.movie.model.MovieInfo;
 import com.example.root.movie.model.rvadapter.MovieAdapter;
 import com.example.root.movie.model.MovieData;
 import com.example.root.movie.model.RecyclerItemClickListener;
@@ -33,7 +34,7 @@ public class FavouriteFragment extends Fragment implements MainActivity.UpdateUI
     private Unbinder unbinder;
     @BindView(R.id.favourite_movie)
     RecyclerView rvFavMovie;
-    List<MovieData.ResultsBean> mList ;
+    List<MovieInfo> mList ;
     MovieAdapter adapter = null;
     AccountFavourite accountFavourite;
     SQLiteDatabase database;

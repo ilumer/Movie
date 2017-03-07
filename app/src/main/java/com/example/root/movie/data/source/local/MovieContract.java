@@ -1,9 +1,9 @@
-package com.example.root.movie.dao;
+package com.example.root.movie.data.source.local;
 
 import android.provider.BaseColumns;
 
 
-public class Movie {
+public class MovieContract {
     public static abstract class MovieDataBean implements BaseColumns{
         public static final String TABLE_NAME = "MovieDataBean";
         public static final String COLUMN_NAME_POSTER_PATH = "poster_path";

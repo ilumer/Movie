@@ -11,6 +11,7 @@ import com.example.root.movie.handler.CommonHandler;
 import com.example.root.movie.helper.IMDBHelper;
 import com.example.root.movie.model.DetailMovie;
 import com.example.root.movie.model.MovieData;
+import com.example.root.movie.model.MovieInfo;
 import com.example.root.movie.model.ReviewsModel;
 import com.example.root.movie.model.Trailers;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
@@ -19,6 +20,7 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import okhttp3.Call;
@@ -41,7 +43,7 @@ public class MovieOkhttp {
         this.mcontext = context;
     }
 
-    public MovieData getMovieData(int page) throws Exception {
+    public static List<MovieInfo> getMovieData(int page){
         String uri = Uri.parse(DBAPI.BASEPOPLULAR_URI).buildUpon()
                 .appendQueryParameter("api_key",DBAPI.API_KEY)
                 .appendQueryParameter("page",String.valueOf(page))
@@ -49,18 +51,26 @@ public class MovieOkhttp {
         Request request = new Request.Builder()
                 .url(uri)
                 .build();
-
-        Response response = client.newCall(request).execute();
-        if (!response.isSuccessful()){
-            throw new IOException("unexpected code"+response);
+        Response response = null;
+        try {
+            response = client.newCall(request).execute();
+            if (!response.isSuccessful()){
+                throw new IOException("unexpected code"+response);
+            }
+            return gson.fromJson(response.body().string(),MovieData.class).getResults();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        } finally {
+            if (response != null)
+                response.close();
         }
-        return gson.fromJson(response.body().string(),MovieData.class);
     }
 
-    public List<MovieData.ResultsBean> getPopularMovieResults(int page){
-        List<MovieData.ResultsBean> Results = null;
+    public List<MovieInfo> getPopularMovieResults(int page){
+        List<MovieInfo> Results = null;
         try{
-            Results = getMovieData(page).getResults();
+            Results = getMovieData(page);
         }catch (Exception e){
             e.printStackTrace();
         }

@@ -7,14 +7,15 @@ import android.view.ViewGroup;
 
 import com.example.root.movie.R;
 import com.example.root.movie.model.MovieData;
+import com.example.root.movie.model.MovieInfo;
 import com.example.root.movie.model.ReHolder;
 
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<ReHolder> {
-    List<MovieData.ResultsBean> list;
+    List<MovieInfo> list;
     Context context;
-    public MovieAdapter(List<MovieData.ResultsBean> list, Context context) {
+    public MovieAdapter(List<MovieInfo> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -35,13 +36,13 @@ public class MovieAdapter extends RecyclerView.Adapter<ReHolder> {
         return list.size();
     }
 
-    public void setList(List<MovieData.ResultsBean> mList){
+    public void setList(List<MovieInfo> mList){
         list.clear();
         list.addAll(mList);
         notifyDataSetChanged();
     }
 
-    public MovieData.ResultsBean getItem(int position){
+    public MovieInfo getItem(int position){
         return list.get(position);
     }
 }

@@ -30,8 +30,8 @@ public class ReHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this,itemView);
     }
 
-    public void bindModel(MovieData.ResultsBean i,Context context){
-        String uri = IMDBHelper.getImageBsUri(IMDBHelper.getWidth(context),i.getPoster_path());
+    public void bindModel(MovieInfo i, Context context){
+        String uri = IMDBHelper.getImageBsUri(IMDBHelper.getWidth(context),i.getPosterPath());
         Glide.with(context).
                 load(uri).
                 centerCrop().
