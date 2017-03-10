@@ -1,35 +1,41 @@
 package com.example.root.movie.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by ilumer on 17-3-7.
  */
 
 public class MovieInfo {
-    private String poster_path;
+    @SerializedName("poster_path")
+    private String posterPath;
     private boolean adult;
     private String overview;
-    private String release_date;
+    @SerializedName("release_date")
+    private String releaseDate;
     private int id;
-    private String original_title;
-    private String original_language;
+    @SerializedName("original_title")
+    private String originalTitle;
+    @SerializedName("original_language")
+    private String originalLanguage;
     private String title;
-    private String backdrop_path;
+    @SerializedName("backdrop_path")
+    private String backdropPath;
     private int width;
     private int height;
     private double popularity;
-    private int vote_count;
+    @SerializedName("vote_count")
+    private int voteCount;
     private boolean video;
-    private double vote_average;
+    @SerializedName("vote_average")
+    private double voteAverage;
 
     public String getPosterPath() {
-        return poster_path;
+        return posterPath;
     }
 
     public void setPosterPath(String poster_path) {
-        this.poster_path = poster_path;
+        this.posterPath = poster_path;
     }
 
     public boolean isAdult() {
@@ -49,11 +55,11 @@ public class MovieInfo {
     }
 
     public String getReleaseDate() {
-        return release_date;
+        return releaseDate;
     }
 
     public void setReleaseDate(String release_date) {
-        this.release_date = release_date;
+        this.releaseDate = release_date;
     }
 
     public int getId() {
@@ -65,19 +71,19 @@ public class MovieInfo {
     }
 
     public String getOriginalTitle() {
-        return original_title;
+        return originalTitle;
     }
 
     public void setOriginalTitle(String original_title) {
-        this.original_title = original_title;
+        this.originalTitle = original_title;
     }
 
     public String getOriginalLanguage() {
-        return original_language;
+        return originalLanguage;
     }
 
     public void setOriginalLanguage(String original_language) {
-        this.original_language = original_language;
+        this.originalLanguage = original_language;
     }
 
     public String getTitle() {
@@ -89,11 +95,11 @@ public class MovieInfo {
     }
 
     public String getBackdropPath() {
-        return backdrop_path;
+        return backdropPath;
     }
 
     public void setBackdropPath(String backdrop_path) {
-        this.backdrop_path = backdrop_path;
+        this.backdropPath = backdrop_path;
     }
 
     public int getWidth() {
@@ -121,11 +127,11 @@ public class MovieInfo {
     }
 
     public int getVoteCount() {
-        return vote_count;
+        return voteCount;
     }
 
     public void setVoteCount(int vote_count) {
-        this.vote_count = vote_count;
+        this.voteCount = vote_count;
     }
 
     public boolean isVideo() {
@@ -137,11 +143,11 @@ public class MovieInfo {
     }
 
     public double getVoteAverage() {
-        return vote_average;
+        return voteAverage;
     }
 
     public void setVoteAverage(double vote_average) {
-        this.vote_average = vote_average;
+        this.voteAverage = vote_average;
     }
 
 }

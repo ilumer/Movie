@@ -50,11 +50,6 @@ public class RatedAdapter extends RecyclerView.Adapter<RatedAdapter.RatedViewHol
     @Override
     public void onBindViewHolder(RatedViewHolder holder, final int position) {
         RateInfo info = mList.get(position);
-        Glide.with(mcontext).load(IMDBHelper
-                .getImageBsUri(IMDBHelper.getWidth(mcontext),info.getPoster_path()))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .centerCrop()
-                .into(holder.image);
         holder.mName.setText(info.getTitle());
         holder.mVoterPer.setText(String.format(holder.perFormat,info.getVote_average()));
         holder.mVoteNum.setText(String.format(holder.numFormat,info.getVote_count()));

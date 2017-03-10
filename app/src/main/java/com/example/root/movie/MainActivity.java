@@ -21,19 +21,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.root.movie.PopMovie.view.PopMovieFragment;
-import com.example.root.movie.activity.RatedActivity;
+import com.example.root.movie.PopMovie.PopMovieFragment;
 import com.example.root.movie.api.model.UserInfoCache;
 import com.example.root.movie.constant.MovieConstant;
 import com.example.root.movie.fragment.RatedDetailFragment;
 import com.example.root.movie.handler.UserInfoHandler;
 import com.example.root.movie.data.source.local.MovieHelper;
 import com.example.root.movie.model.FragmentCallback;
-import com.example.root.movie.model.MovieData;
 import com.example.root.movie.model.MovieInfo;
-import com.example.root.movie.net.MovieOkhttp;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -176,31 +172,6 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
     }
 
     public void selectDrawerItem(MenuItem item){
-        switch (item.getItemId()){
-            case R.id.nav_first_fragment:{
-                final SharedPreferences pf = getSharedPreferences(MovieConstant.SP_EXTRA_SESSIONID,Context.MODE_PRIVATE);
-                if (pf.getString(MovieConstant.SP_EXTRA_SESSIONID,null)!=null) {
-                    new Thread(){
-                        @Override
-                        public void run() {
-                            UserInfoCache mUserInfo = MovieOkhttp.getAccountInfo(pf.getString(MovieConstant.SP_EXTRA_SESSIONID, null));
-                            handler.obtainMessage(MovieConstant.USERINFOHANDLERMESSAGE,mUserInfo).
-                                    sendToTarget();
-                            StoreageCache(mUserInfo,"user");
-                        }
-                    }.start();
-
-                }else {
-                    Toast.makeText(this,"nosessionid",Toast.LENGTH_SHORT).show();
-                }
-                break;
-            }
-            case R.id.rated:{
-                final Intent i = new Intent(this, RatedActivity.class);
-                startActivity(i);
-                break;
-            }
-        }
         drawerLayout.closeDrawers();
     }
 
