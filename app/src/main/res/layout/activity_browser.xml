@@ -17,7 +17,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             android:elevation="4dp"
-            android:theme="@style/Movie_AppTheme"/>
+            android:theme="@style/MovieTheme"/>
     </android.support.design.widget.AppBarLayout>
 
     <ProgressBar

@@ -2,7 +2,6 @@ package com.example.root.movie;
 
 import android.app.Application;
 
-
 import com.facebook.stetho.Stetho;
 
 public class App extends Application {

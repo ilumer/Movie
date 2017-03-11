@@ -12,7 +12,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Movie_AppTheme">
+        android:theme="@style/MovieTheme">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop">

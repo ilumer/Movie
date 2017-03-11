@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.root.movie.R;
@@ -50,7 +51,7 @@ public class PopMovieFragment extends Fragment
 
     @Nullable
     @Override
-    public android.view.View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         android.view.View view = inflater.inflate(R.layout.fragment_main,container,false);
         unbinder=ButterKnife.bind(this,view);
         setHasOptionsMenu(true);
@@ -74,7 +75,7 @@ public class PopMovieFragment extends Fragment
         movieList.addOnScrollListener(new EndlessRecyclerOnScrollListener(gridLayoutManager) {
             @Override
             public void onLoadMore() {
-                presenter.loadMore();
+                presenter.loadMoreFromNet(false);
             }
         });
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -89,6 +90,12 @@ public class PopMovieFragment extends Fragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.sort_menu,menu);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.unSubscribe();
     }
 
     @Override
@@ -125,7 +132,7 @@ public class PopMovieFragment extends Fragment
 
     @Override
     public void onRefresh() {
-        presenter.refresh();
+        presenter.loadMoreFromNet(true);
     }
 
     @Override
