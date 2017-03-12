@@ -8,12 +8,14 @@ import com.example.root.movie.model.MovieInfo;
 import com.example.root.movie.net.MovieOkhttp;
 import com.example.root.movie.repositories.MoviesRepository;
 
+import java.io.IOException;
 import java.util.List;
 
 import rx.Observable;
 import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func0;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -39,11 +41,17 @@ public class PopMoviesRepository implements MoviesRepository {
 
     @Override
     public Observable<List<MovieInfo>> getPopMoviesFromNet(final int page) {
-        return Observable.fromCallable(new Func0<List<MovieInfo>>() {
-            @Override
-            public List<MovieInfo> call() {
-                return MovieOkhttp.getMovieData(page);
-            }
-        }).subscribeOn(Schedulers.io());
+        return Observable.just(page)
+                .flatMap(new Func1<Integer, Observable<List<MovieInfo>>>() {
+                    @Override
+                    public Observable<List<MovieInfo>> call(Integer integer) {
+                        try{
+                            List<MovieInfo> movies = MovieOkhttp.getMovieData(page);
+                            return Observable.just(movies);
+                        }catch (IOException e){
+                            return Observable.error(e);
+                        }
+                    }
+                }).subscribeOn(Schedulers.io());
     }
 }

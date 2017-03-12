@@ -19,7 +19,9 @@ public class PopMovieContract {
 
         void stopRefreshing();
 
-        void stopLoadingMore();
+        void stopLoadMore();
+
+        void failLoadMore();
 
         void loadingMore();
     }

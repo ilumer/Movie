@@ -43,7 +43,7 @@ public class MovieOkhttp {
         this.mcontext = context;
     }
 
-    public static List<MovieInfo> getMovieData(int page){
+    public static List<MovieInfo> getMovieData(int page) throws IOException{
         String uri = Uri.parse(DBAPI.BASEPOPLULAR_URI).buildUpon()
                 .appendQueryParameter("api_key",DBAPI.API_KEY)
                 .appendQueryParameter("page",String.valueOf(page))
@@ -52,15 +52,12 @@ public class MovieOkhttp {
                 .url(uri)
                 .build();
         Response response = null;
-        try {
+        try{
             response = client.newCall(request).execute();
             if (!response.isSuccessful()){
                 throw new IOException("unexpected code"+response);
             }
             return gson.fromJson(response.body().string(),MovieData.class).getResults();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return Collections.emptyList();
         } finally {
             if (response != null)
                 response.close();

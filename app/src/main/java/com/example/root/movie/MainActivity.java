@@ -2,6 +2,7 @@ package com.example.root.movie;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
     @BindView(R.id.tabLayout)
     TabLayout tabLayout;
     @BindView(R.id.toolbar)
-    Toolbar mtoolbar;
+    Toolbar toolbar;
     @BindView(R.id.nvView)
     NavigationView nvView;
     @BindView(R.id.Drawer)
@@ -68,7 +69,10 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         ButterKnife.bind(this);
-        setSupportActionBar(mtoolbar);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            toolbar.setElevation(0);
+        }
+        setSupportActionBar(toolbar);
         setUpDrawerContent(nvView);
         drawerToggle = setUpDrawerToggle();
         drawerLayout.addDrawerListener(drawerToggle);
@@ -145,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
     }
 
     private ActionBarDrawerToggle setUpDrawerToggle(){
-        return new ActionBarDrawerToggle(this,drawerLayout,mtoolbar,
+        return new ActionBarDrawerToggle(this,drawerLayout, toolbar,
                 R.string.drawer_open,R.string.drawer_open);
     }
 

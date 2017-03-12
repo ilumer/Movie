@@ -16,7 +16,7 @@ import java.util.List;
  */
 
 public class MovieAdapter extends ProgressAdapter {
-    private static final int MOVIE_TYPE = 0x01;
+    private static final int MOVIE_TYPE = 1;
 
     private List<MovieInfo> moviesList;
 
@@ -52,6 +52,9 @@ public class MovieAdapter extends ProgressAdapter {
             case LOADING_TYPE:{
                 break;
             }
+            case LOADING_ERROR:{
+                break;
+            }
         }
     }
 
@@ -69,6 +72,7 @@ public class MovieAdapter extends ProgressAdapter {
 
     public int getSpanSize(int position){
         switch (getItemViewType(position)){
+            case LOADING_ERROR:
             case LOADING_TYPE:
                 return 2;
             default:

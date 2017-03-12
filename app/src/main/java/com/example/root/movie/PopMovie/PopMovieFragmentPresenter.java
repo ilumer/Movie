@@ -1,5 +1,7 @@
 package com.example.root.movie.PopMovie;
 
+import android.util.Log;
+
 import com.example.root.movie.model.MovieInfo;
 import com.example.root.movie.repositories.MoviesRepository;
 
@@ -7,9 +9,11 @@ import com.example.root.movie.repositories.MoviesRepository;
 import java.util.List;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -22,6 +26,7 @@ public class PopMovieFragmentPresenter implements PopMovieContract.Presenter {
     private PopMovieContract.View view;
     private MoviesRepository repository;
     private int page;
+    private boolean isLoadingMore = false;
 
 
     public PopMovieFragmentPresenter(PopMovieContract.View view, MoviesRepository repository) {
@@ -41,6 +46,8 @@ public class PopMovieFragmentPresenter implements PopMovieContract.Presenter {
         if (loadFirst){
             page = 1;
             subscription.add(loadMoviesFromNet(page)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Action1<List<MovieInfo>>() {
                         @Override
                         public void call(List<MovieInfo> movies) {
@@ -58,24 +65,38 @@ public class PopMovieFragmentPresenter implements PopMovieContract.Presenter {
                         }
                     }));
         }else {
-            view.loadingMore();
-            subscription.add(loadMoviesFromNet(++page)
-                    .subscribe(new Action1<List<MovieInfo>>() {
-                        @Override
-                        public void call(List<MovieInfo> movies) {
-                            view.displayMovies(movies);
-                        }
-                    }, new Action1<Throwable>() {
-                        @Override
-                        public void call(Throwable throwable) {
-                            view.stopLoadingMore();
-                        }
-                    }, new Action0() {
-                        @Override
-                        public void call() {
-                            view.stopLoadingMore();
-                        }
-                    }));
+            if (!isLoadingMore) {
+                subscription.add(loadMoviesFromNet(++page)
+                        .subscribeOn(Schedulers.io())
+                        .doOnSubscribe(new Action0() {
+                            @Override
+                            public void call() {
+                                isLoadingMore = true;
+                                view.loadingMore();
+                            }
+                        })
+                        .subscribeOn(AndroidSchedulers.mainThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<List<MovieInfo>>() {
+                            @Override
+                            public void onCompleted() {
+                                view.stopLoadMore();
+                                isLoadingMore = false;
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                view.failLoadMore();
+                                isLoadingMore = false;
+                            }
+
+                            @Override
+                            public void onNext(List<MovieInfo> movies) {
+                                view.displayMovies(movies);
+                            }
+
+                        }));
+            }
         }
     }
 
@@ -84,8 +105,7 @@ public class PopMovieFragmentPresenter implements PopMovieContract.Presenter {
      * @param page 需要获取的Movies的分页
      */
     private Observable<List<MovieInfo>> loadMoviesFromNet(int page){
-        return repository.getPopMoviesFromNet(page)
-                .observeOn(AndroidSchedulers.mainThread());
+        return repository.getPopMoviesFromNet(page);
     }
 
     @Override

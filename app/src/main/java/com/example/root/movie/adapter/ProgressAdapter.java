@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.example.root.movie.R;
 import com.example.root.movie.adapter.ViewHolder.BaseViewHolder;
+import com.example.root.movie.adapter.ViewHolder.LoadingErrorViewHolder;
 import com.example.root.movie.adapter.ViewHolder.ProgressBarViewHolder;
 
 /**
@@ -15,24 +16,30 @@ import com.example.root.movie.adapter.ViewHolder.ProgressBarViewHolder;
 
 abstract class ProgressAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
-    public static final int LOADING_TYPE = 0x00;
+    static final int LOADING_TYPE = -1;
+    static final int LOADING_ERROR = LOADING_TYPE -1;
     private boolean isLoading = false;
+    private boolean isError = false;
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         if (viewType == LOADING_TYPE){
             return createProgressBarViewHolder(context,parent);
-        } else {
+        } else if (viewType == LOADING_ERROR){
+            return createErrorViewHolder(context,parent);
+        } else{
             return onCreateExtViewHolder(context,parent);
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == getDataCount()){
+        if (position == getDataCount() && !isError){
             return LOADING_TYPE;
-        }else {
+        }else if (position == getDataCount() && isError){
+            return LOADING_ERROR;
+        } else {
             return getExtItemViewType(position);
         }
     }
@@ -44,8 +51,14 @@ abstract class ProgressAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     public void loadingEnd(){
-        notifyItemRemoved(getItemCount());
+        int position = getItemCount();
         isLoading = false;
+        notifyItemRemoved(position);
+    }
+
+    public void loadingError(){
+        isError = true;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -55,6 +68,10 @@ abstract class ProgressAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     protected BaseViewHolder createProgressBarViewHolder(Context context,ViewGroup parent){
         return new ProgressBarViewHolder(LayoutInflater.from(context).inflate(R.layout.viewholder_progressbar,parent,false));
+    }
+
+    private BaseViewHolder createErrorViewHolder(Context context,ViewGroup parent) {
+        return new LoadingErrorViewHolder(LayoutInflater.from(context).inflate(R.layout.viewholder_loaderror,parent,false));
     }
 
     abstract int getExtItemViewType(int position);

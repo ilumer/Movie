@@ -19,6 +19,7 @@
     <string name="movie_vote_per">%1$.0f %%</string>
     <string name="movie_vote_num">%1$d votes</string>
     <string name="movie_collect">收集</string>
+    <string name="fail_load_more">加载失败请点击重试</string>
 
 
     <!--login-->

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -85,6 +86,13 @@ public class PopMovieFragment extends Fragment
             }
         });
         presenter = new PopMovieFragmentPresenter(this,new PopMoviesRepository(getActivity().getApplicationContext()));
+        swipeRefresh.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefresh.setRefreshing(true);
+            }
+        });
+        onRefresh();
     }
 
     @Override
@@ -146,8 +154,13 @@ public class PopMovieFragment extends Fragment
     }
 
     @Override
-    public void stopLoadingMore() {
+    public void stopLoadMore() {
         movieAdapter.loadingEnd();
+    }
+
+    @Override
+    public void failLoadMore() {
+        movieAdapter.loadingError();
     }
 
     @Override
