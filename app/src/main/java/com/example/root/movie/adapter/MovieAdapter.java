@@ -49,9 +49,7 @@ public class MovieAdapter extends ProgressAdapter {
                 holder.bind(movie);
                 break;
             }
-            case LOADING_TYPE:{
-                break;
-            }
+            case LOADING_TYPE:
             case LOADING_ERROR:{
                 break;
             }

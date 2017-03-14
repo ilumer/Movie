@@ -45,25 +45,32 @@ abstract class ProgressAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     public void loadingMore(){
-        isLoading = true;
-        notifyItemInserted(getItemCount());
-        // size = index +1
+        if (!isError) {
+            isLoading = true;
+            //Position of the newly inserted item in the data set
+            notifyItemInserted(getDataCount());
+        }else {
+            isError = false;
+            isLoading = true;
+            notifyItemChanged(getDataCount());
+        }
     }
 
     public void loadingEnd(){
-        int position = getItemCount();
+        int position = getDataCount();
         isLoading = false;
         notifyItemRemoved(position);
     }
 
     public void loadingError(){
+       isLoading = false;
         isError = true;
-        notifyDataSetChanged();
+        notifyItemChanged(getDataCount());
     }
 
     @Override
     public int getItemCount() {
-        return getDataCount() + (isLoading ? 1: 0);
+        return getDataCount() + (isLoading ? 1: 0) + (isError ? 1: 0);
     }
 
     protected BaseViewHolder createProgressBarViewHolder(Context context,ViewGroup parent){

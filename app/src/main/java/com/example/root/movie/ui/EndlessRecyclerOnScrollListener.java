@@ -8,11 +8,11 @@ import android.util.Log;
 
 /**
  * Created by root on 10/17/16.
- *
+ * https://gist.github.com/nesquena/d09dc68ff07e845cc622
  */
 
 public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScrollListener {
-    private int visibleThreshold = 1;
+    private int visibleThreshold = 3;
 
     // The total number of items in the dataset after the last load
     private int previousTotalItemCount = 0;
@@ -76,15 +76,11 @@ public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScr
         // list is invalidated and should be reset back to initial state
         if (totalItemCount < previousTotalItemCount) {
             this.previousTotalItemCount = totalItemCount;
-            if (totalItemCount == 0) {
-                this.loading = true;
-            }
         }
         // If it’s still loading, we check to see if the dataset count has
         // changed, if so we conclude it has finished loading and update the current page
         // number and total item count.
-        if (loading && (totalItemCount >previousTotalItemCount)) {
-            loading = false;
+        if ((totalItemCount >previousTotalItemCount)) {
             previousTotalItemCount = totalItemCount;
         }
 
@@ -92,16 +88,14 @@ public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScr
         // the visibleThreshold and need to reload more data.
         // If we do need to reload some more data, we execute onLoadMore to fetch the data.
         // threshold should reflect how many total columns there are too
-        Log.e("last"+lastVisibleItemPosition,"total"+totalItemCount);
-        if (!loading && (lastVisibleItemPosition + visibleThreshold) >=totalItemCount) {
+        if ((lastVisibleItemPosition + visibleThreshold) >=totalItemCount) {
+            // must call many times
             onLoadMore();
-            loading = true;
         }
     }
 
     // Defines the process for actually loading more data based on page
     public abstract void onLoadMore();
-
 }
 
 
