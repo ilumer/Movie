@@ -21,6 +21,7 @@ import com.example.root.movie.adapter.MovieAdapter;
 import com.example.root.movie.model.MovieInfo;
 import com.example.root.movie.repositories.impl.PopMoviesRepository;
 import com.example.root.movie.ui.EndlessRecyclerOnScrollListener;
+import com.example.root.movie.util.Injection;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,7 +77,7 @@ public class PopMovieFragment extends Fragment
         movieList.addOnScrollListener(new EndlessRecyclerOnScrollListener(gridLayoutManager) {
             @Override
             public void onLoadMore() {
-                presenter.loadMoreFromNet(false);
+                presenter.loadMoreMovies();
             }
         });
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -85,7 +86,7 @@ public class PopMovieFragment extends Fragment
                 return movieAdapter.getSpanSize(position);
             }
         });
-        presenter = new PopMovieFragmentPresenter(this,new PopMoviesRepository(getActivity().getApplicationContext()));
+        presenter = new PopMovieFragmentPresenter(this,new PopMoviesRepository(getActivity().getApplicationContext()), Injection.provideSchedulerProvider());
         swipeRefresh.post(new Runnable() {
             @Override
             public void run() {
@@ -140,7 +141,7 @@ public class PopMovieFragment extends Fragment
 
     @Override
     public void onRefresh() {
-        presenter.loadMoreFromNet(true);
+        presenter.refreshMovies();
     }
 
     @Override

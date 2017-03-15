@@ -52,6 +52,6 @@ public class PopMoviesRepository implements MoviesRepository {
                             return Observable.error(e);
                         }
                     }
-                }).subscribeOn(Schedulers.io());
+                });
     }
 }

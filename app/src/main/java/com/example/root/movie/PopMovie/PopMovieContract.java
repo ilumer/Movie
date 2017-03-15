@@ -27,7 +27,10 @@ public class PopMovieContract {
     }
 
     interface Presenter extends BasePresenter{
-        void loadMoreFromNet(boolean loadFirst);
+
+        void refreshMovies();
+
+        void loadMoreMovies();
 
         void loadFromDb();
     }
