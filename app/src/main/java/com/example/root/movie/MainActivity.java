@@ -20,7 +20,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.example.root.movie.PopMovie.PopMovieFragment;
+import com.example.root.movie.popmovie.PopMovieFragment;
 import com.example.root.movie.fragment.RatedDetailFragment;
 import com.example.root.movie.handler.UserInfoHandler;
 import com.example.root.movie.data.source.local.MovieHelper;
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
     @Override
     public void selectdMovie(MovieInfo m) {
         if (mode==Mode.single){
-            Intent i = new Intent(this,DetialActivity.class);
+            Intent i = new Intent(this,DetailActivity.class);
             //i.putExtra(RatedDetailFragment.EXTRA_ID,m);
             startActivity(i);
         }else if (mode==Mode.multiple){

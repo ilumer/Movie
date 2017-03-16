@@ -22,9 +22,9 @@ import butterknife.ButterKnife;
 
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerViewHolder>{
 
-    List<Trailers.ResultsBean> mList;
+    List<Trailers.Trailer> mList;
     Context mcontext;
-    public TrailerAdapter(List<Trailers.ResultsBean> List,Context context) {
+    public TrailerAdapter(List<Trailers.Trailer> List, Context context) {
         this.mcontext = context;
         mList = List;
     }
@@ -39,7 +39,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
     @Override
     public void onBindViewHolder(TrailerViewHolder holder, int position) {
-        final Trailers.ResultsBean m = mList.get(position);
+        final Trailers.Trailer m = mList.get(position);
         Glide.with(mcontext)
                 .load(YoutubeHelper.getImgUri(m.getKey()))
                 .into(holder.imageView);

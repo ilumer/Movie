@@ -42,7 +42,7 @@ public class RatedDetailFragment extends BaseFragment
     Toolbar toolbar;
     @BindView(R.id.release_date)
     TextView mdate;
-    @BindView(R.id.title)
+    @BindView(R.id.movie_title)
     TextView mtitle;
     @BindView(R.id.vote_average)
     TextView mvote;
@@ -70,7 +70,7 @@ public class RatedDetailFragment extends BaseFragment
 
     @Override
     protected int getLayoutId() {
-        return R.layout.detial_fragment;
+        return R.layout.fragment_detail;
     }
 
     @Override
@@ -105,13 +105,13 @@ public class RatedDetailFragment extends BaseFragment
 
     public void updateUI(DetailMovie movie){
         Glide.with(this)
-                .load(IMDBHelper.getImageBsUri(getActivity(),movie.getPoster_path()))
+                .load(IMDBHelper.getImageBsUri(getActivity(),movie.getPosterPath()))
                 .centerCrop()
                 .into(imageView);
         mtitle.setText(movie.getTitle());
         moverview.setText(movie.getOverview());
-        mdate.setText(String.format(dateformat,movie.getRelease_date()));
-        mvote.setText(String.format(voteformat,movie.getVote_average()));
+        mdate.setText(String.format(dateformat,movie.getReleaseDate()));
+        mvote.setText(String.format(voteformat,movie.getVoteAverage()));
         MovieOkhttp.getReviews(handler, movieId);
         MovieOkhttp.getTrailers(handler, movieId);
     }

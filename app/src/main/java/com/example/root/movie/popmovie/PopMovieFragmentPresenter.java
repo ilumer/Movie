@@ -1,20 +1,15 @@
-package com.example.root.movie.PopMovie;
-
-import android.util.Log;
+package com.example.root.movie.popmovie;
 
 import com.example.root.movie.model.MovieInfo;
-import com.example.root.movie.repositories.MoviesRepository;
+import com.example.root.movie.repositories.MovieRepository;
 import com.example.root.movie.util.schedulers.BaseSchedulerProvider;
 
 
 import java.util.List;
 
 import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -25,13 +20,13 @@ public class PopMovieFragmentPresenter implements PopMovieContract.Presenter {
 
     private CompositeSubscription subscription;
     private PopMovieContract.View view;
-    private MoviesRepository repository;
+    private MovieRepository repository;
     private BaseSchedulerProvider schedulerProvider;
     private int page;
     private boolean isLoadingMore = false;
 
 
-    public PopMovieFragmentPresenter(PopMovieContract.View view, MoviesRepository repository,BaseSchedulerProvider schedulerProvider) {
+    public PopMovieFragmentPresenter(PopMovieContract.View view, MovieRepository repository, BaseSchedulerProvider schedulerProvider) {
         this.view = view;
         this.repository = repository;
         this.schedulerProvider = schedulerProvider;
@@ -68,6 +63,7 @@ public class PopMovieFragmentPresenter implements PopMovieContract.Presenter {
                     @Override
                     public void call(Throwable throwable) {
                         view.stopRefreshing();
+                        view.displayNoMovies();
                     }
                 }, new Action0() {
                     @Override

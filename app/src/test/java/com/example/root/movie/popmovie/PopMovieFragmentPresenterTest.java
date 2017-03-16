@@ -1,7 +1,7 @@
-package com.example.root.movie.PopMovie;
+package com.example.root.movie.popmovie;
 
 import com.example.root.movie.model.MovieInfo;
-import com.example.root.movie.repositories.MoviesRepository;
+import com.example.root.movie.repositories.MovieRepository;
 import com.example.root.movie.util.schedulers.BaseSchedulerProvider;
 import com.example.root.movie.util.schedulers.ImmediateSchedulerProvider;
 
@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 
+import java.io.IOException;
 import java.util.List;
 
 import rx.Observable;
@@ -25,7 +26,7 @@ import rx.Observable;
 public class PopMovieFragmentPresenterTest {
 
     @Mock
-    MoviesRepository repository;
+    MovieRepository repository;
     @Mock
     PopMovieContract.View view;
     @Mock
@@ -59,4 +60,15 @@ public class PopMovieFragmentPresenterTest {
 
         Mockito.verify(view).displayMovies(movies);
     }
+
+    @Test
+    public void getPopMoviesFromNetError() {
+        Mockito.when(repository.getPopMoviesFromNet(1))
+                .thenReturn(Observable.<List<MovieInfo>>error(new IOException()));
+
+        presenter.refreshMovies();
+
+        Mockito.verify(view).displayNoMovies();
+    }
+
 }

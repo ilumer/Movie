@@ -7,7 +7,7 @@ import com.example.root.movie.net.MovieOkhttp;
 
 import java.util.List;
 
-public class TrailerAsyncloader extends AsyncTaskLoader<List<Trailers.ResultsBean>> {
+public class TrailerAsyncloader extends AsyncTaskLoader<List<Trailers.Trailer>> {
     int id;
     public TrailerAsyncloader(Context context, int id) {
         super(context);
@@ -15,7 +15,7 @@ public class TrailerAsyncloader extends AsyncTaskLoader<List<Trailers.ResultsBea
     }
 
     @Override
-    public List<Trailers.ResultsBean> loadInBackground() {
+    public List<Trailers.Trailer> loadInBackground() {
         return MovieOkhttp.getTrailers(id);
     }
 }

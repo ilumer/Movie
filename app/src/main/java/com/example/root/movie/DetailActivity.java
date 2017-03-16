@@ -2,16 +2,16 @@ package com.example.root.movie;
 
 import android.support.v4.app.Fragment;
 
-import com.example.root.movie.PopMovie.PopMovieFragment;
+import com.example.root.movie.detialmovie.DetailMovieFragment;
+import com.example.root.movie.popmovie.PopMovieFragment;
 import com.example.root.movie.fragment.RatedDetailFragment;
-import com.example.root.movie.model.MovieData;
 import com.example.root.movie.model.MovieInfo;
 
-public class DetialActivity extends ToolbarActivity {
+public class DetailActivity extends ToolbarActivity {
     @Override
     protected Fragment createNewFragment() {
-        MovieInfo m = getIntent().getParcelableExtra(RatedDetailFragment.EXTRA_ID);
-        return new PopMovieFragment();
+        int movieId = getIntent().getIntExtra(DetailMovieFragment.EXTRA_MOVIE_ID,-1);
+        return DetailMovieFragment.newInstance(movieId);
     }
 
     @Override

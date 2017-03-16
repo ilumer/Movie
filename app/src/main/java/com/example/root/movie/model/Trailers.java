@@ -13,13 +13,13 @@ public class Trailers {
      */
 
     private int id;
-    private List<ResultsBean> results;
+    private List<Trailer> results;
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public void setResults(List<ResultsBean> results) {
+    public void setResults(List<Trailer> results) {
         this.results = results;
     }
 
@@ -27,11 +27,11 @@ public class Trailers {
         return id;
     }
 
-    public List<ResultsBean> getResults() {
+    public List<Trailer> getResults() {
         return results;
     }
 
-    public static class ResultsBean {
+    public class Trailer {
         /**
          * id : 533ec654c3a36854480003eb
          * iso_639_1 : en

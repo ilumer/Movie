@@ -7,6 +7,8 @@ import android.support.v4.content.AsyncTaskLoader;
 import com.example.root.movie.model.DetailMovie;
 import com.example.root.movie.net.MovieOkhttp;
 
+import java.io.IOException;
+
 /**
  * Created by root on 8/4/16.
  *
@@ -21,6 +23,11 @@ public class MovieDataloader extends AsyncTaskLoader<DetailMovie> {
 
     @Override
     public DetailMovie loadInBackground() {
-        return MovieOkhttp.getDetialMovieInfo(id);
+        try {
+            return MovieOkhttp.getDetialMovieInfo(id);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

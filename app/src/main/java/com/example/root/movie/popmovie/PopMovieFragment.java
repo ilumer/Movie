@@ -1,4 +1,4 @@
-package com.example.root.movie.PopMovie;
+package com.example.root.movie.popmovie;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,7 +18,7 @@ import com.example.root.movie.R;
 import com.example.root.movie.activity.LoginActivity;
 import com.example.root.movie.adapter.MovieAdapter;
 import com.example.root.movie.model.MovieInfo;
-import com.example.root.movie.repositories.impl.PopMoviesRepository;
+import com.example.root.movie.repositories.impl.MovieRepositoryImpl;
 import com.example.root.movie.ui.EndlessRecyclerOnScrollListener;
 import com.example.root.movie.util.Injection;
 
@@ -86,7 +85,7 @@ public class PopMovieFragment extends Fragment
                 return movieAdapter.getSpanSize(position);
             }
         });
-        presenter = new PopMovieFragmentPresenter(this,new PopMoviesRepository(getActivity().getApplicationContext()), Injection.provideSchedulerProvider());
+        presenter = new PopMovieFragmentPresenter(this,new MovieRepositoryImpl(getActivity().getApplicationContext()), Injection.provideSchedulerProvider());
         swipeRefresh.post(new Runnable() {
             @Override
             public void run() {

@@ -20,7 +20,6 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 import okhttp3.Call;
@@ -74,24 +73,20 @@ public class MovieOkhttp {
         return Results;
     }
 
-    public static DetailMovie getDetialMovieInfo(int id){
+    public static DetailMovie getDetialMovieInfo(int id) throws IOException{
         HttpUrl url = HttpUrl.parse(DBAPI.BASEMOVIEINFO_URI+id)
                 .newBuilder()
                 .addQueryParameter("api_key",DBAPI.API_KEY)
                 .build();
         String response = null;
-        try{
-            response = getContent(url);
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
+        response = getContent(url);
         return gson.fromJson(response,DetailMovie.class);
     }
 
-    public static List<Trailers.ResultsBean> getTrailers(int id){
+    public static List<Trailers.Trailer> getTrailers(int id){
         String uri = DBAPI.BASEMOVIEINFO_URI+id+DBAPI.BASEVIDEO_TYPE+"?api_key="+DBAPI.API_KEY;
         Request request = new Request.Builder().url(uri).build();
-        List<Trailers.ResultsBean> trailers = null;
+        List<Trailers.Trailer> trailers = null;
         Response response ;
         try{
             response = client.newCall(request).execute();

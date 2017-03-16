@@ -1,4 +1,4 @@
-package com.example.root.movie.PopMovie;
+package com.example.root.movie.popmovie;
 
 import com.example.root.movie.BasePresenter;
 import com.example.root.movie.model.MovieInfo;
