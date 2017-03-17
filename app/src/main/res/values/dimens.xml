@@ -1,22 +1,7 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="fragment_MovieTitleContainer_height">128dp</dimen>
-    <dimen name="movie_textHorMargin">8dp</dimen>
-    <dimen name="movie_textVerMargin">4dp</dimen>
-    <dimen name="movie_vote_size">16sp</dimen>
-    <dimen name="movie_textSize">32sp</dimen>
-    <dimen name="movie_card_width">192dp</dimen>
-    <dimen name="movie_card_minHeight">150dp</dimen>
-    <dimen name="movie_card_imageSize">210dp</dimen>
-    <dimen name="movie_detailTitleSize">32sp</dimen>
-    <dimen name="movie_titleSize">64sp</dimen>
-    <dimen name="favourite_movieTitle">16dp</dimen>
     <!--item_view-->
-    <dimen name="card_imageView_height">190dp</dimen>
-    <dimen name="card_layout_margin">4dp</dimen>
 
     <!--status_bar_height-->
-    <dimen name="status_bar_height">25dp</dimen>
 </resources>

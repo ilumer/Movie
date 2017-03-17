@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.root.movie.model.DetailMovie;
 import com.example.root.movie.model.MovieInfo;
+import com.example.root.movie.model.Trailers;
 import com.example.root.movie.net.MovieOkhttp;
 import com.example.root.movie.repositories.MovieRepository;
 
@@ -60,6 +61,21 @@ public class MovieRepositoryImpl implements MovieRepository {
                             DetailMovie movie = MovieOkhttp.getDetialMovieInfo(id);
                             return Observable.just(movie);
                         }catch (IOException e){
+                            return Observable.just(null);
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public Observable<List<Trailers.Trailer>> getMovieTrailers(String imdbId) {
+        return Observable.just(imdbId)
+                .flatMap(new Func1<String, Observable<List<Trailers.Trailer>>>() {
+                    @Override
+                    public Observable<List<Trailers.Trailer>> call(String id) {
+                        try {
+                            return Observable.just(MovieOkhttp.getTrailers(id));
+                        } catch (IOException e) {
                             return Observable.error(e);
                         }
                     }

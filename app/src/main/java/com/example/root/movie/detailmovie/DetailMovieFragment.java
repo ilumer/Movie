@@ -1,9 +1,11 @@
-package com.example.root.movie.detialmovie;
+package com.example.root.movie.detailmovie;
 
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +15,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.root.movie.R;
+import com.example.root.movie.adapter.VideoAdapter;
 import com.example.root.movie.helper.IMDBHelper;
 import com.example.root.movie.model.Trailers;
 import com.example.root.movie.repositories.MovieRepository;
 import com.example.root.movie.repositories.impl.MovieRepositoryImpl;
 import com.example.root.movie.util.Injection;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -40,9 +44,14 @@ public class DetailMovieFragment extends Fragment implements DetailMovieContract
     @BindView(R.id.movie_screen)
     ImageView movie;
     @BindView(R.id.release_date)
-    TextView date;
+    TextView releaseDate;
     @BindView(R.id.movie_title)
-    TextView title;
+    TextView movieTitle;
+    @BindView(R.id.movie_trailer)
+    RecyclerView videos;
+    LinearLayoutManager manager;
+    VideoAdapter videoAdapter;
+    List<Trailers.Trailer> trailers = new ArrayList<>();
 
     @Nullable
     @Override
@@ -57,6 +66,11 @@ public class DetailMovieFragment extends Fragment implements DetailMovieContract
         if (Build.VERSION.SDK_INT >=21) {
             toolbar.setElevation(0);
         }
+        manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+        videoAdapter = new VideoAdapter(trailers);
+        videos.setAdapter(videoAdapter);
+        videos.setLayoutManager(manager);
+        videos.setNestedScrollingEnabled(false);
         MovieRepository repository = new MovieRepositoryImpl(getActivity().getApplicationContext());
         presenter = new DetailMovieFragmentPresenter(
                 this,
@@ -96,16 +110,27 @@ public class DetailMovieFragment extends Fragment implements DetailMovieContract
 
     @Override
     public void showTitle(String str) {
-        title.setText(str);
+        movieTitle.setText(str);
     }
 
     @Override
     public void showDate(String date) {
-        title.setText(date);
+        releaseDate.setText(date);
     }
 
     @Override
     public void showTrailer(List<Trailers.Trailer> trailerList) {
+        trailers.addAll(trailerList);
+        videoAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void failLoad() {
+
+    }
+
+    @Override
+    public void failLoadTrailers() {
 
     }
 }

@@ -1,4 +1,4 @@
-package com.example.root.movie.ui;
+package com.example.root.movie.util.ui;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;

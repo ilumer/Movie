@@ -4,6 +4,7 @@ import com.example.root.movie.data.source.local.MovieContract;
 import com.example.root.movie.model.DetailMovie;
 import com.example.root.movie.model.MovieData;
 import com.example.root.movie.model.MovieInfo;
+import com.example.root.movie.model.Trailers;
 
 import java.util.List;
 
@@ -20,5 +21,7 @@ public interface MovieRepository {
     Observable<List<MovieInfo>> getPopMoviesFromNet(int page);
 
     Observable<DetailMovie> getDetailMovie(int id);
+
+    Observable<List<Trailers.Trailer>> getMovieTrailers(String imdbId);
 
 }

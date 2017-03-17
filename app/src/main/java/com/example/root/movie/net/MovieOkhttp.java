@@ -7,7 +7,6 @@ import android.util.Log;
 import com.example.root.movie.api.model.RatedResults;
 import com.example.root.movie.api.model.UserInfoCache;
 import com.example.root.movie.constant.MovieConstant;
-import com.example.root.movie.handler.CommonHandler;
 import com.example.root.movie.helper.IMDBHelper;
 import com.example.root.movie.model.DetailMovie;
 import com.example.root.movie.model.MovieData;
@@ -83,21 +82,11 @@ public class MovieOkhttp {
         return gson.fromJson(response,DetailMovie.class);
     }
 
-    public static List<Trailers.Trailer> getTrailers(int id){
-        String uri = DBAPI.BASEMOVIEINFO_URI+id+DBAPI.BASEVIDEO_TYPE+"?api_key="+DBAPI.API_KEY;
+    public static List<Trailers.Trailer> getTrailers(String imdbId) throws IOException{
+        String uri = DBAPI.BASEMOVIEINFO_URI+imdbId+DBAPI.BASEVIDEO_TYPE+"?api_key="+DBAPI.API_KEY;
         Request request = new Request.Builder().url(uri).build();
-        List<Trailers.Trailer> trailers = null;
-        Response response ;
-        try{
-            response = client.newCall(request).execute();
-            if (!response.isSuccessful()){
-                Log.e(TAG,"unexpected code"+response);
-            }
-            trailers = gson.fromJson(response.body().string(),Trailers.class).getResults();
-        }catch (Exception e){
-            Log.e(TAG,e.getMessage());
-        }
-        return trailers;
+        Response response = client.newCall(request).execute();
+        return gson.fromJson(response.body().string(),Trailers.class).getResults();
     }
 
     public static ReviewsModel getReciew(int id){
@@ -207,52 +196,5 @@ public class MovieOkhttp {
             Log.e(TAG,e.toString());
         }
         return response.body().string();
-    }
-
-    public static void getReviews(final CommonHandler handler, int id){
-        HttpUrl url = HttpUrl.parse(DBAPI.BASEMOVIEINFO_URI+id+DBAPI.BASEREVIEWS_TYPE)
-                .newBuilder()
-                .addQueryParameter("api_key",DBAPI.API_KEY)
-                .build();
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                ReviewsModel model;
-                model = gson.fromJson(response.body().string(),ReviewsModel.class);
-                handler.obtainMessage(MovieConstant.REVIEWINFOMESSAGE,model).sendToTarget();
-            }
-        });
-
-    }
-
-    public static void getTrailers(final CommonHandler handler,int id){
-        HttpUrl url = HttpUrl.parse(DBAPI.BASEMOVIEINFO_URI+id+DBAPI.BASEVIDEO_TYPE)
-                .newBuilder()
-                .addQueryParameter("api_key",DBAPI.API_KEY)
-                .build();
-        final Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Trailers trailers = gson.fromJson(response.body().string(),Trailers.class);
-                handler.obtainMessage(MovieConstant.TRAILERSMESSAGE,trailers).sendToTarget();
-            }
-        });
     }
 }

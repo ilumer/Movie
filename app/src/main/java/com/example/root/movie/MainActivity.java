@@ -21,7 +21,6 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.root.movie.popmovie.PopMovieFragment;
-import com.example.root.movie.fragment.RatedDetailFragment;
 import com.example.root.movie.handler.UserInfoHandler;
 import com.example.root.movie.data.source.local.MovieHelper;
 import com.example.root.movie.model.FragmentCallback;
@@ -190,18 +189,9 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
     public void selectdMovie(MovieInfo m) {
         if (mode==Mode.single){
             Intent i = new Intent(this,DetailActivity.class);
-            //i.putExtra(RatedDetailFragment.EXTRA_ID,m);
             startActivity(i);
         }else if (mode==Mode.multiple){
-            FragmentManager manager = getSupportFragmentManager();
-            RatedDetailFragment fragment = (RatedDetailFragment) manager.findFragmentById(R.id.fragment_container);
-            if (fragment!=null){
-                manager.beginTransaction()
-                        .remove(fragment).commit();
-            }
-            manager.beginTransaction()
-                    .add(R.id.fragment_container,RatedDetailFragment.getInstance(m.getId()))
-                    .commit();
+
         }
     }
 

@@ -19,7 +19,7 @@ import com.example.root.movie.activity.LoginActivity;
 import com.example.root.movie.adapter.MovieAdapter;
 import com.example.root.movie.model.MovieInfo;
 import com.example.root.movie.repositories.impl.MovieRepositoryImpl;
-import com.example.root.movie.ui.EndlessRecyclerOnScrollListener;
+import com.example.root.movie.util.ui.EndlessRecyclerOnScrollListener;
 import com.example.root.movie.util.Injection;
 
 import java.util.ArrayList;

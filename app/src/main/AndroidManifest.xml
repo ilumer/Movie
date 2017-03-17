@@ -36,7 +36,7 @@
             android:noHistory="true" />
         <activity android:name=".activity.LoginActivity"
             android:theme="@style/LoginTheme"/>
-        <activity android:name=".activity.RatedActivity" />
+
     </application>
 
 </manifest>

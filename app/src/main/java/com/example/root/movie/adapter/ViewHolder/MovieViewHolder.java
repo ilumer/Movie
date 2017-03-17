@@ -8,8 +8,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.root.movie.DetailActivity;
 import com.example.root.movie.R;
-import com.example.root.movie.detialmovie.DetailMovieFragment;
-import com.example.root.movie.fragment.RatedDetailFragment;
+import com.example.root.movie.detailmovie.DetailMovieFragment;
 import com.example.root.movie.helper.IMDBHelper;
 import com.example.root.movie.model.MovieInfo;
 

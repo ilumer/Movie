@@ -4,18 +4,9 @@
     <string name="movie_favourite">favourite movie</string>
     <string name="movie_popular">popular_movie</string>
     <string name="trailers">Trailers</string>
-    <string name="trailers_video">play_video</string>
-    <string name="my_favourite_movies">MARK AS \n FAVORITE</string>
-    <string name="remove_favourite_movie">REMOVE \n FAVORITE</string>
-    <string name="movie_review">REVIEW</string>
     <string name="movie_overview">OVERVIEW</string>
     <string name="review_account">account_image</string>
     <string name="toast_notInternet">Check the network</string>
-    <string name="sort_point">refresh</string>
-    <string name="movie_image">image</string>
-    <string name="movie_release_date">Release Date:%1$s</string>
-    <string name="movie_runtime_unit">%1$d min</string>
-    <string name="movie_vote_helper">%1$.1f /10</string>
     <string name="movie_vote_per">%1$.0f %%</string>
     <string name="movie_vote_num">%1$d votes</string>
     <string name="movie_collect">收集</string>
@@ -35,16 +26,10 @@
     <string name="account_favMovie">喜欢的电影</string>
     <string name="account_favTv">喜欢的电视剧</string>
     <string name="account_account_TMDB">你的TMDB</string>
-    <string name="account_notification">通知</string>
     <string name="account_history">记录</string>
-    <string name="account_ratedMovie">推荐的电影</string>
-    <string name="account_ratedTv">推荐的电视剧</string>
     <string name="account_rated">推荐</string>
     
     <!--电影相关-->
     <string name="Release_Date">Release_Date</string>
-    <string name="Run_time">Run Time</string>
-    <string name="Director">Director</string>
-    <string name="Language">Language</string>
 
 </resources>

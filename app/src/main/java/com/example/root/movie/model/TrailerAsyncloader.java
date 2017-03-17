@@ -5,6 +5,7 @@ import android.support.v4.content.AsyncTaskLoader;
 
 import com.example.root.movie.net.MovieOkhttp;
 
+import java.io.IOException;
 import java.util.List;
 
 public class TrailerAsyncloader extends AsyncTaskLoader<List<Trailers.Trailer>> {
@@ -16,6 +17,11 @@ public class TrailerAsyncloader extends AsyncTaskLoader<List<Trailers.Trailer>> 
 
     @Override
     public List<Trailers.Trailer> loadInBackground() {
-        return MovieOkhttp.getTrailers(id);
+        try {
+            return MovieOkhttp.getTrailers(id+"");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

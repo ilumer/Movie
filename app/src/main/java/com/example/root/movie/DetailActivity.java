@@ -2,10 +2,7 @@ package com.example.root.movie;
 
 import android.support.v4.app.Fragment;
 
-import com.example.root.movie.detialmovie.DetailMovieFragment;
-import com.example.root.movie.popmovie.PopMovieFragment;
-import com.example.root.movie.fragment.RatedDetailFragment;
-import com.example.root.movie.model.MovieInfo;
+import com.example.root.movie.detailmovie.DetailMovieFragment;
 
 public class DetailActivity extends ToolbarActivity {
     @Override

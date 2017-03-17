@@ -100,26 +100,9 @@
                     android:layout_height="wrap_content" />
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/trailer"
+                    android:id="@+id/movie_trailer"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/review_container"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/trailer_container">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/movie_review"/>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/review"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="150dp"/>
             </LinearLayout>
         </RelativeLayout>
 
