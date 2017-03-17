@@ -29,13 +29,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity
-            android:name=".BrowserActivity"
-            android:theme="@style/LoginTheme"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:noHistory="true" />
-        <activity android:name=".activity.LoginActivity"
-            android:theme="@style/LoginTheme"/>
 
     </application>
 

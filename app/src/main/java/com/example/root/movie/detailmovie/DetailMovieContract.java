@@ -23,6 +23,8 @@ public class DetailMovieContract {
 
         void showTrailer(List<Trailers.Trailer> trailerList);
 
+        void showOverView(String overView);
+
         void failLoad();
 
         void failLoadTrailers();

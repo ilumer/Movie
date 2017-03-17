@@ -3,6 +3,7 @@ package com.example.root.movie.detailmovie;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,8 +26,12 @@ import com.example.root.movie.util.Injection;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindColor;
+import butterknife.BindDrawable;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -41,14 +46,25 @@ public class DetailMovieFragment extends Fragment implements DetailMovieContract
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.movie_screen)
+    @BindView(R.id.background_picture)
     ImageView movie;
     @BindView(R.id.release_date)
     TextView releaseDate;
     @BindView(R.id.movie_title)
     TextView movieTitle;
+    @BindView(R.id.movie_overview)
+    TextView movieOverView;
     @BindView(R.id.movie_trailer)
     RecyclerView videos;
+    @BindView(R.id.favorite)
+    FloatingActionButton favorite;
+    @BindString(R.string.movie_user_score)
+    String movieScore;
+    @BindString(R.string.movie_release_date)
+    String movieReleaseDate;
+    @BindString(R.string.app_name)
+    String appName;
+
     LinearLayoutManager manager;
     VideoAdapter videoAdapter;
     List<Trailers.Trailer> trailers = new ArrayList<>();
@@ -66,6 +82,7 @@ public class DetailMovieFragment extends Fragment implements DetailMovieContract
         if (Build.VERSION.SDK_INT >=21) {
             toolbar.setElevation(0);
         }
+        toolbar.setTitle(appName);
         manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
         videoAdapter = new VideoAdapter(trailers);
         videos.setAdapter(videoAdapter);
@@ -115,7 +132,7 @@ public class DetailMovieFragment extends Fragment implements DetailMovieContract
 
     @Override
     public void showDate(String date) {
-        releaseDate.setText(date);
+        releaseDate.setText(String.format(movieReleaseDate,date));
     }
 
     @Override
@@ -132,5 +149,15 @@ public class DetailMovieFragment extends Fragment implements DetailMovieContract
     @Override
     public void failLoadTrailers() {
 
+    }
+
+    @Override
+    public void showOverView(String overView) {
+        movieOverView.setText(overView);
+    }
+
+    @OnClick(R.id.favorite)
+    void submit(){
+        favorite.setImageResource(R.drawable.ic_favorite_border);
     }
 }

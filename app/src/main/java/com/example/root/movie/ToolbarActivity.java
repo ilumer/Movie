@@ -12,19 +12,12 @@ import butterknife.ButterKnife;
 
 public abstract class ToolbarActivity extends AppCompatActivity {
 
-    @Nullable
-    @BindView(R.id.toolbar)
-    Toolbar mtoolbar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getLayoutId());
+        setContentView(R.layout.activity_without_toolbar);
         ButterKnife.bind(this);
-        if (IsToolbar(getLayoutId())) {
-            setSupportActionBar(mtoolbar);
-        }
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
         if (fragment==null) {
@@ -41,14 +34,7 @@ public abstract class ToolbarActivity extends AppCompatActivity {
     protected abstract int getLayoutId();
 
     protected boolean IsToolbar(int id){
-     switch (id){
-         case R.layout.activity_with_toolbar:
-             return true;
-         case R.layout.activity_without_toolbar:
-             return false;
-         default:
-             return false;
-     }
+        return true;
     }
 
 }

@@ -64,10 +64,13 @@ public class DetailMovieFragmentPresenterTest {
         Mockito.when(repository.getDetailMovie(detailId))
                 .thenReturn(Observable.<DetailMovie>just(null));
         // 泛型需要确定类型参数
+        List<Trailers.Trailer> list = new ArrayList<>();
 
         presenter.loadDetailMovie(detailId);
 
         Mockito.verify(view).failLoad();
+        Mockito.verify(view,Mockito.never()).failLoadTrailers();
+        Mockito.verify(view,Mockito.never()).showTrailer(list);
     }
 
     @Test

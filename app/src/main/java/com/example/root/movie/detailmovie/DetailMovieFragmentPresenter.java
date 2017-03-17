@@ -74,6 +74,7 @@ public class DetailMovieFragmentPresenter implements DetailMovieContract.Present
                         view.showDate(detailMovie.getReleaseDate());
                         view.showMovie(detailMovie.getBackdropPath());
                         view.showTitle(detailMovie.getTitle());
+                        view.showOverView(detailMovie.getOverview());
                     }
                 });
 

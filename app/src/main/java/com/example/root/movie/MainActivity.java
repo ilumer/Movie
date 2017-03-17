@@ -21,7 +21,6 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.root.movie.popmovie.PopMovieFragment;
-import com.example.root.movie.handler.UserInfoHandler;
 import com.example.root.movie.data.source.local.MovieHelper;
 import com.example.root.movie.model.FragmentCallback;
 import com.example.root.movie.model.MovieInfo;
@@ -55,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
     String drawer_close;
     TextView mHeadname;
     private ActionBarDrawerToggle drawerToggle;
-    private final UserInfoHandler handler = new UserInfoHandler(this);
     ViewPageAdapter adapter;
     Mode mode = Mode.single;
     enum Mode{
@@ -186,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
     }
 
     @Override
-    public void selectdMovie(MovieInfo m) {
+    public void selectMovie(MovieInfo m) {
         if (mode==Mode.single){
             Intent i = new Intent(this,DetailActivity.class);
             startActivity(i);

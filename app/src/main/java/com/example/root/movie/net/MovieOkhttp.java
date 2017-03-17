@@ -4,14 +4,9 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
-import com.example.root.movie.api.model.RatedResults;
-import com.example.root.movie.api.model.UserInfoCache;
-import com.example.root.movie.constant.MovieConstant;
-import com.example.root.movie.helper.IMDBHelper;
 import com.example.root.movie.model.DetailMovie;
 import com.example.root.movie.model.MovieData;
 import com.example.root.movie.model.MovieInfo;
-import com.example.root.movie.model.ReviewsModel;
 import com.example.root.movie.model.Trailers;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
@@ -21,8 +16,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -89,23 +82,6 @@ public class MovieOkhttp {
         return gson.fromJson(response.body().string(),Trailers.class).getResults();
     }
 
-    public static ReviewsModel getReciew(int id){
-        String uri = DBAPI.BASEMOVIEINFO_URI+id+DBAPI.BASEREVIEWS_TYPE+"?api_key="+DBAPI.API_KEY;
-        Request request = new Request.Builder().url(uri).build();
-        ReviewsModel reviews = null;
-        Response response ;
-        try{
-            response = client.newCall(request).execute();
-            if (!response.isSuccessful()){
-                Log.e(TAG,"unexpected code"+response);
-            }
-            reviews = gson.fromJson(response.body().string(),ReviewsModel.class);
-        }catch (Exception e){
-            Log.e(TAG,e.getMessage());
-        }
-        return reviews;
-    }
-
     public static String getToken(){
         String uri = DBAPI.NEW_TOKEN+"?api_key="+DBAPI.API_KEY;
         Request request = new Request.Builder().url(uri).build();
@@ -140,42 +116,6 @@ public class MovieOkhttp {
             Log.e(TAG,e.getMessage());
         }
         return sessionId;
-    }
-
-    public static UserInfoCache getAccountInfo(String SessionId){
-        HttpUrl url = HttpUrl.parse(DBAPI.ACCOUNT_INFO).
-                newBuilder().
-                addQueryParameter("api_key",DBAPI.API_KEY).
-                addQueryParameter("session_id",SessionId).
-                build();
-        String content = null;
-        UserInfoCache mUserInfo = null;
-        try{
-            content = getContent(url);
-            mUserInfo = gson.fromJson(content,UserInfoCache.class);
-        }catch (IOException ex){
-            ex.printStackTrace();
-        }
-        return mUserInfo;
-    }
-
-    public static RatedResults getRated(String SessionID,String type,String id){
-        HttpUrl url = HttpUrl.parse(
-                IMDBHelper.getAccountBsUri(id,DBAPI.EVALUATION_RATED,type))
-                .newBuilder()
-                .addQueryParameter("api_key",DBAPI.API_KEY)
-                .addQueryParameter("session_id",SessionID)
-                .build();
-        String content ;
-        RatedResults ratedResults = null;
-        try{
-            content = getContent(url);
-            Log.e(TAG,content);
-            ratedResults = gson.fromJson(content,RatedResults.class);
-        }catch (IOException ex){
-            Log.e(TAG,ex.getCause().toString());
-        }
-        return ratedResults;
     }
 
     /*

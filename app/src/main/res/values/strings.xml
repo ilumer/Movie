@@ -3,12 +3,12 @@
     <string name="sort_vote_average">评分排序</string>
     <string name="movie_favourite">favourite movie</string>
     <string name="movie_popular">popular_movie</string>
-    <string name="trailers">Trailers</string>
-    <string name="movie_overview">OVERVIEW</string>
+    <string name="movie_overview">Overview</string>
     <string name="review_account">account_image</string>
     <string name="toast_notInternet">Check the network</string>
-    <string name="movie_vote_per">%1$.0f %%</string>
-    <string name="movie_vote_num">%1$d votes</string>
+    <string name="movie_user_score">user score : %f/10</string>
+    <string name="movie_release_date">release date : %s</string>
+    <string name="trailer">Trailers</string>
     <string name="movie_collect">收集</string>
     <string name="fail_load_more">加载失败,请检查网络</string>
 
@@ -30,6 +30,5 @@
     <string name="account_rated">推荐</string>
     
     <!--电影相关-->
-    <string name="Release_Date">Release_Date</string>
 
 </resources>
