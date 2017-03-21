@@ -16,7 +16,7 @@ import rx.Observable;
 
 public interface MovieRepository {
 
-    Observable<List<MovieInfo>> getPopMoviesFromLocal();
+    Observable<List<MovieInfo>> getFavMoviesFromLocal();
 
     Observable<List<MovieInfo>> getPopMoviesFromNet(int page);
 

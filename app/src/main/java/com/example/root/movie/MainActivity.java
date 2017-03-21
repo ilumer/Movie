@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.example.root.movie.favmovie.FavMovieFragment;
 import com.example.root.movie.popmovie.PopMovieFragment;
 import com.example.root.movie.data.source.local.MovieHelper;
 import com.example.root.movie.model.FragmentCallback;
@@ -43,13 +44,6 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
     String favTitle;
     @BindString(R.string.movie_popular)
     String popTitle;
-    @BindString(R.string.drawer_open)
-    String drawer_open;
-    @BindString(R.string.drawer_close)
-
-    String drawer_close;
-    TextView mHeadname;
-    private ActionBarDrawerToggle drawerToggle;
     ViewPageAdapter adapter;
     Mode mode = Mode.single;
     enum Mode{
@@ -90,9 +84,9 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
         @Override
         public Fragment getItem(int position) {
             if (position==0){
-                return new PopMovieFragment();
+                return PopMovieFragment.instance();
             }else {
-                return new FavouriteFragment();
+                return FavMovieFragment.instance();
             }
         }
 

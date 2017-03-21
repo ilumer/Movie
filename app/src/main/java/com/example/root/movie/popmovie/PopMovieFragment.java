@@ -98,6 +98,10 @@ public class PopMovieFragment extends Fragment
         inflater.inflate(R.menu.sort_menu,menu);
     }
 
+    public static PopMovieFragment instance(){
+      return new PopMovieFragment();
+    }
+
     @Override
     public void onPause() {
         super.onPause();

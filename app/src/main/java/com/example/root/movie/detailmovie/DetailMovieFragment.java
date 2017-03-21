@@ -144,4 +144,12 @@ public class DetailMovieFragment extends Fragment implements DetailMovieContract
         .load(IMDBHelper.getImageBsUri(getActivity(),url))
         .into(posterMovie);
   }
+
+  @Override public void showFavTag(boolean isLike) {
+    if (isLike){
+      favorite.setImageResource(R.drawable.ic_favorite);
+    }else {
+      favorite.setImageResource(R.drawable.ic_no_favorite);
+    }
+  }
 }

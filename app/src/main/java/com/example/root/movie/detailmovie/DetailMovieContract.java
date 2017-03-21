@@ -32,6 +32,8 @@ public class DetailMovieContract {
     void showUserScore(double score);
 
     void loadMoviePost(String url);
+
+    void showFavTag(boolean isLike);
   }
 
   interface Presenter extends BasePresenter {
