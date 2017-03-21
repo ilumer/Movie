@@ -20,85 +20,71 @@ import rx.subscriptions.CompositeSubscription;
 
 public class DetailMovieFragmentPresenter implements DetailMovieContract.Presenter {
 
-    private DetailMovieContract.View view;
-    private BaseSchedulerProvider provider;
-    private MovieRepository repository;
-    private CompositeSubscription subscription;
+  private DetailMovieContract.View view;
+  private BaseSchedulerProvider provider;
+  private MovieRepository repository;
+  private CompositeSubscription subscription;
 
-    public DetailMovieFragmentPresenter(DetailMovieContract.View view,
-                                        BaseSchedulerProvider provider,
-                                        MovieRepository repository) {
-        this.view = view;
-        this.provider = provider;
-        this.repository = repository;
-        this.subscription = new CompositeSubscription();
-    }
+  public DetailMovieFragmentPresenter(DetailMovieContract.View view, BaseSchedulerProvider provider,
+      MovieRepository repository) {
+    this.view = view;
+    this.provider = provider;
+    this.repository = repository;
+    this.subscription = new CompositeSubscription();
+  }
 
-    @Override
-    public void unSubscribe() {
-        subscription.clear();
-    }
+  @Override public void unSubscribe() {
+    subscription.clear();
+  }
 
-    @Override
-    public void loadDetailMovie(int id) {
-        Observable<DetailMovie> data = repository.getDetailMovie(id)
-                .subscribeOn(provider.io())
-                .share();
-        // hot Observable
+  @Override public void loadDetailMovie(int id) {
+    Observable<DetailMovie> data = repository.getDetailMovie(id).subscribeOn(provider.io()).share();
+    // hot Observable
 
-        data.filter(new Func1<DetailMovie, Boolean>() {
-            @Override
-            public Boolean call(DetailMovie detailMovie) {
-                return detailMovie == null;
-            }
-        }).observeOn(provider.ui())
-                .subscribe(new Action1<DetailMovie>() {
-                    @Override
-                    public void call(DetailMovie detailMovie) {
-                        view.failLoad();
-                    }
-                });
-        //load fail
+    data.filter(new Func1<DetailMovie, Boolean>() {
+      @Override public Boolean call(DetailMovie detailMovie) {
+        return detailMovie == null;
+      }
+    }).observeOn(provider.ui()).subscribe(new Action1<DetailMovie>() {
+      @Override public void call(DetailMovie detailMovie) {
+        view.failLoad();
+      }
+    });
+    //load fail
 
-        Observable<DetailMovie> success = data.filter(Funcs.not(new Func1<DetailMovie, Boolean>() {
-            @Override
-            public Boolean call(DetailMovie detailMovie) {
-                return detailMovie == null;
-            }
-        }));
+    Observable<DetailMovie> success = data.filter(Funcs.not(new Func1<DetailMovie, Boolean>() {
+      @Override public Boolean call(DetailMovie detailMovie) {
+        return detailMovie == null;
+      }
+    }));
 
-        success.observeOn(provider.ui())
-                .subscribe(new Action1<DetailMovie>() {
-                    @Override
-                    public void call(DetailMovie detailMovie) {
-                        view.showDate(detailMovie.getReleaseDate());
-                        view.showMovie(detailMovie.getBackdropPath());
-                        view.showTitle(detailMovie.getTitle());
-                        view.showOverView(detailMovie.getOverview());
-                    }
-                });
+    success.observeOn(provider.ui()).subscribe(new Action1<DetailMovie>() {
+      @Override public void call(DetailMovie detailMovie) {
+        view.showDate(detailMovie.getReleaseDate());
+        view.showMovieBackdrop(detailMovie.getBackdropPath());
+        view.showTitle(detailMovie.getTitle());
+        view.showOverView(detailMovie.getOverview());
+        view.loadMoviePost(detailMovie.getPosterPath());
+        view.showUserScore(detailMovie.getVoteAverage());
+      }
+    });
 
-        subscription.add(loadTrailer(success));
-    }
+    subscription.add(loadTrailer(success));
+  }
 
-    @Override
-    public Subscription loadTrailer(Observable<DetailMovie> observable){
-        return observable.flatMap(new Func1<DetailMovie, Observable<List<Trailers.Trailer>>>() {
-            @Override
-            public Observable<List<Trailers.Trailer>> call(DetailMovie detailMovie) {
-                return repository.getMovieTrailers(detailMovie.getImdbId());
-            }
-        }).observeOn(provider.ui())
-                .subscribe(new Action1<List<Trailers.Trailer>>() {
-                    @Override
-                    public void call(List<Trailers.Trailer> trailers) {
-                        view.showTrailer(trailers);
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        view.failLoadTrailers();
-                    }
-                });
-    }
+  @Override public Subscription loadTrailer(Observable<DetailMovie> observable) {
+    return observable.flatMap(new Func1<DetailMovie, Observable<List<Trailers.Trailer>>>() {
+      @Override public Observable<List<Trailers.Trailer>> call(DetailMovie detailMovie) {
+        return repository.getMovieTrailers(detailMovie.getImdbId());
+      }
+    }).observeOn(provider.ui()).subscribe(new Action1<List<Trailers.Trailer>>() {
+      @Override public void call(List<Trailers.Trailer> trailers) {
+        view.showTrailer(trailers);
+      }
+    }, new Action1<Throwable>() {
+      @Override public void call(Throwable throwable) {
+        view.failLoadTrailers();
+      }
+    });
+  }
 }

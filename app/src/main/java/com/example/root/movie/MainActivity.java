@@ -37,10 +37,6 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
     TabLayout tabLayout;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.nvView)
-    NavigationView nvView;
-    @BindView(R.id.Drawer)
-    DrawerLayout drawerLayout;
     @Nullable@BindView(R.id.fragment_container)
     FrameLayout container;
     @BindString(R.string.movie_favourite)
@@ -70,88 +66,16 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback{
             toolbar.setElevation(0);
         }
         setSupportActionBar(toolbar);
-        setUpDrawerContent(nvView);
-        drawerToggle = setUpDrawerToggle();
-        drawerLayout.addDrawerListener(drawerToggle);
-        View headerLayout = nvView.getHeaderView(0);
-        mHeadname = (TextView) headerLayout.findViewById(R.id.name);
         final String[] title = {popTitle,favTitle};
         adapter = new ViewPageAdapter(getSupportFragmentManager(),title);
         pager.setAdapter(adapter);
         MovieHelper movieHelper = new MovieHelper(this);
         movieHelper.getReadableDatabase();
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if (position==1) {
-                    adapter.finishUpdate(pager);
-                    FavouriteFragment favouriteFragment = (FavouriteFragment) adapter.instantiateItem(pager, position);
-                    if (favouriteFragment != null) {
-                        favouriteFragment.updateUI();
-                    }
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
         tabLayout.setupWithViewPager(pager);
         if (container!=null){
             mode = Mode.multiple;
         }
         movieHelper.close();
-    }
-
-    public  void setNvAccountName(String name){
-        mHeadname.setText(name);
-    }
-
-
-
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (drawerToggle.onOptionsItemSelected(item)){
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void setUpDrawerContent(NavigationView view){
-        view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                selectDrawerItem(item);
-                return true;
-            }
-        });
-    }
-
-    private ActionBarDrawerToggle setUpDrawerToggle(){
-        return new ActionBarDrawerToggle(this,drawerLayout, toolbar,
-                R.string.drawer_open,R.string.drawer_open);
-    }
-
-    public void selectDrawerItem(MenuItem item){
-        drawerLayout.closeDrawers();
     }
 
     public class ViewPageAdapter extends FragmentStatePagerAdapter{

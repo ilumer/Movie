@@ -6,7 +6,7 @@
     <string name="movie_overview">Overview</string>
     <string name="review_account">account_image</string>
     <string name="toast_notInternet">Check the network</string>
-    <string name="movie_user_score">user score : %f/10</string>
+    <string name="movie_user_score">user score : %.1f/10</string>
     <string name="movie_release_date">release date : %s</string>
     <string name="trailer">Trailers</string>
     <string name="movie_collect">收集</string>

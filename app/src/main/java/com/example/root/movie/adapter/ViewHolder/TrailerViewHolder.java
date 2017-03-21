@@ -1,5 +1,6 @@
 package com.example.root.movie.adapter.ViewHolder;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -23,10 +24,19 @@ public class TrailerViewHolder extends BaseViewHolder<Trailers.Trailer>{
     }
 
     @Override
-    public void bind(Trailers.Trailer model) {
+    public void bind(final Trailers.Trailer model) {
         super.bind(model);
         Glide.with(trailer.getContext())
                 .load(YoutubeHelper.getImgUri(model.getKey()))
                 .into(trailer);
+        trailer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent();
+                i.setAction(Intent.ACTION_VIEW);
+                i.setData(YoutubeHelper.getVideoUri(model.getKey()));
+                trailer.getContext().startActivity(i);
+            }
+        });
     }
 }

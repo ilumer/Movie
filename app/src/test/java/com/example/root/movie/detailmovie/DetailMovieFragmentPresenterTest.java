@@ -55,7 +55,7 @@ public class DetailMovieFragmentPresenterTest {
         presenter.loadDetailMovie(detailId);
 
         Mockito.verify(view).showTitle(movie.getTitle());
-        Mockito.verify(view).showMovie(movie.getBackdropPath());
+        Mockito.verify(view).showMovieBackdrop(movie.getBackdropPath());
         Mockito.verify(view).showDate(movie.getReleaseDate());
     }
 

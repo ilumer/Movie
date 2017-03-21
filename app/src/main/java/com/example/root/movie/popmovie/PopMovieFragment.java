@@ -117,9 +117,7 @@ public class PopMovieFragment extends Fragment
                 Collections.reverse(mList);
                 return true;
             }
-            case R.id.login:{
-
-            }
+            case R.id.login:
             default:
                 return super.onOptionsItemSelected(item);
         }

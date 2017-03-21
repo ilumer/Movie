@@ -14,25 +14,29 @@ import rx.Subscription;
  */
 
 public class DetailMovieContract {
-    interface View{
-        void showMovie(String url);
+  interface View {
+    void showMovieBackdrop(String url);
 
-        void showTitle(String str);
+    void showTitle(String str);
 
-        void showDate(String date);
+    void showDate(String date);
 
-        void showTrailer(List<Trailers.Trailer> trailerList);
+    void showTrailer(List<Trailers.Trailer> trailerList);
 
-        void showOverView(String overView);
+    void showOverView(String overView);
 
-        void failLoad();
+    void failLoad();
 
-        void failLoadTrailers();
-    }
+    void failLoadTrailers();
 
-    interface Presenter extends BasePresenter{
-        void loadDetailMovie(int id);
+    void showUserScore(double score);
 
-        Subscription loadTrailer(Observable<DetailMovie> observable);
-    }
+    void loadMoviePost(String url);
+  }
+
+  interface Presenter extends BasePresenter {
+    void loadDetailMovie(int id);
+
+    Subscription loadTrailer(Observable<DetailMovie> observable);
+  }
 }
