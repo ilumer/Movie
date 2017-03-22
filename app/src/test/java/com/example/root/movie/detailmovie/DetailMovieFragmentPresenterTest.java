@@ -49,9 +49,7 @@ import rx.Observable;
 
     presenter.loadDetailMovie(detailId);
 
-    Mockito.verify(view).showTitle(movie.getTitle());
-    Mockito.verify(view).showMovieBackdrop(movie.getBackdropPath());
-    Mockito.verify(view).showDate(movie.getReleaseDate());
+    Mockito.verify(view).showMovieInfo(movie);
   }
 
   @Test public void loadDetailMovieFail() throws Exception {
