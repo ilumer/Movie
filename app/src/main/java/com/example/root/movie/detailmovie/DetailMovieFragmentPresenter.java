@@ -1,6 +1,7 @@
 package com.example.root.movie.detailmovie;
 
 import com.example.root.movie.model.DetailMovie;
+import com.example.root.movie.model.MovieInfo;
 import com.example.root.movie.model.Trailers;
 import com.example.root.movie.repositories.MovieRepository;
 import com.example.root.movie.util.rx.Funcs;
@@ -24,6 +25,8 @@ public class DetailMovieFragmentPresenter implements DetailMovieContract.Present
   private BaseSchedulerProvider provider;
   private MovieRepository repository;
   private CompositeSubscription subscription;
+  private MovieInfo favMovie = new MovieInfo();
+  private boolean fav;
 
   public DetailMovieFragmentPresenter(DetailMovieContract.View view, BaseSchedulerProvider provider,
       MovieRepository repository) {
@@ -38,6 +41,17 @@ public class DetailMovieFragmentPresenter implements DetailMovieContract.Present
   }
 
   @Override public void loadDetailMovie(int id) {
+    favMovie.setId(id);
+    repository.checkFavMovieById(id)
+        .subscribe(new Action1<Boolean>() {
+          @Override public void call(Boolean aBoolean) {
+            if (aBoolean){
+              view.showFavTag();
+            }else {
+              view.showNotFavTag();
+            }
+          }
+        });
     Observable<DetailMovie> data = repository.getDetailMovie(id).subscribeOn(provider.io()).share();
     // hot Observable
 
@@ -58,7 +72,7 @@ public class DetailMovieFragmentPresenter implements DetailMovieContract.Present
       }
     }));
 
-    success.observeOn(provider.ui()).subscribe(new Action1<DetailMovie>() {
+    subscription.add(success.observeOn(provider.ui()).subscribe(new Action1<DetailMovie>() {
       @Override public void call(DetailMovie detailMovie) {
         view.showDate(detailMovie.getReleaseDate());
         view.showMovieBackdrop(detailMovie.getBackdropPath());
@@ -66,8 +80,9 @@ public class DetailMovieFragmentPresenter implements DetailMovieContract.Present
         view.showOverView(detailMovie.getOverview());
         view.loadMoviePost(detailMovie.getPosterPath());
         view.showUserScore(detailMovie.getVoteAverage());
+        favMovie.setPosterPath(detailMovie.getPosterPath());
       }
-    });
+    }));
 
     subscription.add(loadTrailer(success));
   }
@@ -86,5 +101,28 @@ public class DetailMovieFragmentPresenter implements DetailMovieContract.Present
         view.failLoadTrailers();
       }
     });
+  }
+
+  @Override public void onClickFav() {
+    fav = !fav;
+    if (fav){
+      view.showFavTag();
+      Observable.just(favMovie)
+          .subscribeOn(provider.io())
+          .subscribe(new Action1<MovieInfo>() {
+            @Override public void call(MovieInfo movieInfo) {
+              repository.insert(movieInfo);
+            }
+          });
+    }else {
+      view.showNotFavTag();
+      Observable.just(favMovie)
+          .subscribeOn(provider.io())
+          .subscribe(new Action1<MovieInfo>() {
+            @Override public void call(MovieInfo movieInfo) {
+              repository.remove(movieInfo);
+            }
+          });
+    }
   }
 }

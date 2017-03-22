@@ -16,12 +16,17 @@ import rx.Observable;
 
 public interface MovieRepository {
 
-    Observable<List<MovieInfo>> getFavMoviesFromLocal();
+  Observable<List<MovieInfo>> getFavMoviesFromLocal();
 
-    Observable<List<MovieInfo>> getPopMoviesFromNet(int page);
+  Observable<List<MovieInfo>> getPopMoviesFromNet(int page);
 
-    Observable<DetailMovie> getDetailMovie(int id);
+  Observable<DetailMovie> getDetailMovie(int id);
 
-    Observable<List<Trailers.Trailer>> getMovieTrailers(String imdbId);
+  Observable<List<Trailers.Trailer>> getMovieTrailers(String imdbId);
 
+  Observable<Boolean> checkFavMovieById(int id);
+
+  void insert(MovieInfo movieInfo);
+
+  void remove(MovieInfo movieInfo);
 }

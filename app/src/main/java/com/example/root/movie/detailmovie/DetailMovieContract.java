@@ -33,12 +33,16 @@ public class DetailMovieContract {
 
     void loadMoviePost(String url);
 
-    void showFavTag(boolean isLike);
+    void showFavTag();
+
+    void showNotFavTag();
   }
 
   interface Presenter extends BasePresenter {
     void loadDetailMovie(int id);
 
     Subscription loadTrailer(Observable<DetailMovie> observable);
+
+    void onClickFav();
   }
 }

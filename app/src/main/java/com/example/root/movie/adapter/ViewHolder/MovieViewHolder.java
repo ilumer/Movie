@@ -35,7 +35,7 @@ public class MovieViewHolder extends BaseViewHolder<MovieInfo>{
     public void bind(final MovieInfo model) {
         super.bind(model);
         Glide.with(movie.getContext())
-                .load(IMDBHelper.getImageBsUri(movie.getContext(),model.getBackdropPath()))
+                .load(IMDBHelper.getImageBsUri(movie.getContext(),model.getPosterPath()))
                 .into(movie);
         movie.setOnClickListener(new View.OnClickListener() {
             @Override

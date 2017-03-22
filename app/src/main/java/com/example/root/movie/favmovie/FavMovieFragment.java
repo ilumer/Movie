@@ -1,5 +1,6 @@
 package com.example.root.movie.favmovie;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import com.example.root.movie.model.MovieInfo;
 import com.example.root.movie.repositories.MovieRepository;
 import com.example.root.movie.repositories.impl.MovieRepositoryImpl;
 import com.example.root.movie.util.Injection;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,8 +50,10 @@ public class FavMovieFragment extends Fragment implements FavMovieContract.View 
     favMovie.setHasFixedSize(true);
     layoutManager = new GridLayoutManager(getActivity(),2);
     favMovie.setLayoutManager(layoutManager);
+    list = new ArrayList<>();
     adapter = new MovieAdapter(list);
     favMovie.setLayoutManager(layoutManager);
+    favMovie.setAdapter(adapter);
     repository = new MovieRepositoryImpl(getActivity().getApplicationContext());
     presenter = new FavMovieFragmentPresenter(repository,this,Injection.provideSchedulerProvider());
   }
@@ -61,6 +65,7 @@ public class FavMovieFragment extends Fragment implements FavMovieContract.View 
 
   @Override public void onDestroyView() {
     super.onDestroyView();
+    presenter.unSubscribe();
     unbinder.unbind();
   }
 
@@ -75,4 +80,5 @@ public class FavMovieFragment extends Fragment implements FavMovieContract.View 
   public static FavMovieFragment instance(){
     return new FavMovieFragment();
   }
+
 }

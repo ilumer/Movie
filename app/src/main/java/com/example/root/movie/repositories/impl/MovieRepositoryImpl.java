@@ -1,5 +1,6 @@
 package com.example.root.movie.repositories.impl;
 
+import android.content.ContentValues;
 import android.content.Context;
 
 import android.database.Cursor;
@@ -37,29 +38,44 @@ public class MovieRepositoryImpl implements MovieRepository {
   @Override public Observable<List<MovieInfo>> getFavMoviesFromLocal() {
     return Observable.fromCallable(new Func0<Cursor>() {
       @Override public Cursor call() {
-        return helper.getWritableDatabase().query(MovieContract.MovieDataBean.TABLE_NAME,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null);
+        return helper.getWritableDatabase()
+            .query(MovieContract.MovieDataBean.TABLE_NAME, null, null, null, null, null, null);
       }
     }).map(new Func1<Cursor, List<MovieInfo>>() {
       @Override public List<MovieInfo> call(Cursor cursor) {
         List<MovieInfo> list = new ArrayList<>();
-        try{
+        try {
           //需要的数据
-          while (cursor.moveToNext()){
+          while (cursor.moveToNext()) {
             MovieInfo info = new MovieInfo();
-            info.setId(Db.getInt(cursor,MovieContract.MovieDataBean.COLUMN_NAME_MOVIE_ID));
-            info.setPosterPath(Db.getString(cursor,MovieContract.MovieDataBean.COLUMN_NAME_POSTER_PATH));
+            info.setId(Db.getInt(cursor, MovieContract.MovieDataBean.COLUMN_NAME_MOVIE_ID));
+            info.setPosterPath(
+                Db.getString(cursor, MovieContract.MovieDataBean.COLUMN_NAME_POSTER_PATH));
             list.add(info);
           }
-        }finally {
+        } finally {
           cursor.close();
         }
         return list;
+      }
+    });
+  }
+
+  @Override public Observable<Boolean> checkFavMovieById(int id) {
+    return Observable.just(id).map(new Func1<Integer, Boolean>() {
+      @Override public Boolean call(Integer id) {
+        Cursor cursor = null;
+        try {
+          cursor = helper.getWritableDatabase()
+              .query(MovieContract.MovieDataBean.TABLE_NAME, null,
+                  MovieContract.MovieDataBean.COLUMN_NAME_MOVIE_ID + " = ? ",
+                  new String[] { id + "" }, null, null, null);
+          return cursor.moveToNext();
+        } finally {
+          if (cursor != null) {
+            cursor.close();
+          }
+        }
       }
     });
   }
@@ -100,5 +116,18 @@ public class MovieRepositoryImpl implements MovieRepository {
         }
       }
     });
+  }
+
+  @Override public void insert(MovieInfo movie) {
+    ContentValues value = new ContentValues();
+    value.put(MovieContract.MovieDataBean.COLUMN_NAME_MOVIE_ID,movie.getId());
+    value.put(MovieContract.MovieDataBean.COLUMN_NAME_POSTER_PATH,movie.getPosterPath());
+    helper.getWritableDatabase().replace(MovieContract.MovieDataBean.TABLE_NAME,null,value);
+  }
+
+  @Override public void remove(MovieInfo movieInfo) {
+    helper.getWritableDatabase().delete(MovieContract.MovieDataBean.TABLE_NAME,
+        MovieContract.MovieDataBean.COLUMN_NAME_MOVIE_ID + "= ?",
+        new String[] { String.valueOf(movieInfo.getId()) });
   }
 }

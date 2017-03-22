@@ -22,81 +22,82 @@ import rx.Observable;
 /**
  * Created by ilumer on 17-3-16.
  */
-@RunWith(MockitoJUnitRunner.class)
-public class DetailMovieFragmentPresenterTest {
+@RunWith(MockitoJUnitRunner.class) public class DetailMovieFragmentPresenterTest {
 
-    @Mock
-    MovieRepository repository;
-    @Mock
-    DetailMovieContract.View view;
+  @Mock MovieRepository repository;
+  @Mock DetailMovieContract.View view;
 
-    public static final int detailId = 1111;
+  public static final int detailId = 1111;
 
-    public static final String imdbId = "tt1111";
+  public static final String imdbId = "tt1111";
 
-    //http://stackoverflow.com/questions/18514033/create-a-mocked-list-by-mockito
-    // not mock list;
+  //http://stackoverflow.com/questions/18514033/create-a-mocked-list-by-mockito
+  // not mock list;
 
-    DetailMovieContract.Presenter presenter;
+  DetailMovieContract.Presenter presenter;
 
-    @Before
-    public void setup(){
-        BaseSchedulerProvider provider = new ImmediateSchedulerProvider();
-        presenter = new DetailMovieFragmentPresenter(view,provider,repository);
-    }
+  @Before public void setup() {
+    BaseSchedulerProvider provider = new ImmediateSchedulerProvider();
+    presenter = new DetailMovieFragmentPresenter(view, provider, repository);
+  }
 
-    @Test
-    public void loadDetailMovieSuccess() throws Exception {
-        DetailMovie movie = new DetailMovie();
-        List<Trailers.Trailer> m = new ArrayList<>();
-        Mockito.when(repository.getDetailMovie(detailId))
-                .thenReturn(Observable.just(movie));
+  @Test public void loadDetailMovieSuccess() throws Exception {
+    DetailMovie movie = new DetailMovie();
+    List<Trailers.Trailer> m = new ArrayList<>();
+    Mockito.when(repository.getDetailMovie(detailId)).thenReturn(Observable.just(movie));
+    Mockito.when(repository.checkFavMovieById(detailId)).thenReturn(Observable.just(true));
 
-        presenter.loadDetailMovie(detailId);
+    presenter.loadDetailMovie(detailId);
 
-        Mockito.verify(view).showTitle(movie.getTitle());
-        Mockito.verify(view).showMovieBackdrop(movie.getBackdropPath());
-        Mockito.verify(view).showDate(movie.getReleaseDate());
-    }
+    Mockito.verify(view).showTitle(movie.getTitle());
+    Mockito.verify(view).showMovieBackdrop(movie.getBackdropPath());
+    Mockito.verify(view).showDate(movie.getReleaseDate());
+  }
 
-    @Test
-    public void loadDetailMovieFail() throws Exception {
-        Mockito.when(repository.getDetailMovie(detailId))
-                .thenReturn(Observable.<DetailMovie>just(null));
-        // 泛型需要确定类型参数
-        List<Trailers.Trailer> list = new ArrayList<>();
+  @Test public void loadDetailMovieFail() throws Exception {
+    Mockito.when(repository.getDetailMovie(detailId))
+        .thenReturn(Observable.<DetailMovie>just(null));
+    // 泛型需要确定类型参数
+    Mockito.when(repository.checkFavMovieById(detailId)).thenReturn(Observable.just(true));
 
-        presenter.loadDetailMovie(detailId);
+    List<Trailers.Trailer> list = new ArrayList<>();
 
-        Mockito.verify(view).failLoad();
-        Mockito.verify(view,Mockito.never()).failLoadTrailers();
-        Mockito.verify(view,Mockito.never()).showTrailer(list);
-    }
+    presenter.loadDetailMovie(detailId);
 
-    @Test
-    public void loadTrailersSuccess() throws Exception {
-        List<Trailers.Trailer> list = new ArrayList<>();
-        DetailMovie movie = new DetailMovie();
-        movie.setImdbId(imdbId);
-        Observable<DetailMovie> data = Observable.just(movie);
-        Mockito.when(repository.getMovieTrailers(imdbId))
-                .thenReturn(Observable.just(list));
+    Mockito.verify(view).failLoad();
+    Mockito.verify(view, Mockito.never()).failLoadTrailers();
+    Mockito.verify(view, Mockito.never()).showTrailer(list);
+  }
 
-        presenter.loadTrailer(data);
+  @Test public void loadTrailersSuccess() throws Exception {
+    List<Trailers.Trailer> list = new ArrayList<>();
+    DetailMovie movie = new DetailMovie();
+    movie.setImdbId(imdbId);
+    Observable<DetailMovie> data = Observable.just(movie);
+    Mockito.when(repository.getMovieTrailers(imdbId)).thenReturn(Observable.just(list));
 
-        Mockito.verify(view).showTrailer(list);
-    }
+    presenter.loadTrailer(data);
 
-    @Test
-    public void loadTrailersFail() throws Exception {
-        DetailMovie movie = new DetailMovie();
-        movie.setImdbId(imdbId);
-        Observable<DetailMovie> data = Observable.just(movie);
-        Mockito.when(repository.getMovieTrailers(imdbId))
-                .thenReturn(Observable.<List<Trailers.Trailer>>error(new IOException()));
+    Mockito.verify(view).showTrailer(list);
+  }
 
-        presenter.loadTrailer(data);
-        Mockito.verify(view).failLoadTrailers();
-    }
+  @Test public void loadTrailersFail() throws Exception {
+    DetailMovie movie = new DetailMovie();
+    movie.setImdbId(imdbId);
+    Observable<DetailMovie> data = Observable.just(movie);
+    Mockito.when(repository.getMovieTrailers(imdbId))
+        .thenReturn(Observable.<List<Trailers.Trailer>>error(new IOException()));
 
+    presenter.loadTrailer(data);
+    Mockito.verify(view).failLoadTrailers();
+  }
+
+  @Test public void loadFavMovie() throws Exception {
+    Mockito.when(repository.getDetailMovie(detailId)).thenReturn(Observable.just(new DetailMovie()));
+    Mockito.when(repository.checkFavMovieById(detailId)).thenReturn(Observable.just(true));
+
+    presenter.loadDetailMovie(detailId);
+
+    Mockito.verify(view).showFavTag();
+  }
 }

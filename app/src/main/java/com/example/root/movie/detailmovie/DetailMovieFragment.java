@@ -132,7 +132,7 @@ public class DetailMovieFragment extends Fragment implements DetailMovieContract
   }
 
   @OnClick(R.id.favorite) void submit() {
-    favorite.setImageResource(R.drawable.ic_favorite_border);
+    presenter.onClickFav();
   }
 
   @Override public void showUserScore(double score) {
@@ -145,11 +145,11 @@ public class DetailMovieFragment extends Fragment implements DetailMovieContract
         .into(posterMovie);
   }
 
-  @Override public void showFavTag(boolean isLike) {
-    if (isLike){
-      favorite.setImageResource(R.drawable.ic_favorite);
-    }else {
-      favorite.setImageResource(R.drawable.ic_no_favorite);
-    }
+  @Override public void showFavTag() {
+    favorite.setImageResource(R.drawable.ic_favorite);
+  }
+
+  @Override public void showNotFavTag() {
+    favorite.setImageResource(R.drawable.ic_favorite_border);
   }
 }
