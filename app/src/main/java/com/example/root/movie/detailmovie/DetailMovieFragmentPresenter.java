@@ -42,16 +42,17 @@ public class DetailMovieFragmentPresenter implements DetailMovieContract.Present
 
   @Override public void loadDetailMovie(int id) {
     favMovie.setId(id);
-    repository.checkFavMovieById(id)
+    subscription.add(repository.checkFavMovieById(id)
         .subscribe(new Action1<Boolean>() {
           @Override public void call(Boolean aBoolean) {
+            fav = aBoolean;
             if (aBoolean){
               view.showFavTag();
             }else {
               view.showNotFavTag();
             }
           }
-        });
+        }));
     Observable<DetailMovie> data = repository.getDetailMovie(id).subscribeOn(provider.io()).share();
     // hot Observable
 
@@ -74,12 +75,7 @@ public class DetailMovieFragmentPresenter implements DetailMovieContract.Present
 
     subscription.add(success.observeOn(provider.ui()).subscribe(new Action1<DetailMovie>() {
       @Override public void call(DetailMovie detailMovie) {
-        view.showDate(detailMovie.getReleaseDate());
-        view.showMovieBackdrop(detailMovie.getBackdropPath());
-        view.showTitle(detailMovie.getTitle());
-        view.showOverView(detailMovie.getOverview());
-        view.loadMoviePost(detailMovie.getPosterPath());
-        view.showUserScore(detailMovie.getVoteAverage());
+        view.showMovieInfo(detailMovie);
         favMovie.setPosterPath(detailMovie.getPosterPath());
       }
     }));
@@ -105,24 +101,25 @@ public class DetailMovieFragmentPresenter implements DetailMovieContract.Present
 
   @Override public void onClickFav() {
     fav = !fav;
+    view.sendFavMovie(favMovie);
     if (fav){
       view.showFavTag();
-      Observable.just(favMovie)
+      subscription.add(Observable.just(favMovie)
           .subscribeOn(provider.io())
           .subscribe(new Action1<MovieInfo>() {
             @Override public void call(MovieInfo movieInfo) {
               repository.insert(movieInfo);
             }
-          });
+          }));
     }else {
       view.showNotFavTag();
-      Observable.just(favMovie)
+      subscription.add(Observable.just(favMovie)
           .subscribeOn(provider.io())
           .subscribe(new Action1<MovieInfo>() {
             @Override public void call(MovieInfo movieInfo) {
               repository.remove(movieInfo);
             }
-          });
+          }));
     }
   }
 }

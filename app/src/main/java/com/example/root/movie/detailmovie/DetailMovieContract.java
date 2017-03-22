@@ -2,6 +2,7 @@ package com.example.root.movie.detailmovie;
 
 import com.example.root.movie.BasePresenter;
 import com.example.root.movie.model.DetailMovie;
+import com.example.root.movie.model.MovieInfo;
 import com.example.root.movie.model.Trailers;
 
 import java.util.List;
@@ -15,27 +16,20 @@ import rx.Subscription;
 
 public class DetailMovieContract {
   interface View {
-    void showMovieBackdrop(String url);
 
-    void showTitle(String str);
-
-    void showDate(String date);
+    void showMovieInfo(DetailMovie movie);
 
     void showTrailer(List<Trailers.Trailer> trailerList);
-
-    void showOverView(String overView);
 
     void failLoad();
 
     void failLoadTrailers();
 
-    void showUserScore(double score);
-
-    void loadMoviePost(String url);
-
     void showFavTag();
 
     void showNotFavTag();
+
+    void sendFavMovie(MovieInfo movie);
   }
 
   interface Presenter extends BasePresenter {

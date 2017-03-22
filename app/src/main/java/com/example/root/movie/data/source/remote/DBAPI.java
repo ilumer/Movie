@@ -1,4 +1,4 @@
-package com.example.root.movie.net;
+package com.example.root.movie.data.source.remote;
 
 import com.example.root.movie.BuildConfig;
 

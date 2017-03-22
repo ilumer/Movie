@@ -1,10 +1,12 @@
 package com.example.root.movie.detailmovie;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +20,8 @@ import com.bumptech.glide.Glide;
 import com.example.root.movie.R;
 import com.example.root.movie.adapter.VideoAdapter;
 import com.example.root.movie.helper.IMDBHelper;
+import com.example.root.movie.model.DetailMovie;
+import com.example.root.movie.model.MovieInfo;
 import com.example.root.movie.model.Trailers;
 import com.example.root.movie.repositories.MovieRepository;
 import com.example.root.movie.repositories.impl.MovieRepositoryImpl;
@@ -39,6 +43,9 @@ import butterknife.Unbinder;
 public class DetailMovieFragment extends Fragment implements DetailMovieContract.View {
 
   public static final String EXTRA_MOVIE_ID = "EXTRA_MOVIE_ID";
+  public static final String EXTRA_MOVIE = "EXTRA_MOVIE";
+  public static final String INTENT_MOVIE_FILTER = "INTENT_MOVIE_FILTER";
+
   Unbinder unbinder;
   DetailMovieContract.Presenter presenter;
 
@@ -102,15 +109,23 @@ public class DetailMovieFragment extends Fragment implements DetailMovieContract
     return fragment;
   }
 
-  @Override public void showMovieBackdrop(String url) {
+  @Override public void showMovieInfo(DetailMovie info) {
+    showMovieBackdrop(info.getBackdropPath());
+    showDate(info.getReleaseDate());
+    showUserScore(info.getVoteAverage());
+    showTitle(info.getTitle());
+    showMoviePost(info.getPosterPath());
+  }
+
+  public void showMovieBackdrop(String url) {
     Glide.with(this).load(IMDBHelper.getImageBsUri(getActivity(), url)).into(backgroundMovie);
   }
 
-  @Override public void showTitle(String str) {
+  public void showTitle(String str) {
     movieTitle.setText(str);
   }
 
-  @Override public void showDate(String date) {
+  public void showDate(String date) {
     releaseDate.setText(String.format(movieReleaseDate, date));
   }
 
@@ -127,7 +142,7 @@ public class DetailMovieFragment extends Fragment implements DetailMovieContract
 
   }
 
-  @Override public void showOverView(String overView) {
+  public void showOverView(String overView) {
     movieOverView.setText(overView);
   }
 
@@ -135,11 +150,11 @@ public class DetailMovieFragment extends Fragment implements DetailMovieContract
     presenter.onClickFav();
   }
 
-  @Override public void showUserScore(double score) {
+  public void showUserScore(double score) {
     userScore.setText(String.format(userScoreFormat,score));
   }
 
-  @Override public void loadMoviePost(String url) {
+  public void showMoviePost(String url) {
     Glide.with(this)
         .load(IMDBHelper.getImageBsUri(getActivity(),url))
         .into(posterMovie);
@@ -151,5 +166,13 @@ public class DetailMovieFragment extends Fragment implements DetailMovieContract
 
   @Override public void showNotFavTag() {
     favorite.setImageResource(R.drawable.ic_favorite_border);
+  }
+
+
+
+  @Override public void sendFavMovie(MovieInfo movie) {
+    Intent intent = new Intent(INTENT_MOVIE_FILTER);
+    intent.putExtra(EXTRA_MOVIE,movie);
+    LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
   }
 }

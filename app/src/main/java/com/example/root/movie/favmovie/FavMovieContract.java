@@ -13,6 +13,7 @@ public class FavMovieContract {
     void displayMovie(List<MovieInfo> movies);
 
     void displayNoMovie();
+
   }
 
   interface Presenter extends BasePresenter{

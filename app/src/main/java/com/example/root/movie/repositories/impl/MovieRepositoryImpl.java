@@ -7,10 +7,10 @@ import android.database.Cursor;
 import com.example.root.movie.data.source.local.Db;
 import com.example.root.movie.data.source.local.MovieContract;
 import com.example.root.movie.data.source.local.MovieHelper;
+import com.example.root.movie.data.source.remote.MovieOkhttp;
 import com.example.root.movie.model.DetailMovie;
 import com.example.root.movie.model.MovieInfo;
 import com.example.root.movie.model.Trailers;
-import com.example.root.movie.net.MovieOkhttp;
 import com.example.root.movie.repositories.MovieRepository;
 
 import java.io.IOException;

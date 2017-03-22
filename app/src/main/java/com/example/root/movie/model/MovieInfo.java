@@ -1,12 +1,14 @@
 package com.example.root.movie.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by ilumer on 17-3-7.
  */
 
-public class MovieInfo {
+public class MovieInfo implements Parcelable{
     @SerializedName("poster_path")
     private String posterPath;
     private boolean adult;
@@ -150,4 +152,64 @@ public class MovieInfo {
         this.voteAverage = vote_average;
     }
 
+    @Override public boolean equals(Object obj) {
+      if(this == obj) return true;
+      if (obj == null) return false;
+      if (this.getClass() != obj.getClass()) return false;
+      MovieInfo info = (MovieInfo) obj;
+      return this.getId() == info.getId();
+    }
+
+    @Override public int describeContents() {
+        return 0;
+    }
+
+    @Override public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.posterPath);
+        dest.writeByte(this.adult ? (byte) 1 : (byte) 0);
+        dest.writeString(this.overview);
+        dest.writeString(this.releaseDate);
+        dest.writeInt(this.id);
+        dest.writeString(this.originalTitle);
+        dest.writeString(this.originalLanguage);
+        dest.writeString(this.title);
+        dest.writeString(this.backdropPath);
+        dest.writeInt(this.width);
+        dest.writeInt(this.height);
+        dest.writeDouble(this.popularity);
+        dest.writeInt(this.voteCount);
+        dest.writeByte(this.video ? (byte) 1 : (byte) 0);
+        dest.writeDouble(this.voteAverage);
+    }
+
+    public MovieInfo() {
+    }
+
+    protected MovieInfo(Parcel in) {
+        this.posterPath = in.readString();
+        this.adult = in.readByte() != 0;
+        this.overview = in.readString();
+        this.releaseDate = in.readString();
+        this.id = in.readInt();
+        this.originalTitle = in.readString();
+        this.originalLanguage = in.readString();
+        this.title = in.readString();
+        this.backdropPath = in.readString();
+        this.width = in.readInt();
+        this.height = in.readInt();
+        this.popularity = in.readDouble();
+        this.voteCount = in.readInt();
+        this.video = in.readByte() != 0;
+        this.voteAverage = in.readDouble();
+    }
+
+    public static final Creator<MovieInfo> CREATOR = new Creator<MovieInfo>() {
+        @Override public MovieInfo createFromParcel(Parcel source) {
+            return new MovieInfo(source);
+        }
+
+        @Override public MovieInfo[] newArray(int size) {
+            return new MovieInfo[size];
+        }
+    };
 }

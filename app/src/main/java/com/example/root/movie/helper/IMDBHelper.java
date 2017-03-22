@@ -3,8 +3,7 @@ package com.example.root.movie.helper;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
-
-import com.example.root.movie.net.DBAPI;
+import com.example.root.movie.data.source.remote.DBAPI;
 
 public class IMDBHelper {
     public static int getWidth(Context context){
